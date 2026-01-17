@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import { StorageRepo } from '@/lib/series-tracker/storage'
 import type {
+  Season,
   Show,
   TrackerState,
   UserProfile,
@@ -23,6 +24,8 @@ export type SeriesTrackerContextValue = {
   removeShow: (imdbId: string) => void
   updateShow: (show: Show) => void
   replaceState: (next: TrackerState) => void
+  getShowById: (imdbId: string) => Show | undefined
+  getShowProgress: (imdbId: string) => { watched: number; total: number }
 }
 
 const SeriesTrackerContext = createContext<
@@ -93,6 +96,26 @@ export function SeriesTrackerProvider({
     setState(StorageRepo.getState())
   }, [])
 
+  const getShowById = useCallback(
+    (imdbId: string) => {
+      return state.shows.find((s) => s.imdbId === imdbId)
+    },
+    [state],
+  )
+
+  const getShowProgress = useCallback(
+    (imdbId: string) => {
+      const show = getShowById(imdbId)
+      const allEpisodes = (show?.seasons || []).flatMap(
+        (s: Season) => s.episodes || [],
+      )
+      const total = allEpisodes.length
+      const watched = allEpisodes.filter((e) => e.watched).length
+      return { watched, total }
+    },
+    [getShowById],
+  )
+
   const value = useMemo<SeriesTrackerContextValue>(
     () => ({
       state,
@@ -104,6 +127,8 @@ export function SeriesTrackerProvider({
       removeShow,
       updateShow,
       replaceState,
+      getShowById,
+      getShowProgress,
       hasProfile: !!state.profile?.name,
       hasShows: (state.shows?.length ?? 0) > 0,
       profile: state.profile,

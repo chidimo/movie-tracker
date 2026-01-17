@@ -3,6 +3,8 @@ import type { Episode, Season, Show } from '@/lib/series-tracker/types'
 import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
 import { formatTentative, isWithinDays } from '@/lib/utils'
 import { Switcher } from '../switcher'
+import { Link } from '@tanstack/react-router'
+import { DEFAULT_DAYS_SOON } from '@/lib/constants'
 
 export const EpisodeCard = ({
   show,
@@ -106,20 +108,37 @@ export const EpisodeCard = ({
       }
     >
       <div>
-        <div className="text-sm font-medium">
+        <p className="text-sm font-medium">
           {episode.episodeNumber ? `E${episode.episodeNumber} · ` : ''}
           {episode.title}
-        </div>
+        </p>
+
         {episode.releaseDate ? (
           <div className="text-xs text-gray-600 flex items-center gap-2">
             <span>Air date: {formatTentative(episode.releaseDate)}</span>
-            {isWithinDays(episode.releaseDate, 3) ? (
+            {isWithinDays(episode.releaseDate, DEFAULT_DAYS_SOON) ? (
               <span className="inline-flex items-center rounded bg-blue-100 text-blue-800 px-2 py-0.5 text-[10px] uppercase tracking-wide">
                 Soon
               </span>
             ) : null}
           </div>
         ) : null}
+        <div className="flex items-center gap-2">
+          <Link
+            to={episode.imdbUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-700 hover:underline text-xs"
+          >
+            Open on IMDb
+          </Link>
+
+          {episode.rating ? (
+            <div>
+              <p className="text-xs text-gray-600">{episode.rating}</p>
+            </div>
+          ) : null}
+        </div>
         {typeof season.seasonNumber === 'number' &&
         typeof episode.episodeNumber === 'number'
           ? (() => {
@@ -128,7 +147,7 @@ export const EpisodeCard = ({
               return val ? (
                 <div className="text-xs text-blue-700 flex items-center gap-2">
                   <span>Tentative air date: {formatTentative(val)}</span>
-                  {isWithinDays(val, 3) ? (
+                  {isWithinDays(val) ? (
                     <span className="inline-flex items-center rounded bg-blue-100 text-blue-800 px-2 py-0.5 text-[10px] uppercase tracking-wide">
                       Soon
                     </span>

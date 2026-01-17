@@ -1,3 +1,5 @@
+type OmdbResponse = 'True' | 'False'
+
 export type OmdbSearchItem = {
   imdbID: string
   Title: string
@@ -9,22 +11,39 @@ export type OmdbSearchItem = {
 export type OmdbSearchResponse = {
   Search?: OmdbSearchItem[]
   totalResults?: string
-  Response: 'True' | 'False'
+  Response: OmdbResponse
   Error?: string
 }
 
 export type OmdbTitleResponse = {
-  imdbID: string
   Title: string
+  imdbID: string
   Year?: string
   Poster?: string
   Plot?: string
+  Rated?: string
   Runtime?: string // e.g. "60 min"
+  Type: 'series'
   totalSeasons?: string // for series
   Actors?: string // comma-separated
   Released?: string // date string
-  Response: 'True' | 'False'
+  Response: OmdbResponse
   Error?: string
+  Genre: string
+  Director: string
+  Writer: string
+  Language: string
+  Country: string
+  Awards: string
+  Ratings: [
+    {
+      Source: string
+      Value: string
+    },
+  ]
+  Metascore: string
+  imdbRating: string
+  imdbVotes: string
 }
 
 export type OmdbSeasonEpisode = {
@@ -32,6 +51,7 @@ export type OmdbSeasonEpisode = {
   Released?: string // date
   Episode?: string // number as string
   imdbID: string
+  imdbRating: string
 }
 
 export type OmdbSeasonResponse = {
@@ -39,7 +59,7 @@ export type OmdbSeasonResponse = {
   Season?: string
   totalSeasons?: string
   Episodes?: OmdbSeasonEpisode[]
-  Response: 'True' | 'False'
+  Response: OmdbResponse
   Error?: string
 }
 

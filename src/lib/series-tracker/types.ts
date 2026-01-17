@@ -16,6 +16,11 @@ export type Show = {
   totalSeasons?: number
   nextAirDate?: string // ISO string for next upcoming episode release if known
   seasons: Season[]
+  rating?: number
+  genres?: string[]
+  releaseDate?: string;
+  votes?: number;
+  awards?: string;
   // Tentative scheduling (user-entered)
   tentativeNextAirDate?: string // ISO date for the selected 'next air' baseline
   tentativeNextEpisode?: { seasonNumber: number; episodeNumber: number }
@@ -29,6 +34,9 @@ export type Episode = {
   runtimeMinutes?: number
   episodeNumber?: number
   watched?: boolean
+  rating?: string
+  imdbUrl?: string
+  imdbId?: string
 }
 
 export type Season = {

@@ -11,7 +11,7 @@ export const Route = createRootRoute({
     <WorkOSProvider>
       <SeriesTrackerProvider>
         <Header />
-        <main className="px-4 md:px-20 py-10 overflow-auto">
+        <main className="px-4 md:px-20 py-6 overflow-auto">
           <Outlet />
         </main>
         <TanStackDevtools

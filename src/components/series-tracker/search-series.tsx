@@ -4,6 +4,7 @@ import { type OmdbSearchItem } from '@/lib/series-tracker/omdb'
 import type { Show } from '@/lib/series-tracker/types'
 import { useSeriesTracker } from './series-tracker-context'
 import { useOmdbTitleMutation, useSearchSeries } from '@/hooks/use-movies'
+import { computeOmdbShow } from '@/lib/series-tracker/compute-omdb'
 
 export const SearchSeries = () => {
   const [q, setQ] = useState('')
@@ -24,21 +25,8 @@ export const SearchSeries = () => {
 
   const onAdd = async (item: OmdbSearchItem) => {
     const full = await fetchTitle(item.imdbID)
-
-    const show: Show = {
-      imdbId: item.imdbID,
-      title: full?.Title ?? item.Title,
-      thumbnail: full?.Poster ?? item.Poster,
-      imdbUrl: `https://www.imdb.com/title/${item.imdbID}`,
-      releaseYear: full?.Year ?? item.Year,
-      mainCast: full?.Actors?.split(',')
-        .map((s) => s.trim())
-        .filter(Boolean),
-      plot: full?.Plot,
-      totalSeasons: full?.totalSeasons ? Number(full.totalSeasons) : undefined,
-      seasons: [],
-    }
-    addShow(show)
+    if (!full) return
+    addShow(computeOmdbShow(full))
   }
 
   return (

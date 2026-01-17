@@ -2,16 +2,35 @@ import type { Show } from '@/lib/series-tracker/types'
 import { findUpcomingForShow } from '@/lib/series-tracker/upcoming'
 import { formatTentative, getPaddedNumber } from '@/lib/utils'
 
-export const UpcomingBanner = ({
+export const UpcomingRibbon = ({
   show,
-  days = 3,
   className = '',
 }: {
   show?: Show
-  days?: number
   className?: string
 }) => {
-  const upcoming = findUpcomingForShow(show, days)
+  const upcoming = findUpcomingForShow(show)
+  if (!upcoming) return null
+  const s = getPaddedNumber(upcoming.seasonNumber)
+  const e = getPaddedNumber(upcoming.episodeNumber)
+  const code = s && e ? `S${s}.E${e}` : 'Soon'
+  return (
+    <div
+      className={`bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-sm shadow ${className}`}
+    >
+      {code}
+    </div>
+  )
+}
+
+export const UpcomingBanner = ({
+  show,
+  className = '',
+}: {
+  show?: Show
+  className?: string
+}) => {
+  const upcoming = findUpcomingForShow(show)
   if (!upcoming) return null
   const dateStr = new Date(upcoming.dateISO).toISOString()
   const padSeason = getPaddedNumber(upcoming.seasonNumber)

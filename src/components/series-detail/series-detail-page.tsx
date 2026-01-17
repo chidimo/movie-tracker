@@ -1,25 +1,24 @@
-import { useEffect, useMemo, useState } from 'react'
-import type { Show, Season } from '@/lib/series-tracker/types'
+import { useEffect, useState } from 'react'
 import { FetchSeasons } from './fetch-seasons'
 import { ScheduleSetter } from './schedule-setter'
 import { SeasonContainer } from './season-container'
 import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
 import { Progress } from '@/components/progress'
-import { UpcomingBanner } from '@/components/series-tracker/upcoming-banner'
+import { UpcomingBanner } from '@/components/series-tracker/upcoming'
 import { Link, useMatch } from '@tanstack/react-router'
 import { Switcher } from '../switcher'
+import { CastDisplay } from '../cast-display'
+import { RatingsDisplay } from '../series-tracker/ratings-display'
 
 export const SeriesDetailPage = () => {
   const { params } = useMatch({ from: '/$imdbId' })
   const imdbId = params.imdbId
 
-  const { state } = useSeriesTracker()
+  const { getShowById, getShowProgress } = useSeriesTracker()
   const [hideWatched, setHideWatched] = useState(false)
 
-  const show = useMemo<Show | undefined>(
-    () => state.shows.find((s: Show) => s.imdbId === imdbId),
-    [state, imdbId],
-  )
+  const show = getShowById(imdbId)
+  const showProgress = getShowProgress(imdbId)
 
   useEffect(() => {
     if (show?.title) {
@@ -30,15 +29,6 @@ export const SeriesDetailPage = () => {
   const imdbVideosUrl = `https://www.imdb.com/title/${
     show?.imdbId ?? ''
   }/videogallery/`
-
-  const showProgress = useMemo(() => {
-    const allEpisodes = (show?.seasons || []).flatMap(
-      (s: Season) => s.episodes || [],
-    )
-    const total = allEpisodes.length
-    const watched = allEpisodes.filter((e) => e.watched).length
-    return { watched, total }
-  }, [show])
 
   if (!show) {
     return (
@@ -68,25 +58,15 @@ export const SeriesDetailPage = () => {
         ) : (
           <div className="h-40 w-28 bg-gray-200 rounded md:h-60 md:w-40" />
         )}
-        <div className="flex-1">
+        <div className="flex-1 space-y-2">
+          <UpcomingBanner show={show} className="" />
           <h1 className="text-2xl font-bold">{show.title}</h1>
           {show.releaseYear ? (
             <div className="text-sm text-gray-600">{show.releaseYear}</div>
           ) : null}
-          {show.plot ? <p className="mt-2 text-gray-700">{show.plot}</p> : null}
-          {show.mainCast && show.mainCast.length > 0 ? (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {show.mainCast.slice(0, 5).map((c) => (
-                <span
-                  key={c}
-                  className="text-[10px] md:text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full"
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-          ) : null}
-          <UpcomingBanner show={show} days={3} className="mt-3" />
+          {show.plot ? <p className="text-gray-700">{show.plot}</p> : null}
+          <CastDisplay cast={show.mainCast} />
+          <RatingsDisplay rating={show.rating} votes={show.votes} />
           <Progress
             className="mt-3"
             label="Overall progress"
@@ -112,7 +92,7 @@ export const SeriesDetailPage = () => {
             >
               Watch trailer
             </a>
-            <FetchSeasons show={show} />
+            <FetchSeasons id={show.imdbId} />
             <ScheduleSetter show={show} />
           </div>
         </div>

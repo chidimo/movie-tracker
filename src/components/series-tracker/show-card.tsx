@@ -1,7 +1,11 @@
 import { Link } from '@tanstack/react-router'
 import { RemoveShow } from './remove-show'
-import { UpcomingRibbon } from './upcoming-ribbon'
+import { UpcomingRibbon } from './upcoming'
 import type { Show } from '@/lib/series-tracker/types'
+import { CastDisplay } from '../cast-display'
+import { RatingsDisplay } from './ratings-display'
+import { Progress } from '../progress'
+import { useSeriesTracker } from './series-tracker-context'
 
 type Props = {
   show: Show
@@ -9,6 +13,9 @@ type Props = {
 }
 
 export const ShowCard = ({ show, onRemoveShow }: Props) => {
+  const { getShowProgress } = useSeriesTracker()
+  const showProgress = getShowProgress(show.imdbId)
+
   return (
     <li className="relative border border-gray-300 rounded p-3">
       <RemoveShow showId={show.imdbId} onRemove={onRemoveShow} />
@@ -23,34 +30,30 @@ export const ShowCard = ({ show, onRemoveShow }: Props) => {
           ) : (
             <div className="h-24 w-16 bg-gray-200 rounded md:h-40 md:w-28" />
           )}
-          <UpcomingRibbon
-            show={show}
-            days={3}
-            className="absolute top-1 left-1"
-          />
+          <UpcomingRibbon show={show} className="absolute top-1 left-1" />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 space-y-2">
           <div className="font-semibold">{show.title}</div>
           {show.releaseYear ? (
             <div className="text-xs text-gray-600">{show.releaseYear}</div>
           ) : null}
           {show.plot ? (
-            <div className="text-xs text-gray-700 mt-1 line-clamp-3">
+            <div className="text-xs text-gray-700 line-clamp-3">
               {show.plot}
             </div>
           ) : null}
-          {show.mainCast && show.mainCast.length > 0 ? (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {show.mainCast.slice(0, 3).map((c) => (
-                <span
-                  key={c}
-                  className="text-[10px] md:text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full"
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-          ) : null}
+          <CastDisplay cast={show.mainCast} />
+          <RatingsDisplay rating={show.rating} votes={show.votes} />
+
+          <Progress
+            className="mt-3"
+            label="Overall progress"
+            current={showProgress.watched}
+            total={showProgress.total}
+            showFraction
+            showPercentage
+          />
+
           {show.nextAirDate ? (
             <div
               className={
