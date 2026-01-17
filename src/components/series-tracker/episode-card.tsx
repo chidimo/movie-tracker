@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import type { Episode, Season, Show } from '@/lib/series-tracker/types'
-import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
+import { useSeriesTracker } from '@/context/series-tracker-context'
 import { formatTentative, isWithinDays } from '@/lib/utils'
 import { Switcher } from '../switcher'
 import { Link } from '@tanstack/react-router'

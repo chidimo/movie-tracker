@@ -1,5 +1,5 @@
 import type { Season, Show } from '@/lib/series-tracker/types'
-import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
+import { useSeriesTracker } from '@/context/series-tracker-context'
 import { EpisodeCard } from './episode-card'
 import { Progress } from '@/components/progress'
 import { Switcher } from '../switcher'

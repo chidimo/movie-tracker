@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import type { Show } from '@/lib/series-tracker/types'
-import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
+import { useSeriesTracker } from '@/context/series-tracker-context'
 
 export const ScheduleSetter = ({ show }: { show: Show }) => {
   const { updateShow } = useSeriesTracker()

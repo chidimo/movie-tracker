@@ -3,7 +3,7 @@ import { ExportSeries } from '@/components/series-tracker/export-series'
 import { ImportSeries } from '@/components/series-tracker/import-series'
 import { ShowCard } from '@/components/series-tracker/show-card'
 import { SearchSeries } from '@/components/series-tracker/search-series'
-import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
+import { useSeriesTracker } from '@/context/series-tracker-context'
 import type { TrackerState } from '@/lib/series-tracker/types'
 
 export const SeriesTrackerPage = () => {

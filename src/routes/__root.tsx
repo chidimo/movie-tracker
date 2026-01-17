@@ -4,7 +4,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import WorkOSProvider from '../integrations/workos/provider'
 import { Header } from '@/components/header-component'
-import { SeriesTrackerProvider } from '@/components/series-tracker/series-tracker-context'
+import { SeriesTrackerProvider } from '@/context/series-tracker-context'
 
 export const Route = createRootRoute({
   component: () => (

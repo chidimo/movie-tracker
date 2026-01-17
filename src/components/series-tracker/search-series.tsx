@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { type OmdbSearchItem } from '@/lib/series-tracker/omdb'
-import { useSeriesTracker } from './series-tracker-context'
+import { useSeriesTracker } from '../../context/series-tracker-context'
 import { useOmdbTitleMutation, useSearchSeries } from '@/hooks/use-movies'
 import { computeOmdbShow } from '@/lib/series-tracker/compute-omdb'
 

@@ -5,7 +5,7 @@ import type { Show } from '@/lib/series-tracker/types'
 import { CastDisplay } from '../cast-display'
 import { RatingsDisplay } from './ratings-display'
 import { Progress } from '../progress'
-import { useSeriesTracker } from './series-tracker-context'
+import { useSeriesTracker } from '../../context/series-tracker-context'
 
 type Props = {
   show: Show
