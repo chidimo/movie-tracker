@@ -104,6 +104,9 @@ export function SeriesTrackerProvider({
       removeShow,
       updateShow,
       replaceState,
+      hasProfile: !!state.profile?.name,
+      hasShows: (state.shows?.length ?? 0) > 0,
+      profile: state.profile,
     }),
     [
       state,

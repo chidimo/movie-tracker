@@ -9,8 +9,6 @@ import type { TrackerState } from '@/lib/series-tracker/types'
 export const SeriesTrackerPage = () => {
   const { state, removeShow, replaceState } = useSeriesTracker()
 
-  const profileName = state.profile?.name ?? 'Guest'
-
   const handleRemoveShow = (removeId: string) => {
     removeShow(removeId)
   }
@@ -20,7 +18,9 @@ export const SeriesTrackerPage = () => {
       <ProfileModal />
 
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-1">Welcome, {profileName}</h2>
+        <h2 className="text-xl font-semibold mb-1">
+          {state.profile?.name ? `${state.profile.name}!` : 'Welcome!'} 👋
+        </h2>
         <p className="text-gray-600 mb-4">
           Track series you watch and see what&apos;s next.
         </p>
