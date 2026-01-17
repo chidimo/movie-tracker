@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Dialog } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { StorageRepo } from '@/lib/series-tracker/storage'
 import type { UserProfile } from '@/lib/series-tracker/types'
 
@@ -37,10 +37,10 @@ export const ProfileModal = () => {
     <Dialog open={open} onClose={() => {}} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto w-full max-w-md rounded bg-white p-6">
-          <Dialog.Title className="text-lg font-semibold mb-2">
+        <DialogPanel className="mx-auto w-full max-w-md rounded bg-white p-6">
+          <DialogTitle className="text-lg font-semibold mb-2">
             Create your profile
-          </Dialog.Title>
+          </DialogTitle>
           <p className="text-sm text-gray-700 mb-4">
             Enter a display name. This stays on your browser only.
           </p>
@@ -58,7 +58,7 @@ export const ProfileModal = () => {
               Save
             </button>
           </div>
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   )

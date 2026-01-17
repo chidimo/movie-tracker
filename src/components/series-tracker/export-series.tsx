@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Dialog } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import type { Show } from '@/lib/series-tracker/types'
 
 export const ExportSeries = ({ state }: { state: any }) => {
@@ -71,10 +71,10 @@ export const ExportSeries = ({ state }: { state: any }) => {
       >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto w-full max-w-lg rounded bg-white p-6">
-            <Dialog.Title className="text-lg font-semibold mb-3">
+          <DialogPanel className="mx-auto w-full max-w-lg rounded bg-white p-6">
+            <DialogTitle className="text-lg font-semibold mb-3">
               Export shows
-            </Dialog.Title>
+            </DialogTitle>
             {state.shows.length === 0 ? (
               <p className="text-sm text-gray-700">No shows to export.</p>
             ) : (
@@ -137,7 +137,7 @@ export const ExportSeries = ({ state }: { state: any }) => {
                 Download JSON
               </button>
             </div>
-          </Dialog.Panel>
+          </DialogPanel>
         </div>
       </Dialog>
     </>

@@ -1,4 +1,4 @@
-import { Dialog } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
 export const ConfirmModal = ({
   open,
@@ -21,10 +21,10 @@ export const ConfirmModal = ({
     <Dialog open={open} onClose={onCancel} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto w-full max-w-md rounded bg-white p-6">
-          <Dialog.Title className="text-lg font-semibold mb-2">
+        <DialogPanel className="mx-auto w-full max-w-md rounded bg-white p-6">
+          <DialogTitle className="text-lg font-semibold mb-2">
             {title}
-          </Dialog.Title>
+          </DialogTitle>
           {description ? (
             <p className="text-sm text-gray-700 mb-4">{description}</p>
           ) : null}
@@ -42,7 +42,7 @@ export const ConfirmModal = ({
               {confirmText}
             </button>
           </div>
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   )

@@ -15,6 +15,7 @@ export const FetchSeasons = ({ show }: { show: Show }) => {
       : (show.totalSeasons ?? 0)
     const capped = Math.max(0, Math.min(total, 30))
     const seasons: Season[] = []
+
     for (let i = 1; i <= capped; i++) {
       const data = await omdbGetSeason(show.imdbId, i)
       if (!data || data.Response === 'False') continue
@@ -42,6 +43,7 @@ export const FetchSeasons = ({ show }: { show: Show }) => {
         episodes: eps,
       })
     }
+
     // compute next upcoming air date from all episodes with a future release date
     const futureTimestamps: number[] = []
     const now = Date.now()
@@ -69,7 +71,7 @@ export const FetchSeasons = ({ show }: { show: Show }) => {
 
   return (
     <button
-      className="text-blue-700 disabled:opacity-60"
+      className="text-blue-700 disabled:opacity-60 cursor-pointer"
       onClick={fetchAllSeasons}
       disabled={loading}
       aria-busy={loading}

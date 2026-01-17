@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Dialog } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { StorageRepo } from '@/lib/series-tracker/storage'
 import type { Show } from '@/lib/series-tracker/types'
 
@@ -141,10 +141,10 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
       >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto w-full max-w-lg rounded bg-white p-6">
-            <Dialog.Title className="text-lg font-semibold mb-3">
+          <DialogPanel className="mx-auto w-full max-w-lg rounded bg-white p-6">
+            <DialogTitle className="text-lg font-semibold mb-3">
               Import shows
-            </Dialog.Title>
+            </DialogTitle>
             <div className="mb-3">
               <input
                 ref={fileInputRef}
@@ -239,7 +239,7 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
                 Import Selected
               </button>
             </div>
-          </Dialog.Panel>
+          </DialogPanel>
         </div>
       </Dialog>
     </div>

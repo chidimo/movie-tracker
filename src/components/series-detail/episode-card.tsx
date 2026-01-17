@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import type { Episode, Season, Show } from '@/lib/series-tracker/types'
 import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
 import { formatTentative, isWithinDays } from '@/lib/utils'
+import { Switcher } from '../switcher'
 
 export const EpisodeCard = ({
   show,
@@ -137,20 +138,17 @@ export const EpisodeCard = ({
             })()
           : null}
       </div>
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={!!episode.watched}
-          onChange={(ev) =>
-            toggleEpisode(
-              season.seasonNumber ?? 0,
-              episode.episodeNumber,
-              ev.target.checked,
-            )
-          }
-        />
-        Watched
-      </label>
+      <Switcher
+        checked={!!episode.watched}
+        label="Watched"
+        onChange={(checked) =>
+          toggleEpisode(
+            season.seasonNumber ?? 0,
+            episode.episodeNumber,
+            checked,
+          )
+        }
+      />
     </li>
   )
 }

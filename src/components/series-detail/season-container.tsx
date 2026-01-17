@@ -2,14 +2,15 @@ import type { Season, Show } from '@/lib/series-tracker/types'
 import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
 import { EpisodeCard } from './episode-card'
 import { Progress } from '@/components/progress'
+import { Switcher } from '../switcher'
 
 export const SeasonContainer = ({
-  season,
   show,
+  season,
   hideWatched,
 }: {
-  season: Season
   show: Show
+  season: Season
   hideWatched: boolean
 }) => {
   const { updateShow } = useSeriesTracker()
@@ -26,6 +27,8 @@ export const SeasonContainer = ({
     updateShow({ ...show, seasons: nextSeasons })
   }
 
+  const seasonWatched = season.episodes.every((e) => e.watched)
+
   return (
     <div key={season.seasonNumber ?? season.title} className="border rounded">
       <div className="flex items-center justify-between mb-2 p-3">
@@ -41,22 +44,15 @@ export const SeasonContainer = ({
             showPercentage
           />
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex flex-col gap-2">
-            <button
-              className="text-sm text-blue-700 text-left"
-              onClick={() => toggleSeason(season.seasonNumber ?? 0, true)}
-            >
-              Mark season watched
-            </button>
-            <button
-              className="text-sm text-blue-700 text-left"
-              onClick={() => toggleSeason(season.seasonNumber ?? 0, false)}
-            >
-              Mark season unwatched
-            </button>
-          </div>
-        </div>
+        <Switcher
+          label={
+            seasonWatched ? 'Mark season unwatched' : 'Mark season watched'
+          }
+          checked={seasonWatched}
+          onChange={(checked) => {
+            toggleSeason(season.seasonNumber ?? 0, checked)
+          }}
+        />
       </div>
       <ul className="divide-y">
         {season.episodes

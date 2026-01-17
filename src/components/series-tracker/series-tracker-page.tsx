@@ -22,11 +22,9 @@ export const SeriesTrackerPage = () => {
           {state.profile?.name ? `${state.profile.name}!` : 'Welcome!'} 👋
         </h2>
         <p className="text-gray-600 mb-4">
-          Track series you watch and see what&apos;s next.
+          Track your favorite shows and see what&apos;s next.
         </p>
       </div>
-
-      {/* API key is handled server-side via env; no input needed */}
 
       <SearchSeries />
 

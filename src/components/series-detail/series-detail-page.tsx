@@ -7,6 +7,7 @@ import { useSeriesTracker } from '@/components/series-tracker/series-tracker-con
 import { Progress } from '@/components/progress'
 import { UpcomingBanner } from '@/components/series-tracker/upcoming-banner'
 import { Link, useMatch } from '@tanstack/react-router'
+import { Switcher } from '../switcher'
 
 export const SeriesDetailPage = () => {
   const { params } = useMatch({ from: '/$imdbId' })
@@ -20,10 +21,9 @@ export const SeriesDetailPage = () => {
     [state, imdbId],
   )
 
-  // Update document title
   useEffect(() => {
     if (show?.title) {
-      document.title = `${show.title} – Series Tracker – Chidi Orji`
+      document.title = `${show.title} – Popcorn Time`
     }
   }, [show?.title])
 
@@ -121,14 +121,11 @@ export const SeriesDetailPage = () => {
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-semibold">Seasons</h2>
-          <label className="text-sm flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={hideWatched}
-              onChange={(e) => setHideWatched(e.target.checked)}
-            />
-            Hide watched episodes
-          </label>
+          <Switcher
+            label="Hide watched episodes"
+            checked={hideWatched}
+            onChange={(checked) => setHideWatched(checked)}
+          />
         </div>
         {!show.seasons || show.seasons.length === 0 ? (
           <p className="text-gray-700">

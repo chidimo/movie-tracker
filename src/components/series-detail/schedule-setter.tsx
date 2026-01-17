@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Dialog } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import type { Show } from '@/lib/series-tracker/types'
 import { useSeriesTracker } from '@/components/series-tracker/series-tracker-context'
 
@@ -82,7 +82,7 @@ export const ScheduleSetter = ({ show }: { show: Show }) => {
 
   return (
     <>
-      <button className="text-blue-700" onClick={openScheduleModal}>
+      <button className="text-blue-700 cursor-pointer" onClick={openScheduleModal}>
         Set tentative schedule
       </button>
       <Dialog
@@ -92,10 +92,10 @@ export const ScheduleSetter = ({ show }: { show: Show }) => {
       >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto w-full max-w-md rounded bg-white p-6">
-            <Dialog.Title className="text-lg font-semibold mb-3">
+          <DialogPanel className="mx-auto w-full max-w-md rounded bg-white p-6">
+            <DialogTitle className="text-lg font-semibold mb-3">
               Set tentative schedule
-            </Dialog.Title>
+            </DialogTitle>
             {!show || (show.seasons || []).length === 0 ? (
               <p className="text-sm text-gray-700">
                 Load seasons first to select an episode.
@@ -166,7 +166,7 @@ export const ScheduleSetter = ({ show }: { show: Show }) => {
                 Save
               </button>
             </div>
-          </Dialog.Panel>
+          </DialogPanel>
         </div>
       </Dialog>
     </>
