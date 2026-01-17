@@ -59,3 +59,52 @@ export const formatTentative = (iso: string) => {
     months[d.getMonth()]
   }, ${d.getFullYear()}`
 }
+
+export const parseDayMonthYearToISO = (dateStr: string) => {
+  if (!dateStr || typeof dateStr !== 'string') {
+    return undefined
+  }
+
+  const parts = dateStr.trim().split(' ')
+  if (parts.length !== 3) {
+    return undefined
+  }
+
+  const [dayStr, monthStr, yearStr] = parts
+
+  const day = Number(dayStr)
+  const year = Number(yearStr)
+
+  const months = {
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
+  }
+
+  const month = months[monthStr as keyof typeof months]
+
+  if (
+    !Number.isInteger(day) ||
+    !Number.isInteger(year) ||
+    month === undefined
+  ) {
+    return undefined
+  }
+
+  const date = new Date(Date.UTC(year, month, day))
+
+  if (Number.isNaN(date.getTime())) {
+    return undefined
+  }
+
+  return date.toISOString()
+}

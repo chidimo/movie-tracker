@@ -1,4 +1,4 @@
-import { cleanStringifiedNumber } from '../utils'
+import { cleanStringifiedNumber, parseDayMonthYearToISO } from '../utils'
 import type { OmdbTitleResponse } from './omdb'
 import type { Show } from './types'
 
@@ -21,7 +21,7 @@ export const computeOmdbShow = (full: OmdbTitleResponse) => {
       .map((s) => s.trim())
       .filter(Boolean),
     releaseDate: full?.Released
-      ? new Date(full.Released).toISOString()
+      ? parseDayMonthYearToISO(full.Released)
       : undefined,
     awards: full?.Awards,
   }

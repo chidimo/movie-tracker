@@ -53,11 +53,10 @@ const getSingleSeason = async (
 export const FetchSeasons = ({ id }: { id: string }) => {
   const { updateShow, getShowById } = useSeriesTracker()
   const [loading, setLoading] = useState(false)
+  const existingShow = getShowById(id)
 
   const fetchAllSeasons = useCallback(async () => {
     setLoading(true)
-
-    const existingShow = getShowById(id)
 
     const titleData = await omdbGetTitle(id)
     if (!titleData || titleData.Response === 'False') return
@@ -100,7 +99,7 @@ export const FetchSeasons = ({ id }: { id: string }) => {
     })
 
     setLoading(false)
-  }, [updateShow])
+  }, [updateShow, existingShow, id])
 
   return (
     <button
