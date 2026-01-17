@@ -43,7 +43,9 @@ export type OmdbSeasonResponse = {
   Error?: string
 }
 
-const omdbFunctionPath = '/.netlify/functions/omdb'
+const omdbFunctionPath = import.meta.env.DEV
+  ? '/api/omdb'
+  : '/.netlify/functions/omdb'
 
 function buildOmdbFunctionUrl(params: Record<string, string>): string {
   const url = new URL(omdbFunctionPath, 'http://localhost')
