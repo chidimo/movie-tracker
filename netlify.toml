@@ -1,0 +1,10 @@
+[build]
+  command = "yarn build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  command = "yarn vite:dev"
+  targetPort = 3000
+  port = 8888
+  autoLaunch = false

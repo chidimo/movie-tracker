@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ImdbIdRouteImport } from './routes/$imdbId'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoWorkosRouteImport } from './routes/demo/workos'
 
+const ImdbIdRoute = ImdbIdRouteImport.update({
+  id: '/$imdbId',
+  path: '/$imdbId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -25,32 +31,43 @@ const DemoWorkosRoute = DemoWorkosRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$imdbId': typeof ImdbIdRoute
   '/demo/workos': typeof DemoWorkosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$imdbId': typeof ImdbIdRoute
   '/demo/workos': typeof DemoWorkosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$imdbId': typeof ImdbIdRoute
   '/demo/workos': typeof DemoWorkosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/workos'
+  fullPaths: '/' | '/$imdbId' | '/demo/workos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/workos'
-  id: '__root__' | '/' | '/demo/workos'
+  to: '/' | '/$imdbId' | '/demo/workos'
+  id: '__root__' | '/' | '/$imdbId' | '/demo/workos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ImdbIdRoute: typeof ImdbIdRoute
   DemoWorkosRoute: typeof DemoWorkosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/$imdbId': {
+      id: '/$imdbId'
+      path: '/$imdbId'
+      fullPath: '/$imdbId'
+      preLoaderRoute: typeof ImdbIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ImdbIdRoute: ImdbIdRoute,
   DemoWorkosRoute: DemoWorkosRoute,
 }
 export const routeTree = rootRouteImport
