@@ -68,14 +68,13 @@ export const SeriesDetailPage = () => {
           <CastDisplay cast={show.mainCast} />
           <RatingsDisplay rating={show.rating} votes={show.votes} />
           <Progress
-            className="mt-3"
             label="Overall progress"
             current={showProgress.watched}
             total={showProgress.total}
             showFraction
             showPercentage
           />
-          <div className="mt-3 flex gap-3">
+          <div className="flex gap-3">
             <a
               href={show.imdbUrl}
               target="_blank"
