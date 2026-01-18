@@ -7,6 +7,7 @@ import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
+import { SeriesTrackerProvider } from './context/series-tracker-context.tsx'
 
 // Create a new router instance
 const router = createRouter({
@@ -31,7 +32,9 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <SeriesTrackerProvider>
+        <RouterProvider router={router} />
+      </SeriesTrackerProvider>
     </StrictMode>,
   )
 }

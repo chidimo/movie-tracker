@@ -3,10 +3,10 @@ import { Link } from '@tanstack/react-router'
 const Avatar = () => {
   return (
     <Link to={'/'} className="-">
-      <span className="sr-only">Chidi Orji - Movie Tracker</span>
+      <span className="sr-only">Popcorn time</span>
       <img
         className="h-10 w-auto rounded full"
-        src="/movie-tracker.png"
+        src="/popcorn-time.png"
         alt=""
       />
     </Link>
