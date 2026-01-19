@@ -13,6 +13,7 @@ import type {
   TrackerState,
   UserProfile,
 } from '@/lib/series-tracker/types'
+import { scheduleTentativeNotifications } from '@/lib/notifications'
 
 export type SeriesTrackerContextValue = {
   state: TrackerState
@@ -26,6 +27,7 @@ export type SeriesTrackerContextValue = {
   replaceState: (next: TrackerState) => void
   getShowById: (imdbId: string) => Show | undefined
   getShowProgress: (imdbId: string) => { watched: number; total: number }
+  setNotification: (day: number) => void
 }
 
 const SeriesTrackerContext = createContext<
@@ -38,6 +40,14 @@ export function SeriesTrackerProvider({
   children: React.ReactNode
 }>) {
   const [state, setState] = useState<TrackerState>({ shows: [] })
+
+  const rescheduleNotifications = useCallback(
+    async (nextState: TrackerState) => {
+      const leadDays = nextState.notificationDay ?? 2
+      await scheduleTentativeNotifications(nextState, leadDays)
+    },
+    [],
+  )
 
   // Initial load
   useEffect(() => {
@@ -116,6 +126,16 @@ export function SeriesTrackerProvider({
     [getShowById],
   )
 
+  const setNotification = useCallback(
+    (day: number) => {
+      StorageRepo.setNotification(day)
+      const next = StorageRepo.getState()
+      setState(next)
+      rescheduleNotifications(next)
+    },
+    [rescheduleNotifications],
+  )
+
   const value = useMemo<SeriesTrackerContextValue>(
     () => ({
       state,
@@ -129,6 +149,7 @@ export function SeriesTrackerProvider({
       replaceState,
       getShowById,
       getShowProgress,
+      setNotification,
       hasProfile: !!state.profile?.name,
       hasShows: (state.shows?.length ?? 0) > 0,
       profile: state.profile,
@@ -142,6 +163,9 @@ export function SeriesTrackerProvider({
       removeShow,
       updateShow,
       replaceState,
+      getShowById,
+      getShowProgress,
+      setNotification,
     ],
   )
 

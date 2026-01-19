@@ -18,9 +18,11 @@ export type Show = {
   seasons: Season[]
   rating?: number
   genres?: string[]
-  releaseDate?: string;
-  votes?: number;
-  awards?: string;
+  releaseDate?: string
+  votes?: number
+  awards?: string
+  // computed fields
+  hideWatched?: boolean // whether to hide watched episodes by default
   // Tentative scheduling (user-entered)
   tentativeNextAirDate?: string // ISO date for the selected 'next air' baseline
   tentativeNextEpisode?: { seasonNumber: number; episodeNumber: number }
@@ -51,4 +53,5 @@ export type TrackerState = {
   profile?: UserProfile
   shows: Show[]
   omdbApiKey?: string
+  notificationDay?: number
 }

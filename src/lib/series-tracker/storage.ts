@@ -41,10 +41,15 @@ export const StorageRepo = {
     const s = read()
     const exists = s.shows.some((x) => x.imdbId === show.imdbId)
     if (exists) return
-    write({ ...s, shows: [show, ...(s.shows || [])] })
+    const showWithDefaults = { ...show, hideWatched: true }
+    write({ ...s, shows: [showWithDefaults, ...(s.shows || [])] })
   },
   removeShow(imdbId: string) {
     const s = read()
     write({ ...s, shows: (s.shows || []).filter((x) => x.imdbId !== imdbId) })
+  },
+  setNotification(day: number) {
+    const s = read()
+    write({ ...s, notificationDay: day })
   },
 }

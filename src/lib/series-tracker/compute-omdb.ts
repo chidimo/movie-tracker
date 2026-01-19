@@ -2,7 +2,7 @@ import { cleanStringifiedNumber, parseDayMonthYearToISO } from '../utils'
 import type { OmdbTitleResponse } from './omdb'
 import type { Show } from './types'
 
-export const computeOmdbShow = (full: OmdbTitleResponse) => {
+export const normalizeOmdbShow = (full: OmdbTitleResponse) => {
   const show: Show = {
     imdbId: full.imdbID,
     title: full?.Title ?? full.Title,
@@ -27,4 +27,20 @@ export const computeOmdbShow = (full: OmdbTitleResponse) => {
   }
 
   return show
+}
+
+type NormalizeOptions = {
+  includeEpisodes?: boolean
+}
+
+export const normalizeShowTransfer = (
+  show: Partial<Show>,
+  options: NormalizeOptions = {},
+) => {
+  const includeEpisodes = options.includeEpisodes ?? false
+
+  return {
+    ...show,
+    seasons: includeEpisodes ? (show.seasons ?? []) : [],
+  }
 }

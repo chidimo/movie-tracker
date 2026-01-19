@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { FetchSeasons } from './fetch-seasons'
+import { useEffect } from 'react'
 import { ScheduleSetter } from './schedule-setter'
 import { SeasonContainer } from './season-container'
 import { useSeriesTracker } from '@/context/series-tracker-context'
@@ -9,16 +8,17 @@ import { Link, useMatch } from '@tanstack/react-router'
 import { Switcher } from '../switcher'
 import { CastDisplay } from '../cast-display'
 import { RatingsDisplay } from '../series-tracker/ratings-display'
+import { useFetchSeasons } from '@/hooks/use-fetch-seasons'
 
 export const SeriesDetailPage = () => {
   const { params } = useMatch({ from: '/$imdbId' })
   const imdbId = params.imdbId
 
-  const { getShowById, getShowProgress } = useSeriesTracker()
-  const [hideWatched, setHideWatched] = useState(false)
+  const { getShowById, getShowProgress, updateShow } = useSeriesTracker()
 
   const show = getShowById(imdbId)
   const showProgress = getShowProgress(imdbId)
+  useFetchSeasons(imdbId)
 
   useEffect(() => {
     if (show?.title) {
@@ -91,7 +91,6 @@ export const SeriesDetailPage = () => {
             >
               Watch trailer
             </a>
-            <FetchSeasons id={show.imdbId} />
             <ScheduleSetter show={show} />
           </div>
         </div>
@@ -102,8 +101,10 @@ export const SeriesDetailPage = () => {
           <h2 className="font-semibold">Seasons</h2>
           <Switcher
             label="Hide watched episodes"
-            checked={hideWatched}
-            onChange={(checked) => setHideWatched(checked)}
+            checked={show?.hideWatched ?? false}
+            onChange={(checked) =>
+              updateShow({ ...show, hideWatched: checked })
+            }
           />
         </div>
         {!show.seasons || show.seasons.length === 0 ? (
@@ -119,7 +120,7 @@ export const SeriesDetailPage = () => {
                   key={s.seasonNumber ?? s.title}
                   season={s}
                   show={show}
-                  hideWatched={hideWatched}
+                  hideWatched={show?.hideWatched ?? false}
                 />
               ))}
           </div>

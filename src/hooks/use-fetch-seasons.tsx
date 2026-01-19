@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Episode, Season } from '@/lib/series-tracker/types'
 import { omdbGetSeason, omdbGetTitle } from '@/lib/series-tracker/omdb'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import { computeOmdbShow } from '@/lib/series-tracker/compute-omdb'
+import { normalizeOmdbShow } from '@/lib/series-tracker/compute-omdb'
 
 const getSingleSeason = async (
   id: string,
@@ -50,26 +50,33 @@ const getSingleSeason = async (
   return computedSeason
 }
 
-export const FetchSeasons = ({ id }: { id: string }) => {
+export const useFetchSeasons = (imdbId: string) => {
   const { updateShow, getShowById } = useSeriesTracker()
   const [loading, setLoading] = useState(false)
-  const existingShow = getShowById(id)
+  const hasFetched = useRef(false)
 
   const fetchAllSeasons = useCallback(async () => {
+    if (hasFetched.current) return
+    hasFetched.current = true
+
     setLoading(true)
 
-    const titleData = await omdbGetTitle(id)
+    const titleData = await omdbGetTitle(imdbId)
     if (!titleData || titleData.Response === 'False') return
 
-    const currentShow = computeOmdbShow(titleData)
-    updateShow({ ...currentShow, seasons: existingShow?.seasons ?? [] })
+    const currentShow = normalizeOmdbShow(titleData)
+    const currentExistingShow = getShowById(imdbId)
+    updateShow({ ...currentShow, seasons: currentExistingShow?.seasons ?? [] })
 
-    const capped = Math.max(0, Math.min(existingShow?.totalSeasons ?? 0, 30))
+    const capped = Math.max(
+      0,
+      Math.min(currentExistingShow?.totalSeasons ?? 0, 30),
+    )
     const requests = Array.from({ length: capped }, (_, i) =>
       getSingleSeason(
-        id,
+        imdbId,
         currentShow.title,
-        existingShow?.seasons ?? [],
+        currentExistingShow?.seasons ?? [],
         i + 1,
       ),
     )
@@ -94,21 +101,16 @@ export const FetchSeasons = ({ id }: { id: string }) => {
     updateShow({
       ...currentShow,
       seasons: filteredSeasons,
-      totalSeasons: capped || existingShow?.totalSeasons,
+      totalSeasons: capped || currentExistingShow?.totalSeasons,
       nextAirDate,
     })
 
     setLoading(false)
-  }, [updateShow, existingShow, id])
+  }, [updateShow, getShowById, imdbId])
 
-  return (
-    <button
-      className="text-blue-700 disabled:opacity-60 cursor-pointer"
-      onClick={fetchAllSeasons}
-      disabled={loading}
-      aria-busy={loading}
-    >
-      {loading ? 'Fetching...' : 'Fetch seasons'}
-    </button>
-  )
+  useEffect(() => {
+    fetchAllSeasons()
+  }, [fetchAllSeasons])
+
+  return { fetchingSeasons: loading }
 }

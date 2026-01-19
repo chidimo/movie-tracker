@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import type { Show } from '@/lib/series-tracker/types'
+import { normalizeShowTransfer } from '@/lib/series-tracker/compute-omdb'
 
 export const ExportSeries = ({ state }: { state: any }) => {
   const [exportOpen, setExportOpen] = useState(false)
@@ -25,18 +26,7 @@ export const ExportSeries = ({ state }: { state: any }) => {
     const payload = {
       shows: state.shows
         .filter((s: Show) => exportSelected[s.imdbId])
-        .map((s: Show) => ({
-          imdbId: s.imdbId,
-          title: s.title,
-          thumbnail: s.thumbnail,
-          imdbUrl: s.imdbUrl,
-          releaseYear: s.releaseYear,
-          mainCast: s.mainCast,
-          plot: s.plot,
-          totalSeasons: s.totalSeasons,
-          nextAirDate: s.nextAirDate,
-          seasons: [],
-        })),
+        .map((s: Show) => normalizeShowTransfer(s, { includeEpisodes: true })),
       exportedAt: new Date().toISOString(),
       format: 'series-tracker.v1',
     }

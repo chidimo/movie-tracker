@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { StorageRepo } from '@/lib/series-tracker/storage'
 import type { Show } from '@/lib/series-tracker/types'
+import { normalizeShowTransfer } from '@/lib/series-tracker/compute-omdb'
 
 export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
   const [importOpen, setImportOpen] = useState(false)
@@ -35,18 +36,9 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
       } else if (Array.isArray(json)) {
         shows = json
       }
-      const normalized: Partial<Show>[] = shows.map((s: any) => ({
-        imdbId: s.imdbId,
-        title: s.title,
-        thumbnail: s.thumbnail,
-        imdbUrl: s.imdbUrl,
-        releaseYear: s.releaseYear,
-        mainCast: s.mainCast,
-        plot: s.plot,
-        totalSeasons: s.totalSeasons,
-        nextAirDate: s.nextAirDate,
-        seasons: [],
-      }))
+      const normalized: Partial<Show>[] = shows.map((s: any) =>
+        normalizeShowTransfer(s, { includeEpisodes: true }),
+      )
       const sel: Record<string, boolean> = {}
       const rep: Record<string, boolean> = {}
       for (const s of normalized)
