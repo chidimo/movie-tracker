@@ -8,6 +8,7 @@ export const ExportSeries = ({ state }: { state: any }) => {
   const [exportSelected, setExportSelected] = useState<Record<string, boolean>>(
     {},
   )
+  const [includeEpisodes, setIncludeEpisodes] = useState(false)
 
   const openExport = () => {
     const sel: Record<string, boolean> = {}
@@ -26,7 +27,7 @@ export const ExportSeries = ({ state }: { state: any }) => {
     const payload = {
       shows: state.shows
         .filter((s: Show) => exportSelected[s.imdbId])
-        .map((s: Show) => normalizeShowTransfer(s, { includeEpisodes: true })),
+        .map((s: Show) => normalizeShowTransfer(s, { includeEpisodes })),
       exportedAt: new Date().toISOString(),
       format: 'series-tracker.v1',
     }
@@ -68,7 +69,7 @@ export const ExportSeries = ({ state }: { state: any }) => {
             {state.shows.length === 0 ? (
               <p className="text-sm text-gray-700">No shows to export.</p>
             ) : (
-              <>
+              <div className="space-y-4">
                 <div className="mb-2 flex items-center gap-2">
                   <input
                     id="export-select-all"
@@ -82,6 +83,25 @@ export const ExportSeries = ({ state }: { state: any }) => {
                   <label htmlFor="export-select-all" className="text-sm">
                     Select all
                   </label>
+                </div>
+                <div className="">
+                  <div className="mb-2 flex items-center gap-2">
+                    <input
+                      id="include-episodes"
+                      type="checkbox"
+                      className="h-4 w-4"
+                      checked={includeEpisodes}
+                      onChange={(e) => setIncludeEpisodes(e.target.checked)}
+                    />
+                    <label htmlFor="include-episodes" className="text-sm">
+                      Include episodes
+                    </label>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-2 ml-3">
+                    {includeEpisodes
+                      ? 'Episodes will be included in the export.'
+                      : 'Episodes are excluded from the export.'}
+                  </p>
                 </div>
                 <ul className="max-h-64 overflow-auto border rounded">
                   {state.shows.map((s: Show) => (
@@ -104,10 +124,7 @@ export const ExportSeries = ({ state }: { state: any }) => {
                     </li>
                   ))}
                 </ul>
-                <p className="text-xs text-gray-600 mt-2">
-                  Episodes are excluded from the export.
-                </p>
-              </>
+              </div>
             )}
             <div className="mt-4 flex justify-end gap-2">
               <button

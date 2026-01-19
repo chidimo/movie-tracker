@@ -1,17 +1,15 @@
-import { useRef, useState } from 'react'
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { normalizeShowTransfer } from '@/lib/series-tracker/compute-omdb'
+import { importShows } from '@/lib/series-tracker/import-utils'
 import { StorageRepo } from '@/lib/series-tracker/storage'
 import type { Show } from '@/lib/series-tracker/types'
-import { normalizeShowTransfer } from '@/lib/series-tracker/compute-omdb'
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { useRef, useState } from 'react'
 
 export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
   const [importOpen, setImportOpen] = useState(false)
   const [importSelected, setImportSelected] = useState<Record<string, boolean>>(
     {},
   )
-  const [replaceSelected, setReplaceSelected] = useState<
-    Record<string, boolean>
-  >({})
   const [importedShows, setImportedShows] = useState<Partial<Show>[]>([])
   const [fileError, setFileError] = useState<string | undefined>()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -19,7 +17,6 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
   const openImport = () => {
     setImportedShows([])
     setImportSelected({})
-    setReplaceSelected({})
     setFileError(undefined)
     setImportOpen(true)
   }
@@ -40,15 +37,12 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
         normalizeShowTransfer(s, { includeEpisodes: true }),
       )
       const sel: Record<string, boolean> = {}
-      const rep: Record<string, boolean> = {}
       for (const s of normalized)
         if (s.imdbId) {
           sel[s.imdbId] = true
-          rep[s.imdbId] = false // default: do not replace existing
         }
       setImportedShows(normalized)
       setImportSelected(sel)
-      setReplaceSelected(rep)
     } catch (e) {
       console.error('Failed to parse import file', e)
       setFileError(
@@ -56,7 +50,6 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
       )
       setImportedShows([])
       setImportSelected({})
-    } finally {
       if (fileInputRef.current) fileInputRef.current.value = ''
     }
   }
@@ -69,53 +62,10 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
 
   const confirmImport = () => {
     const current = StorageRepo.getState()
-    const toApply: Show[] = [...current.shows]
-    // map of existing by lowercased title
-    const existingByTitle = new Map<string, Show>()
-    current.shows.forEach((ex) => {
-      const key = (ex.title || '').toLowerCase().trim()
-      if (key) existingByTitle.set(key, ex)
+    const nextState = importShows(current, importedShows, importSelected, {
+      includeEpisodes: true,
     })
-    for (const s of importedShows) {
-      if (!s.imdbId || !importSelected[s.imdbId]) continue
-      const titleKey = (s.title || '').toLowerCase().trim()
-      const existing = titleKey ? existingByTitle.get(titleKey) : undefined
-      if (existing) {
-        // Only replace if user opted in for this item
-        if (replaceSelected[s.imdbId]) {
-          const updated: Show = {
-            ...existing,
-            title: s.title || existing.title,
-            thumbnail: s.thumbnail ?? existing.thumbnail,
-            imdbUrl: s.imdbUrl || existing.imdbUrl,
-            releaseYear: s.releaseYear ?? existing.releaseYear,
-            mainCast: s.mainCast ?? existing.mainCast,
-            plot: s.plot ?? existing.plot,
-            totalSeasons: s.totalSeasons ?? existing.totalSeasons,
-            nextAirDate: s.nextAirDate ?? existing.nextAirDate,
-            seasons: existing.seasons ?? [],
-          }
-          const idx = toApply.findIndex((x) => x.imdbId === existing.imdbId)
-          if (idx >= 0) toApply[idx] = updated
-        }
-        // if replace not checked, leave as is
-        continue
-      }
-      // Not existing: add new
-      toApply.push({
-        imdbId: s.imdbId,
-        title: s.title || s.imdbId,
-        thumbnail: s.thumbnail,
-        imdbUrl: s.imdbUrl || `https://www.imdb.com/title/${s.imdbId}`,
-        releaseYear: s.releaseYear,
-        mainCast: s.mainCast,
-        plot: s.plot,
-        totalSeasons: s.totalSeasons,
-        nextAirDate: s.nextAirDate,
-        seasons: [],
-      })
-    }
-    StorageRepo.setState({ ...current, shows: toApply })
+    StorageRepo.setState(nextState)
     onUpdateState(StorageRepo.getState())
     setImportOpen(false)
   }
@@ -184,23 +134,6 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
                           }
                         />
                         <span className="text-sm">{s.title || s.imdbId}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <label className="text-xs flex items-center gap-1">
-                          <input
-                            type="checkbox"
-                            className="h-4 w-4"
-                            checked={!!(s.imdbId && replaceSelected[s.imdbId])}
-                            onChange={(e) =>
-                              s.imdbId &&
-                              setReplaceSelected((prev) => ({
-                                ...prev,
-                                [s.imdbId!]: e.target.checked,
-                              }))
-                            }
-                          />
-                          Replace if exists
-                        </label>
                       </div>
                     </li>
                   ))}
