@@ -64,18 +64,22 @@ export const useFetchSeasons = (imdbId: string) => {
     const titleData = await omdbGetTitle(imdbId)
     if (!titleData || titleData.Response === 'False') return
 
-    const currentShow = normalizeOmdbShow(titleData)
+    const fetchedShow = normalizeOmdbShow(titleData)
     const currentExistingShow = getShowById(imdbId)
-    updateShow({ ...currentShow, seasons: currentExistingShow?.seasons ?? [] })
+
+    updateShow({ ...fetchedShow, seasons: currentExistingShow?.seasons ?? [] })
 
     const capped = Math.max(
       0,
-      Math.min(currentExistingShow?.totalSeasons ?? 0, 30),
+      Math.min(
+        currentExistingShow?.totalSeasons ?? fetchedShow.totalSeasons ?? 0,
+        30,
+      ),
     )
     const requests = Array.from({ length: capped }, (_, i) =>
       getSingleSeason(
         imdbId,
-        currentShow.title,
+        fetchedShow.title,
         currentExistingShow?.seasons ?? [],
         i + 1,
       ),
@@ -99,7 +103,7 @@ export const useFetchSeasons = (imdbId: string) => {
       : undefined
 
     updateShow({
-      ...currentShow,
+      ...fetchedShow,
       seasons: filteredSeasons,
       totalSeasons: capped || currentExistingShow?.totalSeasons,
       nextAirDate,

@@ -1,16 +1,36 @@
+import { useState } from 'react'
 import { ProfileModal } from '@/components/series-tracker/profile-modal'
 import { ExportSeries } from '@/components/series-tracker/export-series'
 import { ImportSeries } from '@/components/series-tracker/import-series'
-import { ShowCard } from '@/components/series-tracker/show-card'
+import { DraggableShowCard } from '@/components/series-tracker/draggable-show-card'
 import { SearchSeries } from '@/components/series-tracker/search-series'
+import { CommonArtists } from '@/components/series-tracker/show-info-components/common-artists'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 import type { TrackerState } from '@/lib/series-tracker/types'
 
 export const SeriesTrackerPage = () => {
-  const { state, removeShow, replaceState } = useSeriesTracker()
+  const { state, removeShow, replaceState, getOrderedShows, reorderShows } = useSeriesTracker()
+  const orderedShows = getOrderedShows()
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
 
   const handleRemoveShow = (removeId: string) => {
     removeShow(removeId)
+  }
+
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault()
+    if (draggedIndex !== null && draggedIndex !== dropIndex) {
+      reorderShows(draggedIndex, dropIndex)
+    }
+    setDraggedIndex(null)
   }
 
   return (
@@ -28,6 +48,8 @@ export const SeriesTrackerPage = () => {
 
       <SearchSeries />
 
+      <CommonArtists />
+
       <div>
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-lg font-semibold">Your Shows</h3>
@@ -38,17 +60,22 @@ export const SeriesTrackerPage = () => {
             <ExportSeries state={state} />
           </div>
         </div>
-        {state.shows.length === 0 ? (
+        {orderedShows.length === 0 ? (
           <p className="text-gray-600">
             No shows yet. Search above and add one.
           </p>
         ) : (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {state.shows.map((s) => (
-              <ShowCard
-                key={s.imdbId}
-                show={s}
+            {orderedShows.map((show, index) => (
+              <DraggableShowCard
+                key={show.imdbId}
+                show={show}
+                index={index}
                 onRemoveShow={handleRemoveShow}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                isDragging={draggedIndex === index}
               />
             ))}
           </ul>

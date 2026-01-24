@@ -21,6 +21,18 @@ export type Show = {
   releaseDate?: string
   votes?: number
   awards?: string
+  // Additional OMDB fields
+  rated?: string // TV rating/Content rating (e.g., "TV-MA")
+  runtime?: string // Runtime (e.g., "60 min")
+  director?: string // Director information
+  writer?: string // Writer information
+  language?: string // Language(s)
+  country?: string // Country of origin
+  metascore?: string // Metacritic score
+  ratings?: { // Ratings from different sources
+    Source: string
+    Value: string
+  }[]
   // computed fields
   hideWatched?: boolean // whether to hide watched episodes by default
   // Tentative scheduling (user-entered)
@@ -52,6 +64,7 @@ export type Season = {
 export type TrackerState = {
   profile?: UserProfile
   shows: Show[]
+  showOrder?: string[] // array of imdbIds in custom order
   omdbApiKey?: string
   notificationDay?: number
 }

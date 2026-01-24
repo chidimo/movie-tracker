@@ -1,24 +1,27 @@
+import { useSeriesTracker } from '@/context/series-tracker-context'
+
 type Props = {
-  current: number
-  total: number
+  seriesId: string
   label?: string
   className?: string
-  barHeightClassName?: string // e.g. "h-2" or "h-3"
+  barHeightClassName?: string
   showFraction?: boolean
   showPercentage?: boolean
 }
 
-export const Progress = ({
-  current,
-  total,
-  label,
+export const SeriesProgress = ({
+  seriesId,
+  label = 'Overall progress',
   className,
   barHeightClassName = 'h-2',
   showFraction = true,
   showPercentage = true,
 }: Props) => {
+  const { getShowProgress } = useSeriesTracker()
+  const { watched, total } = getShowProgress(seriesId)
+
   const safeTotal = Math.max(0, total || 0)
-  const safeCurrent = Math.min(Math.max(0, current || 0), safeTotal)
+  const safeCurrent = Math.min(Math.max(0, watched || 0), safeTotal)
   const pct = safeTotal ? Math.round((safeCurrent / safeTotal) * 100) : 0
 
   return (

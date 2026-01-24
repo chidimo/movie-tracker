@@ -28,6 +28,9 @@ export type SeriesTrackerContextValue = {
   getShowById: (imdbId: string) => Show | undefined
   getShowProgress: (imdbId: string) => { watched: number; total: number }
   setNotification: (day: number) => void
+  reorderShows: (fromIndex: number, toIndex: number) => void
+  moveShowToTop: (imdbId: string) => void
+  getOrderedShows: () => Show[]
 }
 
 const SeriesTrackerContext = createContext<
@@ -82,13 +85,25 @@ export function SeriesTrackerProvider({
   }, [])
 
   const addShow = useCallback((show: Show) => {
-    StorageRepo.addShow(show)
-    setState(StorageRepo.getState())
+    const current = StorageRepo.getState()
+    const updated: TrackerState = {
+      ...current,
+      shows: [...current.shows, show],
+      showOrder: [...(current.showOrder || []), show.imdbId],
+    }
+    StorageRepo.setState(updated)
+    setState(updated)
   }, [])
 
   const removeShow = useCallback((imdbId: string) => {
-    StorageRepo.removeShow(imdbId)
-    setState(StorageRepo.getState())
+    const current = StorageRepo.getState()
+    const updated: TrackerState = {
+      ...current,
+      shows: current.shows.filter((s) => s.imdbId !== imdbId),
+      showOrder: current.showOrder?.filter((id) => id !== imdbId),
+    }
+    StorageRepo.setState(updated)
+    setState(updated)
   }, [])
 
   const updateShow = useCallback((show: Show) => {
@@ -136,6 +151,44 @@ export function SeriesTrackerProvider({
     [rescheduleNotifications],
   )
 
+  const reorderShows = useCallback((fromIndex: number, toIndex: number) => {
+    const current = StorageRepo.getState()
+    const order = current.showOrder || current.shows.map((s) => s.imdbId)
+    const newOrder = [...order]
+    const [movedItem] = newOrder.splice(fromIndex, 1)
+    newOrder.splice(toIndex, 0, movedItem)
+
+    const updated: TrackerState = {
+      ...current,
+      showOrder: newOrder,
+    }
+    StorageRepo.setState(updated)
+    setState(updated)
+  }, [])
+
+  const moveShowToTop = useCallback((imdbId: string) => {
+    const current = StorageRepo.getState()
+    const order = current.showOrder || current.shows.map((s) => s.imdbId)
+    const currentIndex = order.indexOf(imdbId)
+    if (currentIndex > 0) {
+      const newOrder = [imdbId, ...order.filter((id) => id !== imdbId)]
+      const updated: TrackerState = {
+        ...current,
+        showOrder: newOrder,
+      }
+      StorageRepo.setState(updated)
+      setState(updated)
+    }
+  }, [])
+
+  const getOrderedShows = useCallback(() => {
+    const order = state.showOrder || state.shows.map((s) => s.imdbId)
+    const showMap = new Map(state.shows.map((s) => [s.imdbId, s]))
+    return order
+      .map((id) => showMap.get(id))
+      .filter((s): s is Show => s !== undefined)
+  }, [state])
+
   const value = useMemo<SeriesTrackerContextValue>(
     () => ({
       state,
@@ -150,9 +203,9 @@ export function SeriesTrackerProvider({
       getShowById,
       getShowProgress,
       setNotification,
-      hasProfile: !!state.profile?.name,
-      hasShows: (state.shows?.length ?? 0) > 0,
-      profile: state.profile,
+      reorderShows,
+      moveShowToTop,
+      getOrderedShows,
     }),
     [
       state,
@@ -166,6 +219,9 @@ export function SeriesTrackerProvider({
       getShowById,
       getShowProgress,
       setNotification,
+      reorderShows,
+      moveShowToTop,
+      getOrderedShows,
     ],
   )
 

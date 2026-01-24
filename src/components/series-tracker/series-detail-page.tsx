@@ -2,22 +2,23 @@ import { useEffect } from 'react'
 import { ScheduleSetter } from './schedule-setter'
 import { SeasonContainer } from './season-container'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import { Progress } from '@/components/progress'
-import { UpcomingBanner } from '@/components/series-tracker/upcoming'
 import { Link, useMatch } from '@tanstack/react-router'
 import { Switcher } from '../switcher'
-import { CastDisplay } from '../cast-display'
-import { RatingsDisplay } from '../series-tracker/ratings-display'
+import { CastDisplay } from './show-info-components/cast-display'
 import { useFetchSeasons } from '@/hooks/use-fetch-seasons'
+import {
+  RatingsDisplay,
+  SeriesProgress,
+  UpcomingBanner,
+} from './show-info-components'
 
 export const SeriesDetailPage = () => {
   const { params } = useMatch({ from: '/$imdbId' })
   const imdbId = params.imdbId
 
-  const { getShowById, getShowProgress, updateShow } = useSeriesTracker()
+  const { getShowById, updateShow } = useSeriesTracker()
 
   const show = getShowById(imdbId)
-  const showProgress = getShowProgress(imdbId)
   useFetchSeasons(imdbId)
 
   useEffect(() => {
@@ -48,16 +49,18 @@ export const SeriesDetailPage = () => {
           ← Back to tracker
         </Link>
       </div>
-      <div className="flex gap-4 mb-6">
-        {show.thumbnail && show.thumbnail !== 'N/A' ? (
-          <img
-            src={show.thumbnail}
-            alt="poster"
-            className="h-40 w-28 object-cover rounded md:h-60 md:w-40"
-          />
-        ) : (
-          <div className="h-40 w-28 bg-gray-200 rounded md:h-60 md:w-40" />
-        )}
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex justify-center md:justify-start">
+          {show.thumbnail && show.thumbnail !== 'N/A' ? (
+            <img
+              src={show.thumbnail}
+              alt="poster"
+              className="object-cover rounded"
+            />
+          ) : (
+            <div className="bg-gray-200 rounded" />
+          )}
+        </div>
         <div className="flex-1 space-y-2">
           <UpcomingBanner show={show} className="" />
           <h1 className="text-2xl font-bold">{show.title}</h1>
@@ -67,12 +70,10 @@ export const SeriesDetailPage = () => {
           {show.plot ? <p className="text-gray-700">{show.plot}</p> : null}
           <CastDisplay cast={show.mainCast} />
           <RatingsDisplay rating={show.rating} votes={show.votes} />
-          <Progress
-            label="Overall progress"
-            current={showProgress.watched}
-            total={showProgress.total}
-            showFraction
-            showPercentage
+          <SeriesProgress
+            seriesId={imdbId}
+            showFraction={true}
+            showPercentage={true}
           />
           <div className="flex gap-3">
             <a
@@ -107,24 +108,19 @@ export const SeriesDetailPage = () => {
             }
           />
         </div>
-        {!show.seasons || show.seasons.length === 0 ? (
-          <p className="text-gray-700">
-            No seasons loaded yet. Click &quot;Fetch seasons&quot; above.
-          </p>
-        ) : (
-          <div className="space-y-6">
-            {[...show.seasons]
-              .sort((a, b) => (b.seasonNumber ?? 0) - (a.seasonNumber ?? 0))
-              .map((s) => (
-                <SeasonContainer
-                  key={s.seasonNumber ?? s.title}
-                  season={s}
-                  show={show}
-                  hideWatched={show?.hideWatched ?? false}
-                />
-              ))}
-          </div>
-        )}
+
+        <div className="space-y-6">
+          {[...show.seasons]
+            .sort((a, b) => (b.seasonNumber ?? 0) - (a.seasonNumber ?? 0))
+            .map((s) => (
+              <SeasonContainer
+                key={s.seasonNumber ?? s.title}
+                season={s}
+                show={show}
+                hideWatched={show?.hideWatched ?? false}
+              />
+            ))}
+        </div>
       </div>
     </main>
   )

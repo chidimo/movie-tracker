@@ -1,8 +1,8 @@
 import type { Season, Show } from '@/lib/series-tracker/types'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 import { EpisodeCard } from './episode-card'
-import { Progress } from '@/components/progress'
 import { Switcher } from '../switcher'
+import { SeriesProgress } from './show-info-components'
 
 export const SeasonContainer = ({
   show,
@@ -35,11 +35,10 @@ export const SeasonContainer = ({
         <div>
           <h2 className="font-semibold">{season.title}</h2>
 
-          <Progress
+          <SeriesProgress
+            seriesId={show.imdbId}
             className="mt-2"
             label="Progress"
-            current={season.episodes.filter((e) => e.watched).length}
-            total={season.episodes.length}
             showFraction
             showPercentage
           />

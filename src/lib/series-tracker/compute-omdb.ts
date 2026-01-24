@@ -24,6 +24,14 @@ export const normalizeOmdbShow = (full: OmdbTitleResponse) => {
       ? parseDayMonthYearToISO(full.Released)
       : undefined,
     awards: full?.Awards,
+    rated: full?.Rated,
+    runtime: full?.Runtime,
+    director: full?.Director,
+    writer: full?.Writer,
+    language: full?.Language,
+    country: full?.Country,
+    metascore: full?.Metascore,
+    ratings: full?.Ratings,
   }
 
   return show
