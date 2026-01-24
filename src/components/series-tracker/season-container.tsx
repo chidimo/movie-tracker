@@ -2,7 +2,7 @@ import type { Season, Show } from '@/lib/series-tracker/types'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 import { EpisodeCard } from './episode-card'
 import { Switcher } from '../switcher'
-import { SeriesProgress } from './show-info-components'
+import { SeasonProgress } from './show-info-components'
 
 export const SeasonContainer = ({
   show,
@@ -35,8 +35,8 @@ export const SeasonContainer = ({
         <div>
           <h2 className="font-semibold">{season.title}</h2>
 
-          <SeriesProgress
-            seriesId={show.imdbId}
+          <SeasonProgress
+            season={season}
             className="mt-2"
             label="Progress"
             showFraction
