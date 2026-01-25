@@ -6,8 +6,8 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 
 import './styles.css'
-import reportWebVitals from './reportWebVitals.ts'
-import { SeriesTrackerProvider } from './context/series-tracker-context.tsx'
+import reportWebVitals from './reportWebVitals'
+import { SeriesTrackerProvider } from './context/series-tracker-context'
 
 // Create a new router instance
 const router = createRouter({
@@ -27,8 +27,8 @@ declare module '@tanstack/react-router' {
 }
 
 // Render the app
-const rootElement = document.getElementById('app')
-if (rootElement && !rootElement.innerHTML) {
+const rootElement = document.getElementById('root')
+if (rootElement) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
