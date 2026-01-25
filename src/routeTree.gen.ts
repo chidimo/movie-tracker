@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ImdbIdRouteImport } from './routes/$imdbId'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoWorkosRouteImport } from './routes/demo/workos'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ImdbIdRoute = ImdbIdRouteImport.update({
   id: '/$imdbId',
   path: '/$imdbId',
@@ -32,35 +38,46 @@ const DemoWorkosRoute = DemoWorkosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$imdbId': typeof ImdbIdRoute
+  '/settings': typeof SettingsRoute
   '/demo/workos': typeof DemoWorkosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$imdbId': typeof ImdbIdRoute
+  '/settings': typeof SettingsRoute
   '/demo/workos': typeof DemoWorkosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$imdbId': typeof ImdbIdRoute
+  '/settings': typeof SettingsRoute
   '/demo/workos': typeof DemoWorkosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$imdbId' | '/demo/workos'
+  fullPaths: '/' | '/$imdbId' | '/settings' | '/demo/workos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$imdbId' | '/demo/workos'
-  id: '__root__' | '/' | '/$imdbId' | '/demo/workos'
+  to: '/' | '/$imdbId' | '/settings' | '/demo/workos'
+  id: '__root__' | '/' | '/$imdbId' | '/settings' | '/demo/workos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ImdbIdRoute: typeof ImdbIdRoute
+  SettingsRoute: typeof SettingsRoute
   DemoWorkosRoute: typeof DemoWorkosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$imdbId': {
       id: '/$imdbId'
       path: '/$imdbId'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ImdbIdRoute: ImdbIdRoute,
+  SettingsRoute: SettingsRoute,
   DemoWorkosRoute: DemoWorkosRoute,
 }
 export const routeTree = rootRouteImport
