@@ -30,6 +30,7 @@ export const ProfileForm = ({ onSave, className = '' }: ProfileFormProps) => {
     }
     setProfile(profile)
     onSave?.(profile)
+    alert('Profile saved!')
   }
 
   return (
