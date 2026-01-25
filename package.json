@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port 3000",
-    "build": "vite build && tsc",
-    "preview": "vite preview",
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter core build && pnpm --filter web build",
+    "preview": "pnpm --filter web preview",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier",
