@@ -1,3 +1,4 @@
+import { normalizeOmdbShow } from '@/lib/series-tracker/compute-omdb'
 import {
   omdbGetSeason,
   omdbGetTitle,
@@ -61,6 +62,12 @@ export const useFetchSeasons = (
 
 export function useOmdbTitleMutation() {
   return useMutation({
-    mutationFn: (imdbID: string) => omdbGetTitle(imdbID),
+    mutationFn: async (imdbID: string) => {
+      const result = await omdbGetTitle(imdbID)
+      if (!result) {
+        throw new Error('Show not found')
+      }
+      return normalizeOmdbShow(result)
+    },
   })
 }

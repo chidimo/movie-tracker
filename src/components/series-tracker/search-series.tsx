@@ -3,7 +3,6 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { type OmdbSearchItem } from '@/lib/series-tracker/omdb'
 import { useSeriesTracker } from '../../context/series-tracker-context'
 import { useOmdbTitleMutation, useSearchSeries } from '@/hooks/use-movies'
-import { normalizeOmdbShow } from '@/lib/series-tracker/compute-omdb'
 
 export const SearchSeries = () => {
   const [q, setQ] = useState('')
@@ -25,7 +24,7 @@ export const SearchSeries = () => {
   const onAdd = async (item: OmdbSearchItem) => {
     const full = await fetchTitle(item.imdbID)
     if (!full) return
-    addShow(normalizeOmdbShow(full))
+    addShow(full)
   }
 
   return (
