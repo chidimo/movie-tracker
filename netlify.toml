@@ -1,11 +1,11 @@
 [build]
-  command = "yarn build"
-  publish = "dist"
+  command = "yarn web:build"
+  publish = "packages/web/dist"
   functions = "netlify/functions"
 
 [dev]
-  command = "yarn vite:dev"
-  targetPort = 3000
+  command = "yarn web:dev"
+  targetPort = 5173
   port = 8888
   autoLaunch = false
 

@@ -15,8 +15,8 @@
     "test:ai": "node test-ai-connection.js"
   },
   "dependencies": {
-    "@movie-tracker/core": "workspace:*",
     "@expo/vector-icons": "^15.0.3",
+    "@movie-tracker/core": "workspace:*",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/datetimepicker": "8.4.4",
     "@react-native-picker/picker": "2.11.1",
