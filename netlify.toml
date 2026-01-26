@@ -3,6 +3,11 @@
   publish = "packages/web/dist"
   functions = "netlify/functions"
 
+[build.environment]
+  YARN_VERSION = "4.12.0"
+  YARN_ENABLE_IMMUTABLE_INSTALLS = "false"
+
+
 [dev]
   command = "yarn web:dev"
   targetPort = 5173

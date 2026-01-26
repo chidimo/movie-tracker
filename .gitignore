@@ -8,5 +8,5 @@ count.txt
 .nitro
 .tanstack
 .wrangler
+.yarn/cache
 .yarn/install-state.gz
-.yarn/releases/
