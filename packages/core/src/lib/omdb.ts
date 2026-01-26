@@ -29,7 +29,7 @@ export type OmdbTitleResponse = {
   Released?: string // date string
   Response: OmdbResponse
   Error?: string
-  Genre: string
+  Genre?: string
   Director: string
   Writer: string
   Language: string

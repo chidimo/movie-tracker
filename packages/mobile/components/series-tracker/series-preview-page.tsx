@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { useGetShow } from "@/hooks/use-movies";
+import { useGetShow } from "@/hooks/use-movies-legacy";
 import { ActivityIndicator } from "react-native";
 import { SeriesDetailView } from "./series-detail-view";
 

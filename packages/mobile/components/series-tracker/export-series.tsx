@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
 import { Pressable, Share, StyleSheet, View } from "react-native";
-
 import { Checkbox } from "@/components/form-elements/checkbox";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";

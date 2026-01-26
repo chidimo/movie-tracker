@@ -1,9 +1,26 @@
-import { Show, createMobileOmdbFunctions, normalizeOmdbShow } from "@movie-tracker/core";
-import { AIPromptTemplate, AIRecommendation, generateAIPrompt } from "./ai-types";
-import { Logger } from "./logger";
-import { cloudProviders } from "./constants";
+import { cloudProviders } from "./constants"
+import { createMobileOmdbFunctions } from "./omdb"
+import { normalizeOmdbShow } from "./compute-omdb"
+import { generateAIPrompt } from "./ai-types"
+import { Logger } from "./logger"
+import type { AIPromptTemplate, AIRecommendation } from "./ai-types"
+import type { Show } from "./types"
 
-const { omdbGetTitle } = createMobileOmdbFunctions(process.env.EXPO_PUBLIC_OMDB_API_KEY)
+// Define __DEV__ for non-React Native environments
+declare global {
+  const __DEV__: boolean;
+}
+
+// Provide fallback for environments where __DEV__ is not defined
+if (typeof (globalThis as any).__DEV__ === 'undefined') {
+  try {
+    (globalThis as any).__DEV__ = process?.env?.NODE_ENV !== 'production';
+  } catch {
+    (globalThis as any).__DEV__ = true;
+  }
+}
+
+const { omdbGetTitle } = createMobileOmdbFunctions(typeof process !== 'undefined' ? process.env?.EXPO_PUBLIC_OMDB_API_KEY : undefined)
 
 // Open-source AI integration for show discovery
 // Using Ollama or similar local models for privacy and cost control
@@ -19,20 +36,20 @@ export class AIDiscoveryEngine {
 
   constructor(
     apiKey?: string,
-    baseUrl: string = process.env.EXPO_PUBLIC_AI_BASE_URL || "",
-    model: string = process.env.EXPO_PUBLIC_AI_MODEL || "gemma2:2b",
+    baseUrl: string = (typeof process !== 'undefined' ? process.env?.EXPO_PUBLIC_AI_BASE_URL : undefined) || "",
+    model: string = (typeof process !== 'undefined' ? process.env?.EXPO_PUBLIC_AI_MODEL : undefined) || "gemma2:2b",
   ) {
     this.model = model;
     this.baseUrl = baseUrl;
     // Try multiple sources for API key
     this.apiKey =
       apiKey ||
-      process.env.EXPO_PUBLIC_GROQ_API_KEY ||
-      process.env.GROQ_API_KEY;
+      (typeof process !== 'undefined' ? process.env?.EXPO_PUBLIC_GROQ_API_KEY : undefined) ||
+      (typeof process !== 'undefined' ? process.env?.GROQ_API_KEY : undefined);
 
     // Get recommendation count from environment variable
     this.recommendationCount = Number.parseInt(
-      process.env.EXPO_PUBLIC_AI_RECOMMENDATION_COUNT || "3",
+      (typeof process !== 'undefined' ? process.env?.EXPO_PUBLIC_AI_RECOMMENDATION_COUNT : undefined) || "3",
       10,
     );
 
@@ -76,11 +93,11 @@ export class AIDiscoveryEngine {
   }
 
   // Extract user preferences from existing shows
-  async analyzeUserPreferences(shows: Show[]): Promise<{
-    genres: string[];
-    themes: string[];
+  async analyzeUserPreferences(shows: Array<Show>): Promise<{
+    genres: Array<string>;
+    themes: Array<string>;
     averageRating: number;
-    preferences: string[];
+    preferences: Array<string>;
   }> {
     if (shows.length === 0) {
       return {
@@ -101,9 +118,9 @@ export class AIDiscoveryEngine {
 
   // Get personalized recommendations based on user's existing shows
   public async getPersonalizedRecommendations(
-    shows: Show[],
+    shows: Array<Show>,
     count?: number,
-  ): Promise<AIRecommendation[]> {
+  ): Promise<Array<AIRecommendation>> {
     try {
       Logger.log("Getting personalized recommendations", {
         showCount: shows.length,
@@ -125,7 +142,7 @@ export class AIDiscoveryEngine {
   }
 
   // Get trending shows with AI insights
-  public async getTrendingShows(): Promise<AIRecommendation[]> {
+  public async getTrendingShows(): Promise<Array<AIRecommendation>> {
     try {
       const promptTemplate: AIPromptTemplate = {
         context: `Suggest ${this.recommendationCount} currently trending TV series that are popular and critically acclaimed.`,
@@ -148,7 +165,7 @@ export class AIDiscoveryEngine {
   async getMoodBasedRecommendations(
     mood: string,
     count?: number,
-  ): Promise<AIRecommendation[]> {
+  ): Promise<Array<AIRecommendation>> {
     try {
       const promptTemplate: AIPromptTemplate = {
         context: `Suggest ${count || this.recommendationCount} TV series that are perfect for viewers in the mood for "${mood}".`,
@@ -362,7 +379,7 @@ export class AIDiscoveryEngine {
   private async enrichRecommendationsWithOMDB(
     aiResponse: string,
     category: AIRecommendation["category"],
-  ): Promise<AIRecommendation[]> {
+  ): Promise<Array<AIRecommendation>> {
     try {
       // Try to parse as JSON first
       const jsonMatch = new RegExp(/\[[\s\S]*\]/).exec(aiResponse);
@@ -461,7 +478,7 @@ export class AIDiscoveryEngine {
       return [];
     }
   }
-  private extractGenres(shows: Show[]): string[] {
+  private extractGenres(shows: Array<Show>): Array<string> {
     const allGenres = shows.flatMap((show) => show.genres || []);
     const genreCount = allGenres.reduce(
       (acc, genre) => {
@@ -477,7 +494,7 @@ export class AIDiscoveryEngine {
       .map(([genre]) => genre);
   }
 
-  private async extractThemes(shows: Show[]): Promise<string[]> {
+  private async extractThemes(shows: Array<Show>): Promise<Array<string>> {
     // Simple theme extraction based on titles and plots
     const themes = new Set<string>();
     const themesKeywords = [
@@ -502,7 +519,7 @@ export class AIDiscoveryEngine {
     return Array.from(themes).slice(0, 3);
   }
 
-  private calculateAverageRating(shows: Show[]): number {
+  private calculateAverageRating(shows: Array<Show>): number {
     const ratings = shows
       .map((show) => show.rating)
       .filter((rating): rating is number => rating !== undefined);
@@ -514,10 +531,10 @@ export class AIDiscoveryEngine {
   }
 
   private generatePreferences(
-    genres: string[],
-    themes: string[],
+    genres: Array<string>,
+    themes: Array<string>,
     avgRating: number,
-  ): string[] {
+  ): Array<string> {
     const prefs = [`genres: ${genres.join(", ")}`];
     if (themes.length > 0) {
       prefs.push(`themes: ${themes.join(", ")}`);
@@ -528,7 +545,7 @@ export class AIDiscoveryEngine {
     return prefs;
   }
 
-  private buildPersonalizationPrompt(preferences: any, shows: Show[]): string {
+  private buildPersonalizationPrompt(preferences: any, shows: Array<Show>): string {
     const showTitles = shows
       .slice(0, 5)
       .map((s) => s.title)
@@ -552,7 +569,7 @@ export class AIDiscoveryEngine {
   // Fallback recommendations when AI fails
   private getFallbackRecommendations(
     category: AIRecommendation["category"],
-  ): AIRecommendation[] {
+  ): Array<AIRecommendation> {
     const fallbackShows = [
       {
         title: "Breaking Bad",
@@ -598,17 +615,10 @@ export class AIDiscoveryEngine {
     }));
   }
 
-  private getFallbackTrending(): AIRecommendation[] {
+  private getFallbackTrending(): Array<AIRecommendation> {
     return this.getFallbackRecommendations("trending");
   }
 }
 
-// Export singleton instance with lazy initialization
-export const aiDiscovery = (() => {
-  try {
-    return AIDiscoveryEngine.getInstance();
-  } catch (error) {
-    console.warn('Failed to initialize AI Discovery Engine:', error);
-    return null as any;
-  }
-})();
+// Export singleton instance
+export const aiDiscovery = AIDiscoveryEngine.getInstance();

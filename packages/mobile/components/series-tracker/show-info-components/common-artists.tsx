@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useSeriesTracker } from "@/context/series-tracker-context";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { ArtistFrequency, getCommonArtists } from "@/lib/artist-aggregation";
+import { ArtistFrequency, getCommonArtists } from "@movie-tracker/core";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const ArtistItem = ({ artist }: { artist: ArtistFrequency }) => {

@@ -1,5 +1,5 @@
 import { Rating } from 'react-simple-star-rating'
-import { formatNumber } from '@/lib/utils'
+import { formatNumber } from '@movie-tracker/core'
 
 export const RatingsDisplay = ({
   rating,

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import type { OmdbSearchItem } from '@movie-tracker/core'
 import { useSeriesTracker } from '../../context/series-tracker-context'
-import { useOmdbTitleMutation, useSearchSeries } from '@/hooks/use-movies'
+import type { OmdbSearchItem } from '@movie-tracker/core'
+import { useOmdbTitleMutation, useSearchSeries } from '@/hooks/use-movies-legacy'
 
 export const SearchSeries = () => {
   const [q, setQ] = useState('')
@@ -12,7 +12,7 @@ export const SearchSeries = () => {
     enabled: false,
   })
 
-  const results = (data as OmdbSearchItem[] | undefined) ?? []
+  const results = (data as Array<OmdbSearchItem> | undefined) ?? []
 
   const onSearch = async () => {
     if (!q.trim()) return

@@ -4,7 +4,7 @@ import { useSeriesTracker } from "@/context/series-tracker-context";
 import { useFetchSeasons } from "@/hooks/use-fetch-seasons";
 import { useImageWithFallback } from "@/hooks/use-image-with-fallback";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { IMDB_BASE_URL } from "@/lib/constants";
+import { IMDB_BASE_URL, Show } from "@movie-tracker/core";
 import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
 import { Pressable, StyleSheet, View } from "react-native";
@@ -18,7 +18,6 @@ import {
   SeriesProgress,
 } from "./show-info-components";
 import { useState } from "react";
-import { Show } from "@movie-tracker/core";
 
 export const SeriesDetailView = ({ show }: { show: Show }) => {
   const { getShowProgress, updateShow } = useSeriesTracker();

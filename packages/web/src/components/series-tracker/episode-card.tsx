@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
+import { Link } from '@tanstack/react-router'
+import { DEFAULT_DAYS_SOON, formatTentative, isWithinDays } from '@movie-tracker/core'
+import { Switcher } from '../switcher'
 import type { Episode, Season, Show } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import { formatTentative, isWithinDays } from '@/lib/utils'
-import { Switcher } from '../switcher'
-import { Link } from '@tanstack/react-router'
-import { DEFAULT_DAYS_SOON } from '@/lib/constants'
 
 export const EpisodeCard = ({
   show,
@@ -47,20 +46,12 @@ export const EpisodeCard = ({
 
   const allEpisodesFlat = useMemo(() => {
     if (!show || typeof mostRecentSeasonNumber !== 'number')
-      return [] as {
-        seasonNumber: number
-        episodeNumber: number
-        title: string
-      }[]
+      return []
     const sn = (show.seasons || []).find(
       (s) => s.seasonNumber === mostRecentSeasonNumber,
     )
     if (!sn)
-      return [] as {
-        seasonNumber: number
-        episodeNumber: number
-        title: string
-      }[]
+      return []
     const eps = [...(sn.episodes || [])]
       .filter((e) => typeof e.episodeNumber === 'number')
       .sort((a, b) => (a.episodeNumber ?? 0) - (b.episodeNumber ?? 0))

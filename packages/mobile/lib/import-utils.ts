@@ -1,5 +1,4 @@
-import { normalizeShowTransfer } from "@movie-tracker/core";
-import { IMDB_BASE_URL } from "./constants";
+import { normalizeShowTransfer, IMDB_BASE_URL } from "@movie-tracker/core";
 import type { Show, TrackerState } from "@movie-tracker/core";
 
 type ImportOptions = {

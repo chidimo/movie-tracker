@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSeriesTracker } from "@/context/series-tracker-context";
-import { createMobileOmdbFunctions, normalizeOmdbShow, type Episode, type Season } from "@movie-tracker/core";
-import { IMDB_BASE_URL } from "@/lib/constants";
+import { createMobileOmdbFunctions, normalizeOmdbShow, type Episode, type Season, IMDB_BASE_URL } from "@movie-tracker/core";
 
 const { omdbGetSeason, omdbGetTitle } = createMobileOmdbFunctions(process.env.EXPO_PUBLIC_OMDB_API_KEY)
 

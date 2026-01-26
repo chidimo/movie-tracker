@@ -4,7 +4,7 @@ import {
 } from "@/components/series-tracker/search-result";
 import { ThemedText } from "@/components/themed-text";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { filterSearchResults } from "@/lib/search-utils";
+import { filterSearchResults } from "@movie-tracker/core";
 import { StyleSheet, View } from "react-native";
 
 interface AIRecommendation {
