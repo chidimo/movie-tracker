@@ -1,6 +1,5 @@
-import { Show, createMobileOmdbFunctions } from "@movie-tracker/core";
+import { Show, createMobileOmdbFunctions, normalizeOmdbShow } from "@movie-tracker/core";
 import { AIPromptTemplate, AIRecommendation, generateAIPrompt } from "./ai-types";
-import { normalizeOmdbShow } from "./compute-omdb";
 import { Logger } from "./logger";
 import { cloudProviders } from "./constants";
 

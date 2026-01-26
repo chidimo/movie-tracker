@@ -1,4 +1,4 @@
-import { normalizeShowTransfer } from './compute-omdb'
+import { normalizeShowTransfer } from '@movie-tracker/core'
 import type { Show, TrackerState } from '@movie-tracker/core'
 
 type ImportOptions = {

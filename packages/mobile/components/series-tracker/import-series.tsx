@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/themed-text";
 import { useSeriesTracker } from "@/context/series-tracker-context";
 import { useClipboard } from "@/hooks/use-clipboard";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { normalizeShowTransfer } from "@/lib/compute-omdb";
+import { normalizeShowTransfer } from "@movie-tracker/core";
 import { importShows } from "@/lib/import-utils";
 import type { Show } from "@movie-tracker/core";
 import { router } from "expo-router";

@@ -1,7 +1,6 @@
-import { createWebOmdbFunctions } from '@movie-tracker/core'
+import { createWebOmdbFunctions, normalizeOmdbShow } from '@movie-tracker/core'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { normalizeOmdbShow } from '@/lib/compute-omdb'
 
 const { omdbGetSeason, omdbGetTitle, omdbSearch } = createWebOmdbFunctions({
   omdbFunctionPath: import.meta.env.DEV ? '/api/omdb' : '/.netlify/functions/omdb'
@@ -47,6 +46,7 @@ export const useFetchSeasons = (
 ) => {
   const seasonString = useMemo(
     () =>
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (season === null || season === undefined) ? undefined : String(season),
     [season],
   )

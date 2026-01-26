@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { createWebOmdbFunctions } from '@movie-tracker/core'
+import { createWebOmdbFunctions, normalizeOmdbShow } from '@movie-tracker/core'
 import type { Episode, Season } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import { normalizeOmdbShow } from '@/lib/compute-omdb'
 
 const { omdbGetSeason, omdbGetTitle } = createWebOmdbFunctions({
   omdbFunctionPath: import.meta.env.DEV ? '/api/omdb' : '/.netlify/functions/omdb'

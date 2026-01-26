@@ -6,7 +6,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useSeriesTracker } from "@/context/series-tracker-context";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { normalizeShowTransfer } from "@/lib/compute-omdb";
+import { normalizeShowTransfer } from "@movie-tracker/core";
 import type { Show } from "@movie-tracker/core";
 import ParallaxScrollView from "../parallax-scroll-view";
 import { HorizontalSeparator } from "../horizontal-separator";
