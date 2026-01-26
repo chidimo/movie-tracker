@@ -1,4 +1,4 @@
-import { cleanStringifiedNumber, parseDayMonthYearToISO } from '../utils'
+import { cleanStringifiedNumber, parseDayMonthYearToISO } from './utils'
 import type { OmdbTitleResponse } from './omdb'
 import type { Show } from './types'
 

@@ -6,7 +6,7 @@ import { DraggableShowCard } from '@/components/series-tracker/draggable-show-ca
 import { SearchSeries } from '@/components/series-tracker/search-series'
 import { CommonArtists } from '@/components/series-tracker/show-info-components/common-artists'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import type { TrackerState } from '@/lib/series-tracker/types'
+import type { TrackerState } from '@/lib/types'
 
 export const SeriesTrackerPage = () => {
   const { state, removeShow, replaceState, getOrderedShows, reorderShows } = useSeriesTracker()

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import type { Show } from '@/lib/series-tracker/types'
-import { normalizeShowTransfer } from '@/lib/series-tracker/compute-omdb'
+import type { Show } from '@/lib/types'
+import { normalizeShowTransfer } from '@/lib/compute-omdb'
 
 export const ExportSeries = ({ state }: { state: any }) => {
   const [exportOpen, setExportOpen] = useState(false)

@@ -1,4 +1,4 @@
-import { getCommonArtists } from '@/lib/series-tracker/aggregate-artists'
+import { getCommonArtists } from '@/lib/aggregate-artists'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 
 export const CommonArtists = () => {

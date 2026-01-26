@@ -1,4 +1,4 @@
-import type { Show, TrackerState } from '@/lib/series-tracker/types'
+import type { Show, TrackerState } from '@/lib/types'
 
 export type NotificationPermissionStatus =
   | 'granted'

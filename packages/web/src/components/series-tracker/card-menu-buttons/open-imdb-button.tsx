@@ -1,4 +1,4 @@
-import type { Show } from '@/lib/series-tracker/types'
+import type { Show } from '@/lib/types'
 
 type Props = {
   show: Show

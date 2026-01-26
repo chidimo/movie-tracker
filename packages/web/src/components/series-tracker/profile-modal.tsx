@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
-import { StorageRepo } from '@/lib/series-tracker/storage'
+import { StorageRepo } from '@/lib/storage'
 import { ProfileForm } from '@/components/profile-form'
 
 export const ProfileModal = () => {

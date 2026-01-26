@@ -1,4 +1,4 @@
-import type { Show } from '@/lib/series-tracker/types'
+import type { Show } from '@/lib/types'
 
 export const CastDisplay = ({ cast }: { cast: Show['mainCast'] }) => {
   if (!cast) return null

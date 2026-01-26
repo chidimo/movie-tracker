@@ -6,13 +6,13 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import { StorageRepo } from '@/lib/series-tracker/storage'
+import { StorageRepo } from '@/lib/storage'
 import type {
   Season,
   Show,
   TrackerState,
   UserProfile,
-} from '@/lib/series-tracker/types'
+} from '@/lib/types'
 import { scheduleTentativeNotifications } from '@/lib/notifications'
 
 export type SeriesTrackerContextValue = {

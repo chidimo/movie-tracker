@@ -1,6 +1,6 @@
-import type { Show } from '@/lib/series-tracker/types'
+import type { Show } from '@/lib/types'
 import { isWithinDays } from '@/lib/utils'
-import { DEFAULT_DAYS_SOON } from '../constants'
+import { DEFAULT_DAYS_SOON } from './constants'
 
 export type UpcomingInfo = {
   seasonNumber?: number

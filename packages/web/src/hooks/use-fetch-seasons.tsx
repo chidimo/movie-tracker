@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Episode, Season } from '@/lib/series-tracker/types'
-import { omdbGetSeason, omdbGetTitle } from '@/lib/series-tracker/omdb'
+import type { Episode, Season } from '@/lib/types'
+import { omdbGetSeason, omdbGetTitle } from '@/lib/omdb'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import { normalizeOmdbShow } from '@/lib/series-tracker/compute-omdb'
+import { normalizeOmdbShow } from '@/lib/compute-omdb'
 
 const getSingleSeason = async (
   id: string,

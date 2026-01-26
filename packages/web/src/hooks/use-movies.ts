@@ -1,9 +1,9 @@
-import { normalizeOmdbShow } from '@/lib/series-tracker/compute-omdb'
+import { normalizeOmdbShow } from '@/lib/compute-omdb'
 import {
   omdbGetSeason,
   omdbGetTitle,
   omdbSearch,
-} from '@/lib/series-tracker/omdb'
+} from '@/lib/omdb'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 

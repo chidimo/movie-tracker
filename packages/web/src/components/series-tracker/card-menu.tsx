@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import type { Show } from '@/lib/series-tracker/types'
+import type { Show } from '@/lib/types'
 import { RemoveShow } from './remove-show'
 import {
   MoveToTopButton,

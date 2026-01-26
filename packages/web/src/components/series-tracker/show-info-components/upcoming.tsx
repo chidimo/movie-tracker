@@ -1,5 +1,5 @@
-import type { Show } from '@/lib/series-tracker/types'
-import { findUpcomingForShow } from '@/lib/series-tracker/upcoming'
+import type { Show } from '@/lib/types'
+import { findUpcomingForShow } from '@/lib/upcoming'
 import { formatTentative, getPaddedNumber } from '@/lib/utils'
 
 export const UpcomingRibbon = ({

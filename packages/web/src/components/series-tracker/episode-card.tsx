@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { Episode, Season, Show } from '@/lib/series-tracker/types'
+import type { Episode, Season, Show } from '@/lib/types'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 import { formatTentative, isWithinDays } from '@/lib/utils'
 import { Switcher } from '../switcher'

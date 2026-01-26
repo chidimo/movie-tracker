@@ -1,7 +1,7 @@
-import { normalizeShowTransfer } from '@/lib/series-tracker/compute-omdb'
-import { importShows } from '@/lib/series-tracker/import-utils'
-import { StorageRepo } from '@/lib/series-tracker/storage'
-import type { Show } from '@/lib/series-tracker/types'
+import { normalizeShowTransfer } from '@/lib/compute-omdb'
+import { importShows } from '@/lib/import-utils'
+import { StorageRepo } from '@/lib/storage'
+import type { Show } from '@/lib/types'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useRef, useState } from 'react'
 
