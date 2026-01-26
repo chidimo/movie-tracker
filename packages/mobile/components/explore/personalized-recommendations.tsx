@@ -7,7 +7,7 @@ import { useOmdbTitleMutation } from "@/hooks/use-movies";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { aiDiscovery } from "@/lib/ai-discovery";
 import { AIRecommendation } from "@/lib/ai-types";
-import { OmdbSearchItem } from "@/lib/omdb";
+import { OmdbSearchItem } from "@movie-tracker/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";

@@ -1,11 +1,11 @@
-import { normalizeOmdbShow } from '@/lib/compute-omdb'
-import {
-  omdbGetSeason,
-  omdbGetTitle,
-  omdbSearch,
-} from '@/lib/omdb'
+import { createWebOmdbFunctions } from '@movie-tracker/core'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
+import { normalizeOmdbShow } from '@/lib/compute-omdb'
+
+const { omdbGetSeason, omdbGetTitle, omdbSearch } = createWebOmdbFunctions({
+  omdbFunctionPath: import.meta.env.DEV ? '/api/omdb' : '/.netlify/functions/omdb'
+})
 
 type OptionsType = Omit<
   Parameters<typeof useQuery>[0], // Get the type of the first parameter
@@ -23,7 +23,7 @@ export const useSearchSeries = (
     enabled,
     queryFn: () => omdbSearch(q!.trim()),
     ...options,
-  } as any)
+  })
 }
 
 export const useGetTitle = (
@@ -37,7 +37,7 @@ export const useGetTitle = (
     enabled,
     queryFn: () => omdbGetTitle(imdbID!),
     ...options,
-  } as any)
+  })
 }
 
 export const useFetchSeasons = (
@@ -47,7 +47,7 @@ export const useFetchSeasons = (
 ) => {
   const seasonString = useMemo(
     () =>
-      season === null || season === undefined ? undefined : String(season),
+      (season === null || season === undefined) ? undefined : String(season),
     [season],
   )
   const enabled = !!imdbID && !!seasonString && (options?.enabled ?? true)
@@ -55,9 +55,9 @@ export const useFetchSeasons = (
   return useQuery({
     queryKey: ['omdb', 'fetchSeasons', { imdbID, season: seasonString }],
     enabled,
-    queryFn: () => omdbGetSeason(imdbID!, Number(seasonString!)),
+    queryFn: () => omdbGetSeason(imdbID!, Number(seasonString)),
     ...options,
-  } as any)
+  })
 }
 
 export function useOmdbTitleMutation() {

@@ -1,14 +1,9 @@
 import { normalizeOmdbShow } from "@/lib/compute-omdb";
-import {
-  omdbGetSeason,
-  omdbGetTitle,
-  omdbSearch,
-  type OmdbSearchItem,
-  type OmdbSeasonResponse,
-} from "@/lib/omdb";
-import { Show } from "@movie-tracker/core";
+import { createMobileOmdbFunctions, OmdbSearchItem, OmdbSeasonResponse, Show } from "@movie-tracker/core";
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { useMemo } from "react";
+
+const { omdbGetSeason, omdbGetTitle, omdbSearch } = createMobileOmdbFunctions(process.env.EXPO_PUBLIC_OMDB_API_KEY);
 
 type SearchOptionsType = Omit<
   Parameters<typeof useQuery<OmdbSearchItem[]>>[0],

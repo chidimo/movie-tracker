@@ -1,6 +1,5 @@
 import { cleanStringifiedNumber, parseDayMonthYearToISO } from './utils'
-import type { OmdbTitleResponse } from './omdb'
-import type { Show } from '@movie-tracker/core'
+import type { OmdbTitleResponse, Show } from '@movie-tracker/core'
 
 export const normalizeOmdbShow = (full: OmdbTitleResponse) => {
   const show: Show = {

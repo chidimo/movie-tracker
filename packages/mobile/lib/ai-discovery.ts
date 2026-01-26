@@ -1,9 +1,10 @@
-import { Show } from "@movie-tracker/core";
+import { Show, createMobileOmdbFunctions } from "@movie-tracker/core";
 import { AIPromptTemplate, AIRecommendation, generateAIPrompt } from "./ai-types";
 import { normalizeOmdbShow } from "./compute-omdb";
-import { omdbGetTitle } from "./omdb";
 import { Logger } from "./logger";
 import { cloudProviders } from "./constants";
+
+const { omdbGetTitle } = createMobileOmdbFunctions(process.env.EXPO_PUBLIC_OMDB_API_KEY)
 
 // Open-source AI integration for show discovery
 // Using Ollama or similar local models for privacy and cost control

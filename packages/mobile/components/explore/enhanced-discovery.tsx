@@ -5,7 +5,7 @@ import { useSeriesTracker } from "@/context/series-tracker-context";
 import { useOmdbTitleMutation, useSearchSeries } from "@/hooks/use-movies";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { aiDiscovery } from "@/lib/ai-discovery";
-import { OmdbSearchItem } from "@/lib/omdb";
+import { OmdbSearchItem } from "@movie-tracker/core";
 import { filterSearchResults } from "@/lib/search-utils";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
