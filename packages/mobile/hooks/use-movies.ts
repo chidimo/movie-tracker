@@ -6,7 +6,7 @@ import {
   type OmdbSearchItem,
   type OmdbSeasonResponse,
 } from "@/lib/omdb";
-import { Show } from "@/lib/types";
+import { Show } from "@movie-tracker/core";
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { useMemo } from "react";
 

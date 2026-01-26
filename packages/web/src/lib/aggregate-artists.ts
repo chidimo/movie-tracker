@@ -1,4 +1,4 @@
-import type { Show } from './types'
+import type { Show } from '@movie-tracker/core'
 
 export interface ArtistCount {
   name: string

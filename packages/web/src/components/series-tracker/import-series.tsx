@@ -1,7 +1,7 @@
 import { normalizeShowTransfer } from '@/lib/compute-omdb'
 import { importShows } from '@/lib/import-utils'
 import { StorageRepo } from '@/lib/storage'
-import type { Show } from '@/lib/types'
+import type { Show } from '@movie-tracker/core'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useRef, useState } from 'react'
 

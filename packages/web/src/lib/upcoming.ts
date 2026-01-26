@@ -1,4 +1,4 @@
-import type { Show } from '@/lib/types'
+import type { Show } from '@movie-tracker/core'
 import { isWithinDays } from '@/lib/utils'
 import { DEFAULT_DAYS_SOON } from './constants'
 

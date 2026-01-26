@@ -1,4 +1,4 @@
-import { Show, TrackerState, UserProfile } from "./types";
+import { Show, TrackerState, UserProfile } from "@movie-tracker/core";
 
 // NOTE: AsyncStorage is asynchronous; all methods below return Promises
 import AsyncStorage from "@react-native-async-storage/async-storage";

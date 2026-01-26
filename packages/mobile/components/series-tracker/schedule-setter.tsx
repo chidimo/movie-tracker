@@ -1,6 +1,6 @@
 import { useOnOffSwitch } from "@/hooks/use-on-off-switch";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Show } from "@/lib/types";
+import type { Show } from "@movie-tracker/core";
 import { Pressable, StyleSheet } from "react-native";
 import { DefaultModal } from "../modal";
 import { ThemedText } from "../themed-text";

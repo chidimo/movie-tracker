@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Episode, Season } from '@/lib/types'
+import type { Episode, Season } from '@movie-tracker/core'
 import { omdbGetSeason, omdbGetTitle } from '@/lib/omdb'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 import { normalizeOmdbShow } from '@/lib/compute-omdb'

@@ -1,4 +1,4 @@
-import { Show } from "@/lib/types";
+import { Show } from "@movie-tracker/core";
 import { AIPromptTemplate, AIRecommendation, generateAIPrompt } from "./ai-types";
 import { normalizeOmdbShow } from "./compute-omdb";
 import { omdbGetTitle } from "./omdb";

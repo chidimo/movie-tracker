@@ -2,7 +2,7 @@ import type {
   TrackerState,
   Show,
   UserProfile,
-} from '@/lib/types'
+} from '@movie-tracker/core'
 
 const STORAGE_KEY = 'series-tracker'
 

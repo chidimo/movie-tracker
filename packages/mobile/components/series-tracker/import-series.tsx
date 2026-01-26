@@ -5,7 +5,7 @@ import { useClipboard } from "@/hooks/use-clipboard";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { normalizeShowTransfer } from "@/lib/compute-omdb";
 import { importShows } from "@/lib/import-utils";
-import type { Show } from "@/lib/types";
+import type { Show } from "@movie-tracker/core";
 import { router } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { Dimensions, StyleSheet, TextInput, View } from "react-native";

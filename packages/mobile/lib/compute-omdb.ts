@@ -1,5 +1,5 @@
 import type { OmdbTitleResponse } from "./omdb";
-import type { Show } from "./types";
+import type { Show } from "@movie-tracker/core";
 import { cleanStringifiedNumber, parseDayMonthYearToISO } from "./utils";
 import { IMDB_BASE_URL } from "./constants";
 

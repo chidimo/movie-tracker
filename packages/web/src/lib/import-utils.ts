@@ -1,5 +1,5 @@
 import { normalizeShowTransfer } from './compute-omdb'
-import type { Show, TrackerState } from './types'
+import type { Show, TrackerState } from '@movie-tracker/core'
 
 type ImportOptions = {
   includeEpisodes?: boolean

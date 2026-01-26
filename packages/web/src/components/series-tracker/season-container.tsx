@@ -1,4 +1,4 @@
-import type { Season, Show } from '@/lib/types'
+import type { Season, Show } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 import { EpisodeCard } from './episode-card'
 import { Switcher } from '../switcher'

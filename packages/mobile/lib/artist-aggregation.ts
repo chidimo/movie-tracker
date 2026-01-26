@@ -1,4 +1,4 @@
-import { Show } from "./types";
+import type { Show } from "@movie-tracker/core";
 
 export interface ArtistFrequency {
   name: string;

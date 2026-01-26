@@ -3,7 +3,7 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Show } from "@/lib/types";
+import type { Show } from "@movie-tracker/core";
 import { findUpcomingForShow } from "@/lib/upcoming";
 import { formatTentative, getPaddedNumber } from "@/lib/utils";
 

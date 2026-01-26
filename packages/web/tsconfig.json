@@ -8,7 +8,8 @@
     "verbatimModuleSyntax": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@movie-tracker/core": ["../../core/src"]
     }
   },
   "include": ["src/**/*"],

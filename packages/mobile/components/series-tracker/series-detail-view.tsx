@@ -18,7 +18,7 @@ import {
   SeriesProgress,
 } from "./show-info-components";
 import { useState } from "react";
-import { Show } from "@/lib/types";
+import { Show } from "@movie-tracker/core";
 
 export const SeriesDetailView = ({ show }: { show: Show }) => {
   const { getShowProgress, updateShow } = useSeriesTracker();

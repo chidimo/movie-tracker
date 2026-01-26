@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSeriesTracker } from "@/context/series-tracker-context";
 import { normalizeOmdbShow } from "@/lib/compute-omdb";
 import { omdbGetSeason, omdbGetTitle } from "@/lib/omdb";
-import type { Episode, Season } from "@/lib/types";
+import type { Episode, Season } from "@movie-tracker/core";
 import { IMDB_BASE_URL } from "@/lib/constants";
 
 const getSingleSeason = async (

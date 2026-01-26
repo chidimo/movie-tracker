@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import type { Show } from '@/lib/types'
+import type { Show } from '@movie-tracker/core'
 import { RemoveShow } from './remove-show'
 import {
   MoveToTopButton,
