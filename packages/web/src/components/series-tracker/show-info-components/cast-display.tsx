@@ -1,4 +1,4 @@
-import type { Show } from '@/lib/types'
+import type { Show } from '@movie-tracker/core'
 
 export const CastDisplay = ({ cast }: { cast: Show['mainCast'] }) => {
   if (!cast) return null

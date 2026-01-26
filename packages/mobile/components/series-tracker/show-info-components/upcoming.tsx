@@ -3,9 +3,8 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Show } from "@/lib/types";
-import { findUpcomingForShow } from "@/lib/upcoming";
-import { formatTentative, getPaddedNumber } from "@/lib/utils";
+import type { Show } from "@movie-tracker/core";
+import { findUpcomingForShow, formatTentative, getPaddedNumber } from "@movie-tracker/core";
 
 export const UpcomingRibbon = ({
   show,

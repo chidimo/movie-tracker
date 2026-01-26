@@ -1,4 +1,4 @@
-import { getCommonArtists } from '@/lib/aggregate-artists'
+import { getCommonArtists } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 
 export const CommonArtists = () => {
@@ -19,11 +19,11 @@ export const CommonArtists = () => {
           <div key={artist.name} className="flex items-center justify-between text-sm">
             <span className="font-medium text-blue-800">{artist.name}</span>
             <div className="flex items-center gap-2">
-              <span className="text-blue-600">appears in {artist.count} shows</span>
+              <span className="text-blue-600">appears in {artist.frequency} shows</span>
               <div className="flex gap-1">
-                {artist.shows.slice(0, 3).map((showTitle, index) => (
+                {artist.shows.slice(0, 3).map((showTitle) => (
                   <span
-                    key={index}
+                    key={`${artist.name}-${showTitle}`}
                     className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs"
                   >
                     {showTitle.length > 15 ? `${showTitle.slice(0, 15)}...` : showTitle}

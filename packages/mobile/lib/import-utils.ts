@@ -1,6 +1,5 @@
-import { normalizeShowTransfer } from "./compute-omdb";
-import { IMDB_BASE_URL } from "./constants";
-import type { Show, TrackerState } from "./types";
+import { normalizeShowTransfer, IMDB_BASE_URL } from "@movie-tracker/core";
+import type { Show, TrackerState } from "@movie-tracker/core";
 
 type ImportOptions = {
   includeEpisodes?: boolean;

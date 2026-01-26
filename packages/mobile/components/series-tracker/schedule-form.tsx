@@ -1,6 +1,6 @@
 import { useSeriesTracker } from "@/context/series-tracker-context";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Show } from "@/lib/types";
+import type { Show } from "@movie-tracker/core";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { useMemo, useState } from "react";

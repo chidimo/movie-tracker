@@ -1,5 +1,5 @@
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import type { Show } from '@/lib/types'
+import type { Show } from '@movie-tracker/core'
 
 type Props = {
   show: Show

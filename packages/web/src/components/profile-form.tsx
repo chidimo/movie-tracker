@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { UserProfile } from '@/lib/types'
+import type { UserProfile } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 
 function slugify(input: string) {

@@ -7,12 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { StorageRepo } from '@/lib/storage'
-import type {
-  Season,
-  Show,
-  TrackerState,
-  UserProfile,
-} from '@/lib/types'
+import type { Season, Show, TrackerState, UserProfile } from '@movie-tracker/core'
 import { scheduleTentativeNotifications } from '@/lib/notifications'
 
 export type SeriesTrackerContextValue = {

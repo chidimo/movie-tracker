@@ -6,7 +6,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useImageWithFallback } from "@/hooks/use-image-with-fallback";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { Show } from "@/lib/types";
+import { Show } from "@movie-tracker/core";
 import { CardMenu } from "./card-menu";
 import {
   CastDisplay,

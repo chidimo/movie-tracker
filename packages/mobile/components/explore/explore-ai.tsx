@@ -7,10 +7,10 @@ import {
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useOmdbTitleMutation, useSearchSeries } from "@/hooks/use-movies";
+import { useOmdbTitleMutation, useSearchSeries } from "@/hooks/use-movies-legacy";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { getAssistantQuery } from "@/lib/assistant";
-import { filterSearchResults } from "@/lib/search-utils";
+import { filterSearchResults } from "@movie-tracker/core";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";

@@ -1,4 +1,4 @@
-import type { Show, TrackerState } from '@/lib/types'
+import type { Show, TrackerState } from '@movie-tracker/core'
 
 export type NotificationPermissionStatus =
   | 'granted'

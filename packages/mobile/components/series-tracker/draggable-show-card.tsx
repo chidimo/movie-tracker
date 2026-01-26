@@ -1,4 +1,4 @@
-import { Show } from "@/lib/types";
+import { Show } from "@movie-tracker/core";
 import { StyleSheet } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {

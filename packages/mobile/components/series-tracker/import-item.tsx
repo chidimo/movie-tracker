@@ -1,5 +1,5 @@
 import { Checkbox } from "@/components/form-elements/checkbox";
-import type { Show } from "@/lib/types";
+import type { Show } from "@movie-tracker/core";
 import { StyleSheet, View } from "react-native";
 
 type Props = {

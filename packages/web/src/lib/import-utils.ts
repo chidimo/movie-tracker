@@ -1,5 +1,5 @@
-import { normalizeShowTransfer } from './compute-omdb'
-import type { Show, TrackerState } from './types'
+import { normalizeShowTransfer } from '@movie-tracker/core'
+import type { Show, TrackerState } from '@movie-tracker/core'
 
 type ImportOptions = {
   includeEpisodes?: boolean
@@ -7,13 +7,13 @@ type ImportOptions = {
 
 export const importShows = (
   currentState: TrackerState,
-  importedShows: Partial<Show>[],
+  importedShows: Array<Partial<Show>>,
   selectedIds: Record<string, boolean>,
   options: ImportOptions = {},
 ): TrackerState => {
   const { includeEpisodes = false } = options
 
-  const toApply: Show[] = [...currentState.shows]
+  const toApply: Array<Show> = [...currentState.shows]
   const existingByTitle = new Map<string, Show>()
 
   // Build a map of existing shows by title for quick lookup

@@ -1,16 +1,16 @@
-import { normalizeShowTransfer } from '@/lib/compute-omdb'
-import { importShows } from '@/lib/import-utils'
-import { StorageRepo } from '@/lib/storage'
-import type { Show } from '@/lib/types'
+import { normalizeShowTransfer } from '@movie-tracker/core'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useRef, useState } from 'react'
+import type { Show } from '@movie-tracker/core'
+import { importShows } from '@/lib/import-utils'
+import { StorageRepo } from '@/lib/storage'
 
 export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
   const [importOpen, setImportOpen] = useState(false)
   const [importSelected, setImportSelected] = useState<Record<string, boolean>>(
     {},
   )
-  const [importedShows, setImportedShows] = useState<Partial<Show>[]>([])
+  const [importedShows, setImportedShows] = useState<Array<Partial<Show>>>([])
   const [fileError, setFileError] = useState<string | undefined>()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -27,13 +27,13 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
       if (!file) return
       const text = await file.text()
       const json = JSON.parse(text || '{}')
-      let shows: any[] = []
+      let shows: Array<any> = []
       if (Array.isArray(json?.shows)) {
         shows = json.shows
       } else if (Array.isArray(json)) {
         shows = json
       }
-      const normalized: Partial<Show>[] = shows.map((s: any) =>
+      const normalized: Array<Partial<Show>> = shows.map((s: any) =>
         normalizeShowTransfer(s, { includeEpisodes: true }),
       )
       const sel: Record<string, boolean> = {}

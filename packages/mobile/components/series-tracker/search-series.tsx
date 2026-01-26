@@ -1,7 +1,7 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useOmdbTitleMutation, useSearchSeries } from "@/hooks/use-movies";
+import { useOmdbTitleMutation, useSearchSeries } from "@/hooks/use-movies-legacy";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { Controller, useForm } from "react-hook-form";
 import { ActivityIndicator, StyleSheet, View } from "react-native";

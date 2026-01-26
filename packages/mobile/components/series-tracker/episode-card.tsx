@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useSeriesTracker } from "@/context/series-tracker-context";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Episode, Season, Show } from "@/lib/types";
+import type { Episode, Season, Show } from "@movie-tracker/core";
 import { CustomSwitch } from "../form-elements/custom-switch";
 
 export const EpisodeCard = ({

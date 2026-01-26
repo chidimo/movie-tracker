@@ -2,36 +2,36 @@ type AIREcommendationCategory =
   | "similar"
   | "trending"
   | "hidden_gem"
-  | "mood_based";
+  | "mood_based"
 
 export interface AIRecommendation {
   show: {
-    Title: string;
-    Year: string;
-    imdbID: string;
-    Type: string;
-    Poster: string;
-  };
-  reason: string;
-  confidence: number;
-  category: AIREcommendationCategory;
+    Title: string
+    Year: string
+    imdbID: string
+    Type: string
+    Poster: string
+  }
+  reason: string
+  confidence: number
+  category: AIREcommendationCategory
 }
 
 // Generic AI response structure for show recommendations
 export interface AIShowResponse {
-  title: string;
-  year: string;
-  reason: string;
-  confidence: number;
-  imdbId?: string;
-  posterUrl?: string;
+  title: string
+  year: string
+  reason: string
+  confidence: number
+  imdbId?: string
+  posterUrl?: string
 }
 
 // Generic prompt template for AI recommendations
 export interface AIPromptTemplate {
-  context: string;
-  count: number;
-  additionalInstructions?: string;
+  context: string
+  count: number
+  additionalInstructions?: string
 }
 
 const AI_RESPONSE_FIELDS = {
@@ -42,10 +42,10 @@ const AI_RESPONSE_FIELDS = {
   imdbId: "IMDB ID if possible",
   posterUrl:
     "Poster URL (use TMDB/JustWatch/official sources, or placeholder if not found)",
-};
+}
 
 export const generateAIPrompt = (template: AIPromptTemplate): string => {
-  const { context, additionalInstructions } = template;
+  const { context, additionalInstructions } = template
 
   return `
     ${context}
@@ -60,5 +60,5 @@ export const generateAIPrompt = (template: AIPromptTemplate): string => {
 
     ${additionalInstructions || ""}
 
-    Format as JSON array with fields: title, year, reason, confidence, imdbId, posterUrl`;
-};
+    Format as JSON array with fields: title, year, reason, confidence, imdbId, posterUrl`
+}

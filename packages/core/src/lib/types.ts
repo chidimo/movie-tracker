@@ -11,13 +11,13 @@ export type Show = {
   thumbnail?: string // poster URL
   imdbUrl: string // https://www.imdb.com/title/<imdbId>
   releaseYear?: string
-  mainCast?: string[]
+  mainCast?: Array<string>
   plot?: string
   totalSeasons?: number
   nextAirDate?: string // ISO string for next upcoming episode release if known
-  seasons: Season[]
+  seasons: Array<Season>
   rating?: number
-  genres?: string[]
+  genres?: Array<string>
   releaseDate?: string
   votes?: number
   awards?: string
@@ -29,10 +29,10 @@ export type Show = {
   language?: string // Language(s)
   country?: string // Country of origin
   metascore?: string // Metacritic score
-  ratings?: { // Ratings from different sources
+  ratings?: Array<{ // Ratings from different sources
     Source: string
     Value: string
-  }[]
+  }>
   // computed fields
   hideWatched?: boolean // whether to hide watched episodes by default
   // Tentative scheduling (user-entered)
@@ -58,13 +58,13 @@ export type Season = {
   seasonNumber?: number
   releaseDate?: string
   summary?: string
-  episodes: Episode[]
+  episodes: Array<Episode>
 }
 
 export type TrackerState = {
   profile?: UserProfile
-  shows: Show[]
-  showOrder?: string[] // array of imdbIds in custom order
+  shows: Array<Show>
+  showOrder?: Array<string> // array of imdbIds in custom order
   omdbApiKey?: string
   notificationDay?: number
 }

@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useSeriesTracker } from "@/context/series-tracker-context";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Season, Show } from "@/lib/types";
+import type { Season, Show } from "@movie-tracker/core";
 import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { EpisodeCard } from "./episode-card";

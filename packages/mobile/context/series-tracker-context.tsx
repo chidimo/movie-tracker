@@ -1,6 +1,6 @@
 import { scheduleTentativeNotifications } from "@/lib/notifications";
 import { StorageRepo } from "@/lib/storage";
-import type { Season, Show, TrackerState, UserProfile } from "@/lib/types";
+import type { Season, Show, TrackerState, UserProfile } from "@movie-tracker/core";
 import React, {
   createContext,
   useCallback,

@@ -1,13 +1,13 @@
 import { ThemedText } from "@/components/themed-text";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { OmdbSearchItem } from "@/lib/omdb";
+import { OmdbSearchItem } from "@movie-tracker/core";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { StyleSheet } from "react-native";
 import { CustomButton } from "../form-elements/custom-button";
 import { ThemedView } from "../themed-view";
 
-export type { OmdbSearchItem } from "@/lib/omdb";
+export type { OmdbSearchItem } from "@movie-tracker/core";
 
 export const SearchResult = ({
   onAdd,

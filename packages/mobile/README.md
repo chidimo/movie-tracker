@@ -120,8 +120,9 @@ components/             # Reusable UI components
 ├── series-tracker/    # Core tracking functionality
 └── settings/          # App settings
 lib/                   # Utilities and business logic
-├── ai-discovery.ts    # AI recommendation engine
-├── ai-types.ts        # AI type definitions
+├── ai-discovery.ts    # AI recommendation engine (mobile implementation)
+├── assistant.ts        # Mobile assistant functions
+├── logger.ts           # Mobile logging utilities
 └── types.ts           # App type definitions
 hooks/                 # Custom React hooks
 context/               # React context providers

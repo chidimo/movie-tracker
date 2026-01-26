@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Episode, Season } from '@/lib/types'
-import { omdbGetSeason, omdbGetTitle } from '@/lib/omdb'
+import { createWebOmdbFunctions, normalizeOmdbShow } from '@movie-tracker/core'
+import type { Episode, Season } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import { normalizeOmdbShow } from '@/lib/compute-omdb'
+
+const { omdbGetSeason, omdbGetTitle } = createWebOmdbFunctions({
+  omdbFunctionPath: import.meta.env.DEV ? '/api/omdb' : '/.netlify/functions/omdb'
+})
 
 const getSingleSeason = async (
   id: string,
   showTitle: string,
-  seasons: Season[],
+  seasons: Array<Season>,
   i: number,
 ) => {
   const data = await omdbGetSeason(id, i)
@@ -21,7 +24,7 @@ const getSingleSeason = async (
       existingWatched.set(e.episodeNumber, !!e.watched)
   })
 
-  const eps: Episode[] = (data.Episodes || []).map((ep) => {
+  const eps: Array<Episode> = (data.Episodes || []).map((ep) => {
     const epNo = ep.Episode ? Number(ep.Episode) : undefined
     const released = ep.Released
 
@@ -85,9 +88,9 @@ export const useFetchSeasons = (imdbId: string) => {
       ),
     )
     const seasons = await Promise.all(requests)
-    const filteredSeasons = seasons.filter(Boolean) as Season[]
+    const filteredSeasons = seasons.filter(Boolean) as Array<Season>
 
-    const futureTimestamps: number[] = []
+    const futureTimestamps: Array<number> = []
 
     filteredSeasons.forEach((sn) =>
       sn.episodes.forEach((ep) => {

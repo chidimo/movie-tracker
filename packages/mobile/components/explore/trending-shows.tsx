@@ -6,10 +6,9 @@ import {
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useOmdbTitleMutation } from "@/hooks/use-movies";
+import { useOmdbTitleMutation } from "@/hooks/use-movies-legacy"
+import { aiDiscovery, AIRecommendation } from "@movie-tracker/core";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { aiDiscovery } from "@/lib/ai-discovery";
-import { AIRecommendation } from "@/lib/ai-types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";

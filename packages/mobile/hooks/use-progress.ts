@@ -1,5 +1,5 @@
 import { useSeriesTracker } from "@/context/series-tracker-context";
-import { Season } from "@/lib/types";
+import { Season } from "@movie-tracker/core";
 
 export type BaseProgressProps = {
   label?: string;

@@ -1,5 +1,5 @@
 import { showNotification } from "@/components/notifier";
-import type { Show, TrackerState } from "@/lib/types";
+import type { Show, TrackerState } from "@movie-tracker/core";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 

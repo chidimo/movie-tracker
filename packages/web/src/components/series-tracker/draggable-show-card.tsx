@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CardMenu } from './card-menu'
-import type { Show } from '@/lib/types'
+import type { Show } from '@movie-tracker/core'
 import { CastDisplay, RatingsDisplay, SeriesProgress } from './show-info-components'
 
 type Props = {

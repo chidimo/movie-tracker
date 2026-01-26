@@ -1,5 +1,5 @@
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber } from "@movie-tracker/core";
 import StarRating from "react-native-star-rating-widget";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
