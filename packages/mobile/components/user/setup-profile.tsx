@@ -1,22 +1,22 @@
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useOnOffSwitch } from "@/hooks/use-on-off-switch";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Pressable } from "react-native";
-import { ProfileFormModal } from "./profile-form-modal";
+import { Pressable } from 'react-native'
+import { ProfileFormModal } from './profile-form-modal'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useOnOffSwitch } from '@/hooks/use-on-off-switch'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export const SetupProfile = () => {
-  const { hasProfile } = useSeriesTracker();
-  const { success: successColor } = useThemeColor({}, ["success"]);
-  const { isOn, setOn, setOff } = useOnOffSwitch();
+  const { hasProfile } = useSeriesTracker()
+  const { success: successColor } = useThemeColor({}, ['success'])
+  const { isOn, setOn, setOff } = useOnOffSwitch()
 
   return (
     <>
       <ThemedView>
         <Pressable onPress={setOn}>
           <ThemedView
-            style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+            style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
           >
             <ThemedText type="subtitle">Step 1: Create a profile</ThemedText>
             {hasProfile && (
@@ -35,5 +35,5 @@ export const SetupProfile = () => {
         submitButtonText="Save"
       />
     </>
-  );
-};
+  )
+}

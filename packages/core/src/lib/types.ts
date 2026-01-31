@@ -29,7 +29,8 @@ export type Show = {
   language?: string // Language(s)
   country?: string // Country of origin
   metascore?: string // Metacritic score
-  ratings?: Array<{ // Ratings from different sources
+  ratings?: Array<{
+    // Ratings from different sources
     Source: string
     Value: string
   }>

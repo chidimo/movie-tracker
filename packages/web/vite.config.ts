@@ -39,7 +39,9 @@ export default defineConfig(({ mode }) => {
             url.searchParams.set('apikey', omdbApiKey)
 
             try {
-              const omdbRes = await fetch(`https://www.omdbapi.com/${url.search}`)
+              const omdbRes = await fetch(
+                `https://www.omdbapi.com/${url.search}`,
+              )
               res.statusCode = omdbRes.status
               res.setHeader(
                 'content-type',
@@ -60,7 +62,7 @@ export default defineConfig(({ mode }) => {
       },
     ],
     optimizeDeps: {
-      include: ['@movie-tracker/core']
+      include: ['@movie-tracker/core'],
     },
     resolve: {
       alias: {

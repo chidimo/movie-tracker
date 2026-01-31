@@ -1,59 +1,60 @@
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useFetchSeasons } from "@/hooks/use-fetch-seasons";
-import { useImageWithFallback } from "@/hooks/use-image-with-fallback";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { IMDB_BASE_URL, Show } from "@movie-tracker/core";
-import { Image } from "expo-image";
-import * as WebBrowser from "expo-web-browser";
-import { Pressable, StyleSheet, View } from "react-native";
-import { CustomSwitch } from "../form-elements/custom-switch";
-import ParallaxScrollView from "../parallax-scroll-view";
-import { ScheduleSetter } from "./schedule-setter";
-import { SeasonContainer } from "./season-container";
+import { IMDB_BASE_URL } from '@movie-tracker/core'
+import { Image } from 'expo-image'
+import * as WebBrowser from 'expo-web-browser'
+import { Pressable, StyleSheet, View } from 'react-native'
+import { useState } from 'react'
+import { CustomSwitch } from '../form-elements/custom-switch'
+import ParallaxScrollView from '../parallax-scroll-view'
+import { ScheduleSetter } from './schedule-setter'
+import { SeasonContainer } from './season-container'
 import {
   CastDisplay,
   RatingsDisplay,
   SeriesProgress,
-} from "./show-info-components";
-import { useState } from "react";
+} from './show-info-components'
+import type { Show } from '@movie-tracker/core'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useFetchSeasons } from '@/hooks/use-fetch-seasons'
+import { useImageWithFallback } from '@/hooks/use-image-with-fallback'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export const SeriesDetailView = ({ show }: { show: Show }) => {
-  const { getShowProgress, updateShow } = useSeriesTracker();
+  const { getShowProgress, updateShow } = useSeriesTracker()
 
-  const [hideWatched, setHideWatched] = useState(show?.hideWatched ?? true);
-  const { mutedText: mutedTextColor } = useThemeColor({}, ["mutedText"]);
+  const [hideWatched, setHideWatched] = useState(show?.hideWatched ?? true)
+  const { mutedText: mutedTextColor } = useThemeColor({}, ['mutedText'])
 
-  const showProgress = getShowProgress(show.imdbId);
-  const hasThumbnail = show?.thumbnail && show.thumbnail !== "N/A";
+  const showProgress = getShowProgress(show.imdbId)
+  const hasThumbnail = show?.thumbnail && show.thumbnail !== 'N/A'
 
   const handleHideWatchedChange = (value: boolean) => {
-    setHideWatched(value);
+    setHideWatched(value)
     if (show) {
-      updateShow({ ...show, hideWatched: value });
+      updateShow({ ...show, hideWatched: value })
     }
-  };
+  }
 
   const {
     imageSource: headerImageSource,
     handleImageError: handleHeaderImageError,
   } = useImageWithFallback({
     imageUrl: hasThumbnail ? show.thumbnail : undefined,
-    fallbackImage: require("@/assets/images/popcorn-time.png"),
-  });
+    fallbackImage: require('@/assets/images/popcorn-time.png'),
+  })
 
   const {
     imageSource: posterImageSource,
     handleImageError: handlePosterImageError,
   } = useImageWithFallback({
     imageUrl: hasThumbnail ? show.thumbnail : undefined,
-    fallbackImage: require("@/assets/images/popcorn-time.png"),
-  });
+    fallbackImage: require('@/assets/images/popcorn-time.png'),
+  })
 
-  const { fetchingSeasons } = useFetchSeasons(show.imdbId);
+  const { fetchingSeasons } = useFetchSeasons(show.imdbId)
 
-  const imdbVideosUrl = `${IMDB_BASE_URL}/${show.imdbId}/videogallery/`;
+  const imdbVideosUrl = `${IMDB_BASE_URL}/${show.imdbId}/videogallery/`
 
   return (
     <ParallaxScrollView
@@ -112,7 +113,7 @@ export const SeriesDetailView = ({ show }: { show: Show }) => {
         <View style={styles.seasonsHeader}>
           <ThemedText type="subtitle">Seasons</ThemedText>
           <CustomSwitch
-            label={hideWatched ? "Watched collapsed" : "Collapse watched"}
+            label={hideWatched ? 'Watched collapsed' : 'Collapse watched'}
             value={hideWatched}
             onChange={handleHideWatchedChange}
           />
@@ -132,8 +133,8 @@ export const SeriesDetailView = ({ show }: { show: Show }) => {
         </View>
       </ThemedView>
     </ParallaxScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   headerRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
   },
   poster: {
@@ -151,8 +152,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   posterPlaceholder: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerInfo: {
     flex: 1,
@@ -164,32 +165,32 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   actionsRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
     marginTop: 8,
-    alignItems: "center",
-    flexWrap: "wrap",
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   progress: {
     marginTop: 8,
   },
   seasonsHeader: {
     marginTop: 12,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   switchRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   reactLogo: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
     bottom: 0,
     left: 0,
-    position: "absolute",
+    position: 'absolute',
     borderBottomWidth: 1,
   },
-});
+})

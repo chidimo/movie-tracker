@@ -1,27 +1,31 @@
-import { SearchResult } from "@/components/series-tracker/search-result";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useOmdbTitleMutation, useSearchSeries } from "@/hooks/use-movies-legacy";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { aiDiscovery , OmdbSearchItem, filterSearchResults } from "@movie-tracker/core";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { PressablePill } from "../pressable-pill";
-import { AIInsightsCard } from "./ai-insights-card";
-import { DiscoverySearch } from "./discovery-search";
-import { SimilarShows } from "./similar-shows";
+import { aiDiscovery, filterSearchResults } from '@movie-tracker/core'
+import { useMutation } from '@tanstack/react-query'
+import { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { PressablePill } from '../pressable-pill'
+import { AIInsightsCard } from './ai-insights-card'
+import { DiscoverySearch } from './discovery-search'
+import { SimilarShows } from './similar-shows'
+import type { OmdbSearchItem } from '@movie-tracker/core'
+import { useThemeColor } from '@/hooks/use-theme-color'
+import {
+  useOmdbTitleMutation,
+  useSearchSeries,
+} from '@/hooks/use-movies-legacy'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { ThemedView } from '@/components/themed-view'
+import { ThemedText } from '@/components/themed-text'
+import { SearchResult } from '@/components/series-tracker/search-result'
 
 export const EnhancedDiscovery = () => {
-  const { state, addShow } = useSeriesTracker();
-  const { mutedText: mutedTextColor } = useThemeColor({}, ["mutedText"]);
+  const { state, addShow } = useSeriesTracker()
+  const { mutedText: mutedTextColor } = useThemeColor({}, ['mutedText'])
 
-  const [discoveryQuery, setDiscoveryQuery] = useState("");
-  const [selectedInsight, setSelectedInsight] = useState<string>("");
-  const [selectedPrompt, setSelectedPrompt] = useState<string>("");
+  const [discoveryQuery, setDiscoveryQuery] = useState('')
+  const [selectedInsight, setSelectedInsight] = useState<string>('')
+  const [selectedPrompt, setSelectedPrompt] = useState<string>('')
 
-  const { mutateAsync: fetchTitle, isPending } = useOmdbTitleMutation();
+  const { mutateAsync: fetchTitle, isPending } = useOmdbTitleMutation()
 
   // Enhanced search with AI insights
   const {
@@ -30,7 +34,7 @@ export const EnhancedDiscovery = () => {
     refetch: executeSearch,
   } = useSearchSeries(discoveryQuery, {
     enabled: false,
-  });
+  })
 
   // AI-powered show insights and comparisons
   const {
@@ -46,28 +50,28 @@ export const EnhancedDiscovery = () => {
         4. Perfect for viewers who like...
         5. Content complexity (Simple/Moderate/Complex)
 
-        Format as JSON with fields: description, themes, whyLove, perfectFor, complexity`;
+        Format as JSON with fields: description, themes, whyLove, perfectFor, complexity`
 
-      const response = await aiDiscovery.callAI(prompt);
+      const response = await aiDiscovery.callAI(prompt)
       try {
-        const jsonMatch = new RegExp(/\{[\s\S]*\}/).exec(response);
+        const jsonMatch = new RegExp(/\{[\s\S]*\}/).exec(response)
         if (jsonMatch) {
-          return JSON.parse(jsonMatch[0]);
+          return JSON.parse(jsonMatch[0])
         }
       } catch (error) {
-        console.error("Failed to parse AI insights:", error);
+        console.error('Failed to parse AI insights:', error)
       }
 
       // Fallback insights
       return {
         description: `An engaging series that captivates audiences with its unique storytelling.`,
-        themes: ["drama", "character development", "storytelling"],
-        whyLove: "Compelling characters and engaging plot",
-        perfectFor: "Fans of quality television",
-        complexity: "Moderate",
-      };
+        themes: ['drama', 'character development', 'storytelling'],
+        whyLove: 'Compelling characters and engaging plot',
+        perfectFor: 'Fans of quality television',
+        complexity: 'Moderate',
+      }
     },
-  });
+  })
 
   // "Shows like X" functionality
   const {
@@ -78,55 +82,55 @@ export const EnhancedDiscovery = () => {
     mutationFn: async (showTitle: string) => {
       return aiDiscovery.getMoodBasedRecommendations(
         `shows similar to ${showTitle}`,
-      );
+      )
     },
-  });
+  })
 
   const discoveryPrompts = [
     {
-      emoji: "🎭",
-      label: "Character-driven",
-      query: "character-driven drama series",
+      emoji: '🎭',
+      label: 'Character-driven',
+      query: 'character-driven drama series',
     },
-    { emoji: "🧩", label: "Plot twists", query: "plot twist thriller series" },
-    { emoji: "🔮", label: "Sci-fi", query: "science fiction series" },
+    { emoji: '🧩', label: 'Plot twists', query: 'plot twist thriller series' },
+    { emoji: '🔮', label: 'Sci-fi', query: 'science fiction series' },
     {
-      emoji: "🌍",
-      label: "International",
-      query: "international foreign language series",
+      emoji: '🌍',
+      label: 'International',
+      query: 'international foreign language series',
     },
-    { emoji: "😂", label: "Smart comedy", query: "intelligent comedy series" },
-    { emoji: "📚", label: "Book adaptation", query: "book adaptation series" },
-  ];
+    { emoji: '😂', label: 'Smart comedy', query: 'intelligent comedy series' },
+    { emoji: '📚', label: 'Book adaptation', query: 'book adaptation series' },
+  ]
 
   const onSearch = () => {
-    if (!discoveryQuery.trim()) return;
-    executeSearch();
-    generateInsights(discoveryQuery);
-  };
+    if (!discoveryQuery.trim()) return
+    executeSearch()
+    generateInsights(discoveryQuery)
+  }
 
   const onPromptSelect = (prompt: string) => {
-    setDiscoveryQuery(prompt);
+    setDiscoveryQuery(prompt)
     setTimeout(() => {
-      executeSearch();
-      generateInsights(prompt);
-    }, 100);
-  };
+      executeSearch()
+      generateInsights(prompt)
+    }, 100)
+  }
 
   const onAdd = async (item: OmdbSearchItem) => {
-    const show = await fetchTitle(item.imdbID);
-    if (!show) return;
-    await addShow(show);
-  };
+    const show = await fetchTitle(item.imdbID)
+    if (!show) return
+    await addShow(show)
+  }
 
   const onFindSimilar = (showTitle: string) => {
-    setSelectedInsight(showTitle);
-    findSimilarShows(showTitle);
-  };
+    setSelectedInsight(showTitle)
+    findSimilarShows(showTitle)
+  }
 
   const isAdded = (imdbId: string) => {
-    return state.shows.some((s) => s.imdbId === imdbId);
-  };
+    return state.shows.some((s) => s.imdbId === imdbId)
+  }
 
   return (
     <ThemedView style={styles.section}>
@@ -147,8 +151,8 @@ export const EnhancedDiscovery = () => {
             emoji={prompt.emoji}
             selected={selectedPrompt === prompt.query}
             onPress={() => {
-              setSelectedPrompt(prompt.query);
-              onPromptSelect(prompt.query);
+              setSelectedPrompt(prompt.query)
+              onPromptSelect(prompt.query)
             }}
           />
         ))}
@@ -190,17 +194,17 @@ export const EnhancedDiscovery = () => {
         userShows={state.shows}
       />
     </ThemedView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   section: {
     gap: 12,
   },
   promptsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
     marginBottom: 12,
   },
-});
+})

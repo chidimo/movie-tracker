@@ -1,55 +1,59 @@
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useOmdbTitleMutation, useSearchSeries } from "@/hooks/use-movies-legacy";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Controller, useForm } from "react-hook-form";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { BackButton } from "../back-button";
-import { CustomButton } from "../form-elements/custom-button";
-import { CustomInput } from "../form-elements/custom-input";
-import { VirtualizedList } from "../virtualized-list";
-import { OmdbSearchItem, SearchResult } from "./search-result";
+import { Controller, useForm } from 'react-hook-form'
+import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { BackButton } from '../back-button'
+import { CustomButton } from '../form-elements/custom-button'
+import { CustomInput } from '../form-elements/custom-input'
+import { VirtualizedList } from '../virtualized-list'
+import { SearchResult } from './search-result'
+import type { OmdbSearchItem } from './search-result'
+import { useThemeColor } from '@/hooks/use-theme-color'
+import {
+  useOmdbTitleMutation,
+  useSearchSeries,
+} from '@/hooks/use-movies-legacy'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { ThemedView } from '@/components/themed-view'
+import { ThemedText } from '@/components/themed-text'
 
 type Search = {
-  query: string;
-};
+  query: string
+}
 
 export const SearchSeries = () => {
-  const { state, addShow } = useSeriesTracker();
+  const { state, addShow } = useSeriesTracker()
   const { mutedText: mutedTextColor, danger: dangerColor } = useThemeColor({}, [
-    "mutedText",
-    "danger",
-  ]);
+    'mutedText',
+    'danger',
+  ])
 
   const form = useForm<Search>({
-    defaultValues: { query: "" },
-    reValidateMode: "onChange",
-    values: { query: "" },
-    mode: "onSubmit",
-  });
+    defaultValues: { query: '' },
+    reValidateMode: 'onChange',
+    values: { query: '' },
+    mode: 'onSubmit',
+  })
 
-  const query = form.watch("query");
+  const query = form.watch('query')
 
   const { data, isFetching, refetch, error, isError } = useSearchSeries(query, {
     enabled: false,
-  });
+  })
 
   const onSubmit = form.handleSubmit(async ({ query }) => {
-    if (!query.trim()) return;
+    if (!query.trim()) return
     // With enabled auto-managed by the hook, this refetch is optional.
-    refetch();
-  });
+    refetch()
+  })
 
-  const { mutateAsync: fetchTitle, isPending } = useOmdbTitleMutation();
+  const { mutateAsync: fetchTitle, isPending } = useOmdbTitleMutation()
 
   const onAdd = async (item: OmdbSearchItem) => {
-    const show = await fetchTitle(item.imdbID);
+    const show = await fetchTitle(item.imdbID)
 
-    if (!show) return;
+    if (!show) return
 
-    await addShow(show);
-  };
+    await addShow(show)
+  }
 
   return (
     <ThemedView style={styles.container}>
@@ -59,11 +63,11 @@ export const SearchSeries = () => {
 
       <BackButton />
 
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Controller
           control={form.control}
           name="query"
-          rules={{ required: "Search query is required" }}
+          rules={{ required: 'Search query is required' }}
           render={({
             field: { onChange, onBlur, value },
             fieldState: { error },
@@ -74,7 +78,7 @@ export const SearchSeries = () => {
               onBlur={onBlur}
               placeholder="Search series..."
               returnKeyType="search"
-              containerStyle={{ width: "75%" }}
+              containerStyle={{ width: '75%' }}
               error={error?.message}
               onSubmitEditing={onSubmit}
             />
@@ -86,7 +90,7 @@ export const SearchSeries = () => {
           title="Search"
           variant="PRIMARY"
           containerStyle={{
-            width: "22%",
+            width: '22%',
             paddingHorizontal: 8,
             borderRadius: 4,
           }}
@@ -104,13 +108,13 @@ export const SearchSeries = () => {
 
       {isError && (
         <ThemedText style={[styles.errorText, { color: dangerColor }]}>
-          {error?.message || "Search failed"}
+          {error?.message || 'Search failed'}
         </ThemedText>
       )}
 
       <VirtualizedList>
-        {((data as OmdbSearchItem[] | undefined) ?? []).map((item) => {
-          const isAdded = state.shows.some((s) => s.imdbId === item.imdbID);
+        {(data ?? []).map((item) => {
+          const isAdded = state.shows.some((s) => s.imdbId === item.imdbID)
           return (
             <SearchResult
               key={item.imdbID}
@@ -119,12 +123,12 @@ export const SearchSeries = () => {
               isAdded={isAdded}
               isLoading={isPending}
             />
-          );
+          )
         })}
       </VirtualizedList>
     </ThemedView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -133,16 +137,16 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   heading: {
-    textAlign: "left",
+    textAlign: 'left',
     marginBottom: 4,
   },
   searchRow: {
     gap: 8,
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   loadingRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   loadingText: {},
@@ -154,4 +158,4 @@ const styles = StyleSheet.create({
   errorText: {
     marginTop: 8,
   },
-});
+})

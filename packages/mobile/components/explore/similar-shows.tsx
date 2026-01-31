@@ -1,27 +1,25 @@
-import {
-  OmdbSearchItem,
-  SearchResult,
-} from "@/components/series-tracker/search-result";
-import { ThemedText } from "@/components/themed-text";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { filterSearchResults } from "@movie-tracker/core";
-import { StyleSheet, View } from "react-native";
+import { filterSearchResults } from '@movie-tracker/core'
+import { StyleSheet, View } from 'react-native'
+import type { OmdbSearchItem } from '@/components/series-tracker/search-result'
+import { SearchResult } from '@/components/series-tracker/search-result'
+import { ThemedText } from '@/components/themed-text'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 interface AIRecommendation {
-  show: OmdbSearchItem;
-  reason: string;
-  confidence: number;
-  category: "similar" | "trending" | "hidden_gem" | "mood_based";
+  show: OmdbSearchItem
+  reason: string
+  confidence: number
+  category: 'similar' | 'trending' | 'hidden_gem' | 'mood_based'
 }
 
 interface SimilarShowsProps {
-  selectedInsight: string;
-  similarShows: AIRecommendation[] | undefined;
-  isLoadingSimilar: boolean;
-  onAdd: (item: OmdbSearchItem) => void;
-  isPending: boolean;
-  isAdded: (imdbId: string) => boolean;
-  userShows: { imdbId: string }[];
+  selectedInsight: string
+  similarShows: Array<AIRecommendation> | undefined
+  isLoadingSimilar: boolean
+  onAdd: (item: OmdbSearchItem) => void
+  isPending: boolean
+  isAdded: (imdbId: string) => boolean
+  userShows: Array<{ imdbId: string }>
 }
 
 export const SimilarShows = ({
@@ -33,9 +31,9 @@ export const SimilarShows = ({
   isAdded,
   userShows,
 }: SimilarShowsProps) => {
-  const { mutedText: mutedTextColor } = useThemeColor({}, ["mutedText"]);
+  const { mutedText: mutedTextColor } = useThemeColor({}, ['mutedText'])
 
-  if (!selectedInsight) return null;
+  if (!selectedInsight) return null
 
   // Filter out duplicates and existing shows
   const filteredShows = similarShows
@@ -46,8 +44,8 @@ export const SimilarShows = ({
         .map((show) =>
           similarShows.find((rec) => rec.show.imdbID === show.imdbID),
         )
-        .filter(Boolean) as AIRecommendation[])
-    : [];
+        .filter(Boolean) as Array<AIRecommendation>)
+    : []
 
   return (
     <View style={styles.similarSection}>
@@ -75,8 +73,8 @@ export const SimilarShows = ({
         ))
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   similarSection: {
@@ -85,14 +83,14 @@ const styles = StyleSheet.create({
   },
   similarTitle: {
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   similarCard: {
     gap: 4,
   },
   similarReason: {
     fontSize: 12,
-    fontStyle: "italic",
+    fontStyle: 'italic',
     opacity: 0.8,
   },
-});
+})

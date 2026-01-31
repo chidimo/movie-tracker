@@ -1,19 +1,19 @@
-import { useOnOffSwitch } from "@/hooks/use-on-off-switch";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Show } from "@movie-tracker/core";
-import { Pressable, StyleSheet } from "react-native";
-import { DefaultModal } from "../modal";
-import { ThemedText } from "../themed-text";
-import { ScheduleForm } from "./schedule-form";
+import { Pressable, StyleSheet } from 'react-native'
+import { DefaultModal } from '../modal'
+import { ThemedText } from '../themed-text'
+import { ScheduleForm } from './schedule-form'
+import type { Show } from '@movie-tracker/core'
+import { useThemeColor } from '@/hooks/use-theme-color'
+import { useOnOffSwitch } from '@/hooks/use-on-off-switch'
 
 export const ScheduleSetter = ({ show }: { show: Show }) => {
-  const { isOn, setOn, setOff } = useOnOffSwitch();
-  const { tint: linkColor } = useThemeColor({}, ["tint"]);
+  const { isOn, setOn, setOff } = useOnOffSwitch()
+  const { tint: linkColor } = useThemeColor({}, ['tint'])
 
   const openScheduleModal = () => {
-    if (!show) return;
-    setOn();
-  };
+    if (!show) return
+    setOn()
+  }
 
   return (
     <>
@@ -32,9 +32,9 @@ export const ScheduleSetter = ({ show }: { show: Show }) => {
         <ScheduleForm show={show} onClose={setOff} />
       </DefaultModal>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   link: {},
-});
+})

@@ -1,5 +1,5 @@
-export { CastDisplay } from "./cast-display";
-export { SeriesProgress } from "./series-progress";
-export { RatingsDisplay } from "./ratings-display";
-export { UpcomingBanner } from "./upcoming";
-export { UpcomingRibbon } from "./upcoming";
+export { CastDisplay } from './cast-display'
+export { SeriesProgress } from './series-progress'
+export { RatingsDisplay } from './ratings-display'
+export { UpcomingBanner } from './upcoming'
+export { UpcomingRibbon } from './upcoming'

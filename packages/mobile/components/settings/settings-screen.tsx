@@ -1,27 +1,27 @@
-import { AIDebugInfo } from "@/components/debug/ai-debug-info";
-import { HorizontalSeparator } from "@/components/horizontal-separator";
-import ParallaxScrollView from "@/components/parallax-scroll-view";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { Colors, Fonts } from "@/constants/theme";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { StyleSheet, View } from "react-native";
-import { ProfileSettings } from "../user/profile-settings";
-import { DeleteEverything } from "./delete-everything";
-import { EnableNotifications } from "./enable-notifications";
-import { SetupNotificationLeadDays } from "./setup-notification-lead-days";
-import { ThemeSelector } from "./theme-selector";
+import { StyleSheet, View } from 'react-native'
+import { ProfileSettings } from '../user/profile-settings'
+import { DeleteEverything } from './delete-everything'
+import { EnableNotifications } from './enable-notifications'
+import { SetupNotificationLeadDays } from './setup-notification-lead-days'
+import { ThemeSelector } from './theme-selector'
+import { AIDebugInfo } from '@/components/debug/ai-debug-info'
+import { HorizontalSeparator } from '@/components/horizontal-separator'
+import ParallaxScrollView from '@/components/parallax-scroll-view'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { Colors, Fonts } from '@/constants/theme'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 const SettingSection = ({
   children,
   title,
   description,
 }: {
-  children: React.ReactNode;
-  title: string;
-  description?: string;
+  children: React.ReactNode
+  title: string
+  description?: string
 }) => {
-  const { mutedText: mutedTextColor } = useThemeColor({}, ["mutedText"]);
+  const { mutedText: mutedTextColor } = useThemeColor({}, ['mutedText'])
   return (
     <ThemedView>
       <View style={{ marginBottom: 12 }}>
@@ -34,8 +34,8 @@ const SettingSection = ({
       </View>
       {children}
     </ThemedView>
-  );
-};
+  )
+}
 
 export const SettingsScreen = () => {
   return (
@@ -89,13 +89,13 @@ export const SettingsScreen = () => {
         <DeleteEverything />
       </SettingSection>
     </ParallaxScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
-});
+})

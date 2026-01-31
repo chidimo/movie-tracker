@@ -1,45 +1,45 @@
-import { useCallback, useMemo, useState } from "react";
-import { Pressable, Share, StyleSheet, View } from "react-native";
-import { Checkbox } from "@/components/form-elements/checkbox";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { normalizeShowTransfer } from "@movie-tracker/core";
-import type { Show } from "@movie-tracker/core";
-import ParallaxScrollView from "../parallax-scroll-view";
-import { HorizontalSeparator } from "../horizontal-separator";
-import { BackButton } from "../back-button";
+import { useCallback, useMemo, useState } from 'react'
+import { Pressable, Share, StyleSheet, View } from 'react-native'
+import { normalizeShowTransfer } from '@movie-tracker/core'
+import ParallaxScrollView from '../parallax-scroll-view'
+import { HorizontalSeparator } from '../horizontal-separator'
+import { BackButton } from '../back-button'
+import type { Show } from '@movie-tracker/core'
+import { Checkbox } from '@/components/form-elements/checkbox'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export const ExportSeries = () => {
-  const { state } = useSeriesTracker();
-  const [selected, setSelected] = useState<Record<string, boolean>>({});
-  const [includeEpisodes, setIncludeEpisodes] = useState(false);
+  const { state } = useSeriesTracker()
+  const [selected, setSelected] = useState<Record<string, boolean>>({})
+  const [includeEpisodes, setIncludeEpisodes] = useState(false)
   const {
     mutedText: mutedTextColor,
     tint: primaryColor,
     onTint: onPrimaryColor,
-  } = useThemeColor({}, ["mutedText", "tint", "onTint"]);
+  } = useThemeColor({}, ['mutedText', 'tint', 'onTint'])
 
   const allChecked = useMemo(
     () =>
       state.shows.length > 0 && state.shows.every((s) => selected[s.imdbId]),
     [state.shows, selected],
-  );
+  )
 
   const toggleAll = useCallback(
     (val: boolean) => {
-      const next: Record<string, boolean> = {};
-      for (const s of state.shows) next[s.imdbId] = val;
-      setSelected(next);
+      const next: Record<string, boolean> = {}
+      for (const s of state.shows) next[s.imdbId] = val
+      setSelected(next)
     },
     [state.shows],
-  );
+  )
 
   const hasAny = useMemo(
     () => state.shows.some((s) => selected[s.imdbId]),
     [state.shows, selected],
-  );
+  )
 
   const onShare = useCallback(async () => {
     const payload = {
@@ -47,10 +47,10 @@ export const ExportSeries = () => {
         .filter((s) => selected[s.imdbId])
         .map((s: Show) => normalizeShowTransfer(s, { includeEpisodes })),
       exportedAt: new Date().toISOString(),
-      format: "series-tracker.v1",
-    };
-    await Share.share({ message: JSON.stringify(payload, null, 2) });
-  }, [includeEpisodes, state.shows, selected]);
+      format: 'series-tracker.v1',
+    }
+    await Share.share({ message: JSON.stringify(payload, null, 2) })
+  }, [includeEpisodes, state.shows, selected])
 
   return (
     <ParallaxScrollView>
@@ -73,8 +73,8 @@ export const ExportSeries = () => {
           />
           <ThemedText style={[styles.note, { color: mutedTextColor }]}>
             {includeEpisodes
-              ? "Episodes will be included in the export."
-              : "Episodes are excluded from the export."}
+              ? 'Episodes will be included in the export.'
+              : 'Episodes are excluded from the export.'}
           </ThemedText>
 
           <HorizontalSeparator style={{ marginVertical: 6 }} />
@@ -93,7 +93,7 @@ export const ExportSeries = () => {
                   <HorizontalSeparator style={{ marginVertical: 6 }} />
                 )}
               </View>
-            );
+            )
           })}
 
           <Pressable
@@ -114,8 +114,8 @@ export const ExportSeries = () => {
         </ThemedView>
       )}
     </ParallaxScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   content: { gap: 12 },
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
     borderRadius: 10,
     paddingVertical: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
   disabledBtn: { opacity: 0.6 },
-  primaryBtnText: { fontWeight: "600" },
-});
+  primaryBtnText: { fontWeight: '600' },
+})

@@ -30,7 +30,7 @@ export type ProgressResult = {
 
 export function useProgress(props: ProgressProps): ProgressResult {
   const { getShowProgress } = useSeriesTracker()
-  
+
   let watched = 0
   let total = 0
 
@@ -49,7 +49,8 @@ export function useProgress(props: ProgressProps): ProgressResult {
   const safeCurrent = Math.min(Math.max(0, watched || 0), safeTotal)
   const percentage = safeTotal ? Math.round((safeCurrent / safeTotal) * 100) : 0
 
-  const label = props.label || ('season' in props ? 'Progress' : 'Overall progress')
+  const label =
+    props.label || ('season' in props ? 'Progress' : 'Overall progress')
   const showFraction = props.showFraction ?? true
   const showPercentage = props.showPercentage ?? true
 

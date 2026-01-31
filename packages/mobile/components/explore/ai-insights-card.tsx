@@ -1,22 +1,22 @@
-import { CustomButton } from "@/components/form-elements/custom-button";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View } from 'react-native'
+import { CustomButton } from '@/components/form-elements/custom-button'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 interface AIInsights {
-  description?: string;
-  themes?: string[];
-  whyLove?: string;
-  perfectFor?: string;
-  complexity?: string;
+  description?: string
+  themes?: Array<string>
+  whyLove?: string
+  perfectFor?: string
+  complexity?: string
 }
 
 interface AIInsightsCardProps {
-  aiInsights: AIInsights | undefined;
-  isLoadingInsights: boolean;
-  onFindSimilar: () => void;
-  discoveryQuery: string;
+  aiInsights: AIInsights | undefined
+  isLoadingInsights: boolean
+  onFindSimilar: () => void
+  discoveryQuery: string
 }
 
 export const AIInsightsCard = ({
@@ -27,13 +27,13 @@ export const AIInsightsCard = ({
 }: AIInsightsCardProps) => {
   const { mutedText: mutedTextColor, surface: surfaceColor } = useThemeColor(
     {},
-    ["mutedText", "surface"],
-  );
+    ['mutedText', 'surface'],
+  )
 
   const renderInsightDetails = () => (
     <View style={styles.insightContent}>
       <ThemedText style={styles.insightDescription}>
-        {aiInsights?.description || "No description available"}
+        {aiInsights?.description || 'No description available'}
       </ThemedText>
 
       <View style={styles.insightSection}>
@@ -52,21 +52,21 @@ export const AIInsightsCard = ({
           ❤️ Why Viewers Love It:
         </ThemedText>
         <ThemedText style={styles.insightText}>
-          {aiInsights?.whyLove || "No information available"}
+          {aiInsights?.whyLove || 'No information available'}
         </ThemedText>
       </View>
 
       <View style={styles.insightSection}>
         <ThemedText style={styles.insightLabel}>👥 Perfect For:</ThemedText>
         <ThemedText style={styles.insightText}>
-          {aiInsights?.perfectFor || "No information available"}
+          {aiInsights?.perfectFor || 'No information available'}
         </ThemedText>
       </View>
 
       <View style={styles.insightSection}>
         <ThemedText style={styles.insightLabel}>🧩 Complexity:</ThemedText>
         <ThemedText style={styles.insightText}>
-          {aiInsights?.complexity || "Unknown"}
+          {aiInsights?.complexity || 'Unknown'}
         </ThemedText>
       </View>
 
@@ -77,21 +77,21 @@ export const AIInsightsCard = ({
         containerStyle={styles.similarButton}
       />
     </View>
-  );
+  )
 
-  if (!aiInsights && !isLoadingInsights) return null;
+  if (!aiInsights && !isLoadingInsights) return null
 
-  let insightContent;
+  let insightContent
   if (isLoadingInsights) {
     insightContent = (
       <ThemedText style={{ color: mutedTextColor }}>
         Analyzing series…
       </ThemedText>
-    );
+    )
   } else if (aiInsights) {
-    insightContent = renderInsightDetails();
+    insightContent = renderInsightDetails()
   } else {
-    insightContent = null;
+    insightContent = null
   }
 
   return (
@@ -102,8 +102,8 @@ export const AIInsightsCard = ({
 
       {insightContent}
     </ThemedView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   insightCard: {
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   insightTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   insightContent: {
     gap: 12,
@@ -127,28 +127,28 @@ const styles = StyleSheet.create({
   },
   insightLabel: {
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   insightText: {
     fontSize: 13,
     opacity: 0.9,
   },
   themesContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 6,
   },
   themePill: {
-    backgroundColor: "rgba(0, 122, 255, 0.1)",
+    backgroundColor: 'rgba(0, 122, 255, 0.1)',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
   },
   themeText: {
     fontSize: 11,
-    color: "#007AFF",
+    color: '#007AFF',
   },
   similarButton: {
     marginTop: 8,
   },
-});
+})

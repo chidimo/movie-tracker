@@ -1,20 +1,20 @@
-import React from "react";
-import { FlatList, RefreshControl, View } from "react-native";
+import React from 'react'
+import { FlatList, RefreshControl, View } from 'react-native'
 
 type Props = {
-  refreshing?: boolean;
-  onRefresh?: (...args: any[]) => any;
-};
+  refreshing?: boolean
+  onRefresh?: (...args: Array<any>) => any
+}
 
 export const VirtualizedList = (props: React.PropsWithChildren<Props>) => {
-  const { children, refreshing = false, onRefresh } = props;
+  const { children, refreshing = false, onRefresh } = props
 
   return (
     <FlatList
       data={[]}
       showsVerticalScrollIndicator={false}
-      style={{ width: "100%" }}
-      keyExtractor={() => "key"}
+      style={{ width: '100%' }}
+      keyExtractor={() => 'key'}
       renderItem={null}
       refreshControl={
         <RefreshControl
@@ -33,5 +33,5 @@ export const VirtualizedList = (props: React.PropsWithChildren<Props>) => {
         </View>
       }
     />
-  );
-};
+  )
+}

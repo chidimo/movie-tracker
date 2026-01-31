@@ -1,16 +1,16 @@
 import { useEffect } from 'react'
-import { ScheduleSetter } from './schedule-setter'
-import { SeasonContainer } from './season-container'
-import { useSeriesTracker } from '@/context/series-tracker-context'
 import { Link, useMatch } from '@tanstack/react-router'
 import { Switcher } from '../switcher'
+import { ScheduleSetter } from './schedule-setter'
+import { SeasonContainer } from './season-container'
 import { CastDisplay } from './show-info-components/cast-display'
-import { useFetchSeasons } from '@/hooks/use-fetch-seasons'
 import {
   RatingsDisplay,
   SeriesProgress,
   UpcomingBanner,
 } from './show-info-components'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useFetchSeasons } from '@/hooks/use-fetch-seasons'
 
 export const SeriesDetailPage = () => {
   const { params } = useMatch({ from: '/$imdbId' })

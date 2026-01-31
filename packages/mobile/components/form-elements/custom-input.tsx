@@ -1,54 +1,53 @@
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Ref } from "react";
-import {
+import { Text, TextInput } from 'react-native'
+import { ThemedText } from '../themed-text'
+import { ThemedView } from '../themed-view'
+import type {
   KeyboardTypeOptions,
   StyleProp,
-  Text,
-  TextInput,
   TextStyle,
   ViewStyle,
-} from "react-native";
-import { ThemedText } from "../themed-text";
-import { ThemedView } from "../themed-view";
+} from 'react-native'
+import type { Ref } from 'react'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
-type ReturnKeyTypeOptions = "done" | "go" | "next" | "search" | "send";
+type ReturnKeyTypeOptions = 'done' | 'go' | 'next' | 'search' | 'send'
 
 type AutoCompleteOptions =
-  | "name"
-  | "off"
-  | "cc-csc"
-  | "cc-exp"
-  | "cc-exp-month"
-  | "cc-exp-year"
-  | "cc-number"
-  | "email"
-  | "password"
-  | "postal-code"
-  | "street-address"
-  | "tel"
-  | "username";
+  | 'name'
+  | 'off'
+  | 'cc-csc'
+  | 'cc-exp'
+  | 'cc-exp-month'
+  | 'cc-exp-year'
+  | 'cc-number'
+  | 'email'
+  | 'password'
+  | 'postal-code'
+  | 'street-address'
+  | 'tel'
+  | 'username'
 
 type Props = {
-  label?: string;
-  value?: any;
-  disabled?: boolean;
-  multiline?: boolean;
-  selectTextOnFocus?: boolean;
+  label?: string
+  value?: any
+  disabled?: boolean
+  multiline?: boolean
+  selectTextOnFocus?: boolean
 
-  error?: any;
-  placeholder?: string;
+  error?: any
+  placeholder?: string
 
-  containerStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>
+  textStyle?: StyleProp<TextStyle>
 
-  returnKeyType?: ReturnKeyTypeOptions;
-  keyboardType?: KeyboardTypeOptions;
-  autoComplete?: AutoCompleteOptions;
+  returnKeyType?: ReturnKeyTypeOptions
+  keyboardType?: KeyboardTypeOptions
+  autoComplete?: AutoCompleteOptions
 
-  onBlur?: (...args: any[]) => any;
-  onChangeText: (...args: any[]) => any;
-  onSubmitEditing?: (...args: any[]) => any;
-};
+  onBlur?: (...args: Array<any>) => any
+  onChangeText: (...args: Array<any>) => any
+  onSubmitEditing?: (...args: Array<any>) => any
+}
 
 export const CustomInput = (props: Props, ref?: Ref<TextInput>) => {
   const {
@@ -62,12 +61,12 @@ export const CustomInput = (props: Props, ref?: Ref<TextInput>) => {
     onBlur,
     onChangeText,
     onSubmitEditing,
-    placeholder = "Enter value",
-    keyboardType = "default",
+    placeholder = 'Enter value',
+    keyboardType = 'default',
     returnKeyType,
     selectTextOnFocus,
-    autoComplete = "off",
-  } = props;
+    autoComplete = 'off',
+  } = props
 
   const {
     border: borderColor,
@@ -75,21 +74,15 @@ export const CustomInput = (props: Props, ref?: Ref<TextInput>) => {
     text: textColor,
     background: backgroundColor,
     danger: dangerColor,
-  } = useThemeColor({}, [
-    "border",
-    "mutedText",
-    "text",
-    "background",
-    "danger",
-  ]);
+  } = useThemeColor({}, ['border', 'mutedText', 'text', 'background', 'danger'])
 
   return (
     <ThemedView
       style={[
         {
-          width: "100%",
+          width: '100%',
           marginBottom: 10,
-          backgroundColor: "transparent",
+          backgroundColor: 'transparent',
         },
         containerStyle,
       ]}
@@ -112,7 +105,7 @@ export const CustomInput = (props: Props, ref?: Ref<TextInput>) => {
         style={[
           {
             height: 50,
-            width: "100%",
+            width: '100%',
             fontSize: 18,
             borderWidth: 1,
             borderRadius: 4,
@@ -127,5 +120,5 @@ export const CustomInput = (props: Props, ref?: Ref<TextInput>) => {
 
       {error && <Text style={{ color: dangerColor }}>{error}</Text>}
     </ThemedView>
-  );
-};
+  )
+}

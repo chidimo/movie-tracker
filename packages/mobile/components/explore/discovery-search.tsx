@@ -1,11 +1,11 @@
-import { CustomButton } from "@/components/form-elements/custom-button";
-import { CustomInput } from "@/components/form-elements/custom-input";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View } from 'react-native'
+import { CustomButton } from '@/components/form-elements/custom-button'
+import { CustomInput } from '@/components/form-elements/custom-input'
 
 interface DiscoverySearchProps {
-  discoveryQuery: string;
-  setDiscoveryQuery: (query: string) => void;
-  onSearch: () => void;
+  discoveryQuery: string
+  setDiscoveryQuery: (query: string) => void
+  onSearch: () => void
 }
 
 export const DiscoverySearch = ({
@@ -30,19 +30,19 @@ export const DiscoverySearch = ({
         containerStyle={styles.searchButton}
       />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   searchContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 8,
   },
   searchInput: {
     flex: 1,
   },
   searchButton: {
-    width: "auto",
+    width: 'auto',
     paddingHorizontal: 8,
   },
-});
+})

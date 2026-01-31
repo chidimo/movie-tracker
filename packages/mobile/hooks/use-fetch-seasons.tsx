@@ -1,34 +1,41 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { createMobileOmdbFunctions, normalizeOmdbShow, type Episode, type Season, IMDB_BASE_URL } from "@movie-tracker/core";
+import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  IMDB_BASE_URL,
+  createMobileOmdbFunctions,
+  normalizeOmdbShow,
+} from '@movie-tracker/core'
+import type { Episode, Season } from '@movie-tracker/core'
+import { useSeriesTracker } from '@/context/series-tracker-context'
 
-const { omdbGetSeason, omdbGetTitle } = createMobileOmdbFunctions(process.env.EXPO_PUBLIC_OMDB_API_KEY)
+const { omdbGetSeason, omdbGetTitle } = createMobileOmdbFunctions(
+  process.env.EXPO_PUBLIC_OMDB_API_KEY,
+)
 
 const getSingleSeason = async (
   id: string,
   showTitle: string,
-  seasons: Season[],
+  seasons: Array<Season>,
   i: number,
 ) => {
-  const data = await omdbGetSeason(id, i);
-  if (!data || data.Response === "False") return null;
+  const data = await omdbGetSeason(id, i)
+  if (!data || data.Response === 'False') return null
 
-  const existing = seasons.find((s) => s.seasonNumber === i);
+  const existing = seasons.find((s) => s.seasonNumber === i)
 
-  const existingWatched = new Map<number, boolean>();
+  const existingWatched = new Map<number, boolean>()
   existing?.episodes.forEach((e) => {
-    if (typeof e.episodeNumber === "number")
-      existingWatched.set(e.episodeNumber, !!e.watched);
-  });
+    if (typeof e.episodeNumber === 'number')
+      existingWatched.set(e.episodeNumber, !!e.watched)
+  })
 
-  const eps: Episode[] = (data.Episodes || []).map((ep) => {
-    const epNo = ep.Episode ? Number(ep.Episode) : undefined;
-    const released = ep.Released;
+  const eps: Array<Episode> = (data.Episodes || []).map((ep) => {
+    const epNo = ep.Episode ? Number(ep.Episode) : undefined
+    const released = ep.Released
 
     return {
       title: ep.Title,
       releaseDate:
-        released && released !== "N/A"
+        released && released !== 'N/A'
           ? new Date(released).toISOString()
           : undefined,
       episodeNumber: epNo,
@@ -36,36 +43,36 @@ const getSingleSeason = async (
       rating: ep.imdbRating,
       imdbId: ep.imdbID,
       imdbUrl: ep.imdbID ? `${IMDB_BASE_URL}/${ep.imdbID}` : undefined,
-    };
-  });
+    }
+  })
 
   const computedSeason = {
     title: `${data.Title ?? showTitle} - Season ${data.Season ?? i}`,
     seasonNumber: data.Season ? Number(data.Season) : i,
     episodes: eps,
-  };
+  }
 
-  return computedSeason;
-};
+  return computedSeason
+}
 
 export const useFetchSeasons = (imdbId: string) => {
-  const { updateShow, getShowById } = useSeriesTracker();
-  const [loading, setLoading] = useState(false);
-  const hasFetched = useRef(false);
+  const { updateShow, getShowById } = useSeriesTracker()
+  const [loading, setLoading] = useState(false)
+  const hasFetched = useRef(false)
 
   const fetchAllSeasons = useCallback(async () => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
+    if (hasFetched.current) return
+    hasFetched.current = true
 
-    setLoading(true);
+    setLoading(true)
 
-    const titleData = await omdbGetTitle(imdbId);
-    if (!titleData || titleData.Response === "False") return;
+    const titleData = await omdbGetTitle(imdbId)
+    if (!titleData || titleData.Response === 'False') return
 
-    const fetchedShow = normalizeOmdbShow(titleData);
-    const currentExistingShow = getShowById(imdbId);
+    const fetchedShow = normalizeOmdbShow(titleData)
+    const currentExistingShow = getShowById(imdbId)
 
-    updateShow({ ...fetchedShow, seasons: currentExistingShow?.seasons ?? [] });
+    updateShow({ ...fetchedShow, seasons: currentExistingShow?.seasons ?? [] })
 
     const capped = Math.max(
       0,
@@ -73,7 +80,7 @@ export const useFetchSeasons = (imdbId: string) => {
         currentExistingShow?.totalSeasons ?? fetchedShow.totalSeasons ?? 0,
         30,
       ),
-    );
+    )
     const requests = Array.from({ length: capped }, (_, i) =>
       getSingleSeason(
         imdbId,
@@ -81,38 +88,38 @@ export const useFetchSeasons = (imdbId: string) => {
         currentExistingShow?.seasons ?? [],
         i + 1,
       ),
-    );
-    const seasons = await Promise.all(requests);
-    const filteredSeasons = seasons.filter(Boolean) as Season[];
+    )
+    const seasons = await Promise.all(requests)
+    const filteredSeasons = seasons.filter(Boolean) as Array<Season>
 
-    const futureTimestamps: number[] = [];
+    const futureTimestamps: Array<number> = []
 
     filteredSeasons.forEach((sn) =>
       sn.episodes.forEach((ep) => {
         if (ep.releaseDate) {
-          const t = Date.parse(ep.releaseDate);
-          if (!Number.isNaN(t) && t > Date.now()) futureTimestamps.push(t);
+          const t = Date.parse(ep.releaseDate)
+          if (!Number.isNaN(t) && t > Date.now()) futureTimestamps.push(t)
         }
       }),
-    );
+    )
 
     const nextAirDate = futureTimestamps.length
       ? new Date(Math.min(...futureTimestamps)).toISOString()
-      : undefined;
+      : undefined
 
     updateShow({
       ...fetchedShow,
       seasons: filteredSeasons,
       totalSeasons: capped || currentExistingShow?.totalSeasons,
       nextAirDate,
-    });
+    })
 
-    setLoading(false);
-  }, [updateShow, getShowById, imdbId]);
+    setLoading(false)
+  }, [updateShow, getShowById, imdbId])
 
   useEffect(() => {
-    fetchAllSeasons();
-  }, [fetchAllSeasons]);
+    fetchAllSeasons()
+  }, [fetchAllSeasons])
 
-  return { fetchingSeasons: loading };
-};
+  return { fetchingSeasons: loading }
+}

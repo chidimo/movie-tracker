@@ -1,39 +1,37 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 interface UseImageWithFallbackOptions {
-  imageUrl?: string;
-  fallbackImage: any;
+  imageUrl?: string
+  fallbackImage: any
 }
 
 export const useImageWithFallback = ({
   imageUrl,
   fallbackImage,
 }: UseImageWithFallbackOptions) => {
-  const [imageError, setImageError] = useState(false);
+  const [imageError, setImageError] = useState(false)
 
   const handleImageError = () => {
-    setImageError(true);
-  };
+    setImageError(true)
+  }
 
   const resetError = () => {
-    setImageError(false);
-  };
+    setImageError(false)
+  }
 
   // For React Native (expo-image), use { uri: imageUrl }
   // For web (img tag), imageUrl can be used directly
-  const shouldUseOriginalImage = imageUrl && !imageError;
+  const shouldUseOriginalImage = imageUrl && !imageError
 
   const formattedImageUrl =
-    imageUrl && typeof window !== "undefined" ? imageUrl : { uri: imageUrl };
+    imageUrl && typeof window !== 'undefined' ? imageUrl : { uri: imageUrl }
 
-  const imageSource = shouldUseOriginalImage
-    ? formattedImageUrl
-    : fallbackImage;
+  const imageSource = shouldUseOriginalImage ? formattedImageUrl : fallbackImage
 
   return {
     imageSource,
     imageError,
     handleImageError,
     resetError,
-  };
-};
+  }
+}

@@ -1,19 +1,19 @@
-import { ThemedText } from "@/components/themed-text";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View } from 'react-native'
+import { ThemedText } from '@/components/themed-text'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 type Props = {
-  cast: any;
-};
+  cast: any
+}
 
 export const CastDisplay = ({ cast }: Props) => {
   const { surface: chipBackground, text: chipTextColor } = useThemeColor({}, [
-    "surface",
-    "text",
-  ]);
+    'surface',
+    'text',
+  ])
 
   if (!Array.isArray(cast)) {
-    return null;
+    return null
   }
   return (
     <View style={styles.castRow}>
@@ -28,19 +28,19 @@ export const CastDisplay = ({ cast }: Props) => {
           >
             {c}
           </ThemedText>
-        );
+        )
       })}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   castRow: {
     gap: 6,
     marginTop: 8,
     marginBottom: 8,
-    flexWrap: "wrap",
-    flexDirection: "row",
+    flexWrap: 'wrap',
+    flexDirection: 'row',
   },
   castChip: {
     fontSize: 12,
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     // Android-specific tweaks to prevent extra top/bottom spacing
     includeFontPadding: false,
-    textAlignVertical: "center",
+    textAlignVertical: 'center',
   },
-});
+})

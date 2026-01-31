@@ -1,25 +1,19 @@
-import { default as ExpoCheckBox } from "expo-checkbox";
+import { default as ExpoCheckBox } from 'expo-checkbox'
 
-import { useThemeColor } from "@/hooks/use-theme-color";
-import {
-  Pressable,
-  type StyleProp,
-  StyleSheet,
-  Text,
-  View,
-  type ViewStyle,
-} from "react-native";
+import { Pressable, StyleSheet, Text, View } from 'react-native'
+import type { StyleProp, ViewStyle } from 'react-native'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 type Props = {
-  label?: string;
-  boxPosition?: "left" | "right";
-  error?: string | any[];
-  disabled?: boolean;
-  checked?: boolean;
-  checkboxStyle?: StyleProp<ViewStyle>;
-  containerStyle?: StyleProp<ViewStyle>;
-  onValueChange: (value: boolean) => void;
-};
+  label?: string
+  boxPosition?: 'left' | 'right'
+  error?: string | Array<any>
+  disabled?: boolean
+  checked?: boolean
+  checkboxStyle?: StyleProp<ViewStyle>
+  containerStyle?: StyleProp<ViewStyle>
+  onValueChange: (value: boolean) => void
+}
 
 export const Checkbox = (props: Props) => {
   const {
@@ -28,15 +22,15 @@ export const Checkbox = (props: Props) => {
     disabled = false,
     checked = false,
     containerStyle,
-    boxPosition = "left",
+    boxPosition = 'left',
     onValueChange,
     checkboxStyle = {},
-  } = props;
+  } = props
 
   const { text: textColor, danger: dangerColor } = useThemeColor({}, [
-    "text",
-    "danger",
-  ]);
+    'text',
+    'danger',
+  ])
 
   return (
     <Pressable
@@ -45,9 +39,9 @@ export const Checkbox = (props: Props) => {
     >
       <View
         style={{
-          display: "flex",
-          flexDirection: boxPosition === "left" ? "row" : "row-reverse",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: boxPosition === 'left' ? 'row' : 'row-reverse',
+          alignItems: 'center',
         }}
       >
         <ExpoCheckBox
@@ -60,8 +54,8 @@ export const Checkbox = (props: Props) => {
         />
         <Text
           style={{
-            marginLeft: boxPosition === "left" ? 10 : 0,
-            marginRight: boxPosition === "left" ? 0 : 10,
+            marginLeft: boxPosition === 'left' ? 10 : 0,
+            marginRight: boxPosition === 'left' ? 0 : 10,
             color: textColor,
           }}
         >
@@ -73,15 +67,15 @@ export const Checkbox = (props: Props) => {
         <Text style={[styles.errorText, { color: dangerColor }]}>{error}</Text>
       ) : null}
     </Pressable>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 5,
   },
   errorText: {},
-});
+})

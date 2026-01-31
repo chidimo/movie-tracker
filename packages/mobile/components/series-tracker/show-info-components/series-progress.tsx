@@ -1,10 +1,11 @@
-import { useProgress, type ProgressProps, type SeasonProgressProps } from "@/hooks/use-progress";
-import { StyleSheet, View } from "react-native";
-import { ThemedText } from "../../themed-text";
-import { ThemedView } from "../../themed-view";
+import { StyleSheet, View } from 'react-native'
+import { ThemedText } from '../../themed-text'
+import { ThemedView } from '../../themed-view'
+import type { ProgressProps } from '@/hooks/use-progress'
+import { useProgress } from '@/hooks/use-progress'
 
 type BaseProps = {
-  className?: string;
+  className?: string
 }
 
 type SeriesComponentProps = BaseProps & ProgressProps
@@ -18,23 +19,23 @@ export const SeriesProgress = ({
   showPercentage,
 }: SeriesComponentProps) => {
   const progress = useProgress(
-    season 
+    season
       ? { season, label, showFraction, showPercentage }
-      : { seriesId, label, showFraction, showPercentage }
-  );
+      : { seriesId, label, showFraction, showPercentage },
+  )
 
   return (
     <ThemedView className={className} style={{}}>
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           gap: 4,
         }}
       >
         {progress.label ? (
           <ThemedText className="font-medium" style={styles.text}>
-            {progress.label}:{" "}
+            {progress.label}:{' '}
           </ThemedText>
         ) : null}
         {progress.showFraction ? (
@@ -42,40 +43,37 @@ export const SeriesProgress = ({
             {progress.watched}/{progress.total}
           </ThemedText>
         ) : null}
-        {progress.showFraction && progress.showPercentage ? <ThemedText> · </ThemedText> : null}
+        {progress.showFraction && progress.showPercentage ? (
+          <ThemedText> · </ThemedText>
+        ) : null}
         {progress.showPercentage ? (
           <ThemedText style={styles.text}>{progress.percentage}%</ThemedText>
         ) : null}
       </View>
       <View
         style={{
-          backgroundColor: "#e5e7eb",
+          backgroundColor: '#e5e7eb',
           height: 8,
           borderRadius: 4,
-          width: "100%",
+          width: '100%',
         }}
       >
         <View
           style={{
             width: `${progress.percentage}%`,
-            backgroundColor: "#00a63e",
+            backgroundColor: '#00a63e',
             height: 8,
             borderRadius: 4,
           }}
         />
       </View>
     </ThemedView>
-  );
-};
-
-// Export a SeasonProgress alias for backward compatibility
-export const SeasonProgress = (props: SeasonProgressProps & BaseProps) => (
-  <SeriesProgress {...props} label={props.label || "Progress"} />
-);
+  )
+}
 
 const styles = StyleSheet.create({
   text: {
     fontSize: 12,
-    color: "#4a5565",
+    color: '#4a5565',
   },
-});
+})

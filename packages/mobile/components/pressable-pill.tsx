@@ -1,6 +1,6 @@
-import { ThemedText } from "@/components/themed-text";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from 'react-native'
+import { ThemedText } from '@/components/themed-text'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export const PressablePill = ({
   text,
@@ -8,12 +8,12 @@ export const PressablePill = ({
   selected,
   onPress,
 }: {
-  text: string;
-  emoji: string;
-  selected: boolean;
-  onPress: () => void;
+  text: string
+  emoji: string
+  selected: boolean
+  onPress: () => void
 }) => {
-  const { surface: surfaceColor } = useThemeColor({}, ["surface"]);
+  const { surface: surfaceColor } = useThemeColor({}, ['surface'])
 
   return (
     <Pressable
@@ -27,13 +27,13 @@ export const PressablePill = ({
       <ThemedText style={styles.moodEmoji}>{emoji}</ThemedText>
       <ThemedText style={styles.moodLabel}>{text}</ThemedText>
     </Pressable>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   moodPill: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
   },
   selectedMood: {
     borderWidth: 2,
-    borderColor: "#007AFF",
+    borderColor: '#007AFF',
   },
   moodEmoji: {
     fontSize: 14,
   },
   moodLabel: {
     fontSize: 12,
-    fontWeight: "500",
+    fontWeight: '500',
   },
-});
+})

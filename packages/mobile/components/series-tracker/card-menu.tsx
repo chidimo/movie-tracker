@@ -1,46 +1,46 @@
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
-import { useState } from "react";
-import { Button, Divider, Menu } from "react-native-paper";
-import { MoveToTopButton } from "./card-menu-buttons";
+import { Ionicons } from '@expo/vector-icons'
+import { Link } from 'expo-router'
+import * as WebBrowser from 'expo-web-browser'
+import { useState } from 'react'
+import { Button, Divider, Menu } from 'react-native-paper'
+import { MoveToTopButton } from './card-menu-buttons'
+import { useThemeColor } from '@/hooks/use-theme-color'
+import { useSeriesTracker } from '@/context/series-tracker-context'
 
 type Props = {
-  showId: string;
-  showTitle: string;
-};
+  showId: string
+  showTitle: string
+}
 
 const MenuItemIcon = ({ name, color }: { name: string; color: string }) => (
   <Ionicons name={name as any} size={20} color={color} />
-);
+)
 
 export const CardMenu = ({ showId, showTitle }: Props) => {
-  const [visible, setVisible] = useState(false);
-  const { getShowById, removeShow, moveShowToTop } = useSeriesTracker();
-  const { tint: tintColor } = useThemeColor({}, ["tint"]);
+  const [visible, setVisible] = useState(false)
+  const { getShowById, removeShow, moveShowToTop } = useSeriesTracker()
+  const { tint: tintColor } = useThemeColor({}, ['tint'])
 
-  const show = getShowById(showId);
+  const show = getShowById(showId)
 
-  const closeMenu = () => setVisible(false);
+  const closeMenu = () => setVisible(false)
 
   const handleOpenIMDb = async () => {
-    closeMenu();
+    closeMenu()
     if (show?.imdbUrl) {
-      await WebBrowser.openBrowserAsync(show.imdbUrl);
+      await WebBrowser.openBrowserAsync(show.imdbUrl)
     }
-  };
+  }
 
   const handleMoveToTop = async () => {
-    closeMenu();
-    await moveShowToTop(showId);
-  };
+    closeMenu()
+    await moveShowToTop(showId)
+  }
 
   const handleRemove = async () => {
-    closeMenu();
-    await removeShow(showId);
-  };
+    closeMenu()
+    await removeShow(showId)
+  }
 
   return (
     <Menu
@@ -77,5 +77,5 @@ export const CardMenu = ({ showId, showTitle }: Props) => {
         leadingIcon={() => <MenuItemIcon name="trash" color="#ff4444" />}
       />
     </Menu>
-  );
-};
+  )
+}

@@ -1,73 +1,73 @@
-import { showNotification } from "@/components/notifier";
-import type { Show, TrackerState } from "@movie-tracker/core";
-import * as Notifications from "expo-notifications";
-import { Platform } from "react-native";
+import * as Notifications from 'expo-notifications'
+import { Platform } from 'react-native'
+import type { Show, TrackerState } from '@movie-tracker/core'
+import { showNotification } from '@/components/notifier'
 
 export type NotificationPermissionStatus =
-  | "granted"
-  | "denied"
-  | "undetermined"
-  | "unavailable"
-  | "error";
+  | 'granted'
+  | 'denied'
+  | 'undetermined'
+  | 'unavailable'
+  | 'error'
 
 export async function getNotificationPermissionsStatus(): Promise<NotificationPermissionStatus> {
   try {
-    const settings = await Notifications.getPermissionsAsync();
+    const settings = await Notifications.getPermissionsAsync()
     if (settings.granted) {
-      return "granted";
+      return 'granted'
     }
     if (settings.canAskAgain) {
-      return "undetermined";
+      return 'undetermined'
     }
-    return "denied";
+    return 'denied'
   } catch (error) {
     showNotification({
-      title: "Notification Error",
-      description: "Failed to get notification permissions",
-    });
-    console.error("Failed to get notification permissions:", error);
-    return "error";
+      title: 'Notification Error',
+      description: 'Failed to get notification permissions',
+    })
+    console.error('Failed to get notification permissions:', error)
+    return 'error'
   }
 }
 
 export async function requestNotificationPermissions(): Promise<NotificationPermissionStatus> {
   try {
-    if (Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       // Ensure a default notification channel exists on Android
-      await Notifications.setNotificationChannelAsync("default", {
-        name: "Default",
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'Default',
         importance: Notifications.AndroidImportance.DEFAULT,
-      });
+      })
     }
 
-    const settings = await Notifications.requestPermissionsAsync();
+    const settings = await Notifications.requestPermissionsAsync()
     if (settings.granted) {
       showNotification({
-        title: "Notification granted",
-        description: "You can now receive notifications",
-      });
-      return "granted";
+        title: 'Notification granted',
+        description: 'You can now receive notifications',
+      })
+      return 'granted'
     }
     if (settings.canAskAgain) {
       showNotification({
-        title: "Notification undetermined",
-        description: "You can now receive notifications",
-      });
-      return "undetermined";
+        title: 'Notification undetermined',
+        description: 'You can now receive notifications',
+      })
+      return 'undetermined'
     }
 
     showNotification({
-      title: "Notification denied",
-      description: "You can now receive notifications",
-    });
-    return "denied";
+      title: 'Notification denied',
+      description: 'You can now receive notifications',
+    })
+    return 'denied'
   } catch (error) {
-    console.error("Failed to request notification permissions:", error);
+    console.error('Failed to request notification permissions:', error)
     showNotification({
-      title: "Notification Error",
-      description: "Failed to request notification permissions",
-    });
-    return "error";
+      title: 'Notification Error',
+      description: 'Failed to request notification permissions',
+    })
+    return 'error'
   }
 }
 
@@ -86,38 +86,40 @@ export async function requestNotificationPermissions(): Promise<NotificationPerm
  *    - If show has episode information, limits to remaining episodes in the current season
  * 4. Generates dates by adding frequencyDays intervals to the base date
  */
-const computeTentativeDates = (show: Show, maxOccurrences: number): Date[] => {
-  if (!show.tentativeNextAirDate || !show.tentativeFrequencyDays) return [];
+const computeTentativeDates = (
+  show: Show,
+  maxOccurrences: number,
+): Array<Date> => {
+  if (!show.tentativeNextAirDate || !show.tentativeFrequencyDays) return []
 
-  const base = new Date(show.tentativeNextAirDate);
-  if (Number.isNaN(base.getTime())) return [];
+  const base = new Date(show.tentativeNextAirDate)
+  if (Number.isNaN(base.getTime())) return []
 
-  const frequencyDays = Math.max(1, show.tentativeFrequencyDays);
-  let count = maxOccurrences;
+  const frequencyDays = Math.max(1, show.tentativeFrequencyDays)
+  let count = maxOccurrences
 
   if (show.tentativeNextEpisode && show.seasons?.length) {
     const season = show.seasons.find(
       (s) => s.seasonNumber === show.tentativeNextEpisode?.seasonNumber,
-    );
+    )
     const maxEpisode = Math.max(
       0,
       ...(season?.episodes || [])
         .map((e) => e.episodeNumber || 0)
         .filter((n) => Number.isFinite(n)),
-    );
+    )
     if (maxEpisode > 0) {
-      const remaining =
-        maxEpisode - show.tentativeNextEpisode.episodeNumber + 1;
-      count = Math.min(maxOccurrences, Math.max(1, remaining));
+      const remaining = maxEpisode - show.tentativeNextEpisode.episodeNumber + 1
+      count = Math.min(maxOccurrences, Math.max(1, remaining))
     }
   }
 
   return Array.from({ length: count }, (_, idx) => {
-    const d = new Date(base);
-    d.setDate(d.getDate() + frequencyDays * idx);
-    return d;
-  });
-};
+    const d = new Date(base)
+    d.setDate(d.getDate() + frequencyDays * idx)
+    return d
+  })
+}
 
 /**
  * Schedules tentative notifications for all shows in the tracker state.
@@ -146,34 +148,34 @@ export async function scheduleTentativeNotifications(
   leadDays: number,
   maxOccurrences = 20,
 ): Promise<void> {
-  const permissions = await getNotificationPermissionsStatus();
-  if (permissions !== "granted") return;
+  const permissions = await getNotificationPermissionsStatus()
+  if (permissions !== 'granted') return
 
-  await Notifications.cancelAllScheduledNotificationsAsync();
+  await Notifications.cancelAllScheduledNotificationsAsync()
 
-  const now = new Date();
+  const now = new Date()
   const lead = Math.max(
     0,
     Math.min(14, Number.isFinite(leadDays) ? leadDays : 2),
-  );
+  )
 
   for (const show of state.shows || []) {
-    const dates = computeTentativeDates(show, maxOccurrences);
-    const baseEpisode = show.tentativeNextEpisode?.episodeNumber;
+    const dates = computeTentativeDates(show, maxOccurrences)
+    const baseEpisode = show.tentativeNextEpisode?.episodeNumber
 
     for (let idx = 0; idx < dates.length; idx += 1) {
-      const episodeDate = dates[idx];
-      const notifyAt = new Date(episodeDate);
-      notifyAt.setDate(notifyAt.getDate() - lead);
+      const episodeDate = dates[idx]
+      const notifyAt = new Date(episodeDate)
+      notifyAt.setDate(notifyAt.getDate() - lead)
 
-      if (notifyAt <= now) continue;
+      if (notifyAt <= now) continue
 
       const episodeNumber =
-        typeof baseEpisode === "number" ? baseEpisode + idx : undefined;
+        typeof baseEpisode === 'number' ? baseEpisode + idx : undefined
       const episodeLabel =
-        typeof episodeNumber === "number"
+        typeof episodeNumber === 'number'
           ? `Episode ${episodeNumber}`
-          : "New episode";
+          : 'New episode'
 
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -189,7 +191,7 @@ export async function scheduleTentativeNotifications(
           type: Notifications.SchedulableTriggerInputTypes.DATE,
           date: notifyAt,
         },
-      });
+      })
     }
   }
 }

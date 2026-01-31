@@ -1,4 +1,5 @@
-import { useProgress, type ProgressProps, type SeasonProgressProps } from '@/hooks/use-progress'
+import type { ProgressProps } from '@/hooks/use-progress'
+import { useProgress } from '@/hooks/use-progress'
 
 type BaseProps = {
   className?: string
@@ -17,33 +18,35 @@ export const SeriesProgress = ({
   showPercentage,
 }: SeriesComponentProps) => {
   const progress = useProgress(
-    season 
+    season
       ? { season, label, showFraction, showPercentage }
-      : { seriesId, label, showFraction, showPercentage }
+      : { seriesId, label, showFraction, showPercentage },
   )
 
   return (
     <div className={className}>
       <div className="text-xs text-gray-600 mb-1">
-        {progress.label ? <span className="font-medium">{progress.label}: </span> : null}
+        {progress.label ? (
+          <span className="font-medium">{progress.label}: </span>
+        ) : null}
         {progress.showFraction ? (
           <span>
             {progress.watched}/{progress.total}
           </span>
         ) : null}
-        {progress.showFraction && progress.showPercentage ? <span> · </span> : null}
+        {progress.showFraction && progress.showPercentage ? (
+          <span> · </span>
+        ) : null}
         {progress.showPercentage ? <span>{progress.percentage}%</span> : null}
       </div>
       <div
         className={`${barHeightClassName} w-full bg-gray-200 rounded overflow-hidden`}
       >
-        <div className="h-full bg-green-600" style={{ width: `${progress.percentage}%` }} />
+        <div
+          className="h-full bg-green-600"
+          style={{ width: `${progress.percentage}%` }}
+        />
       </div>
     </div>
   )
 }
-
-// Export a SeasonProgress alias for backward compatibility
-export const SeasonProgress = (props: SeasonProgressProps & BaseProps) => (
-  <SeriesProgress {...props} label={props.label || 'Progress'} />
-)

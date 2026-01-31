@@ -36,7 +36,10 @@ export async function requestNotificationPermissions(): Promise<NotificationPerm
   }
 }
 
-function computeTentativeDates(show: Show, maxOccurrences: number): Date[] {
+function computeTentativeDates(
+  show: Show,
+  maxOccurrences: number,
+): Array<Date> {
   if (!show.tentativeNextAirDate || !show.tentativeFrequencyDays) return []
   const base = new Date(show.tentativeNextAirDate)
   if (Number.isNaN(base.getTime())) return []
@@ -91,7 +94,7 @@ export async function scheduleTentativeNotifications(
     }
 
     const now = new Date()
-    const scheduledNotifications: { show: Show; date: Date }[] = []
+    const scheduledNotifications: Array<{ show: Show; date: Date }> = []
 
     for (const show of state.shows) {
       if (!show.tentativeNextAirDate) continue

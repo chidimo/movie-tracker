@@ -19,20 +19,20 @@ export const ScheduleSetter = ({ show }: { show: Show }) => {
 
   const allEpisodesFlat = useMemo(() => {
     if (!show || typeof mostRecentSeasonNumber !== 'number')
-      return [] as {
+      return [] as Array<{
         seasonNumber: number
         episodeNumber: number
         title: string
-      }[]
+      }>
     const sn = (show.seasons || []).find(
       (s) => s.seasonNumber === mostRecentSeasonNumber,
     )
     if (!sn)
-      return [] as {
+      return [] as Array<{
         seasonNumber: number
         episodeNumber: number
         title: string
-      }[]
+      }>
     const eps = [...(sn.episodes || [])]
       .filter((e) => typeof e.episodeNumber === 'number')
       .sort((a, b) => (a.episodeNumber ?? 0) - (b.episodeNumber ?? 0))
@@ -82,7 +82,10 @@ export const ScheduleSetter = ({ show }: { show: Show }) => {
 
   return (
     <>
-      <button className="text-blue-700 cursor-pointer" onClick={openScheduleModal}>
+      <button
+        className="text-blue-700 cursor-pointer"
+        onClick={openScheduleModal}
+      >
         Set tentative schedule
       </button>
       <Dialog

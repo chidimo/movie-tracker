@@ -1,13 +1,13 @@
-import { ThemedText } from "@/components/themed-text";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { OmdbSearchItem } from "@movie-tracker/core";
-import { Image } from "expo-image";
-import { useRouter } from "expo-router";
-import { StyleSheet } from "react-native";
-import { CustomButton } from "../form-elements/custom-button";
-import { ThemedView } from "../themed-view";
+import { Image } from 'expo-image'
+import { useRouter } from 'expo-router'
+import { StyleSheet } from 'react-native'
+import { CustomButton } from '../form-elements/custom-button'
+import { ThemedView } from '../themed-view'
+import type { OmdbSearchItem } from '@movie-tracker/core'
+import { useThemeColor } from '@/hooks/use-theme-color'
+import { ThemedText } from '@/components/themed-text'
 
-export type { OmdbSearchItem } from "@movie-tracker/core";
+export type { OmdbSearchItem } from '@movie-tracker/core'
 
 export const SearchResult = ({
   onAdd,
@@ -15,28 +15,28 @@ export const SearchResult = ({
   isAdded,
   isLoading,
 }: {
-  onAdd: (item: OmdbSearchItem) => void;
-  item: OmdbSearchItem;
-  isAdded: boolean;
-  isLoading: boolean;
+  onAdd: (item: OmdbSearchItem) => void
+  item: OmdbSearchItem
+  isAdded: boolean
+  isLoading: boolean
 }) => {
-  const router = useRouter();
+  const router = useRouter()
   const {
     border: borderColor,
     surfaceAlt: surfaceAltColor,
     mutedText: mutedTextColor,
-  } = useThemeColor({}, ["border", "surfaceAlt", "mutedText"]);
+  } = useThemeColor({}, ['border', 'surfaceAlt', 'mutedText'])
 
   const handleViewDetails = () => {
-    router.push(`/preview/${item.imdbID}`);
-  };
+    router.push(`/preview/${item.imdbID}`)
+  }
 
   return (
     <ThemedView
       key={item.imdbID}
       style={[styles.itemRow, { opacity: isAdded ? 0.7 : 1, borderColor }]}
     >
-      {item.Poster && item.Poster !== "N/A" ? (
+      {item.Poster && item.Poster !== 'N/A' ? (
         <Image source={{ uri: item.Poster }} style={styles.poster} />
       ) : (
         <ThemedView
@@ -61,7 +61,7 @@ export const SearchResult = ({
           onPress={handleViewDetails}
           title="View Details"
           containerStyle={{
-            width: "auto",
+            width: 'auto',
             height: 40,
             paddingVertical: 4,
             paddingHorizontal: 8,
@@ -71,26 +71,26 @@ export const SearchResult = ({
         />
         <CustomButton
           onPress={() => !isAdded && onAdd(item)}
-          title={isAdded ? "Added" : "Add"}
+          title={isAdded ? 'Added' : 'Add'}
           containerStyle={{
-            width: "auto",
+            width: 'auto',
             height: 40,
             paddingVertical: 4,
             paddingHorizontal: 8,
           }}
-          variant={isAdded ? "SUCCESS" : "PRIMARY"}
+          variant={isAdded ? 'SUCCESS' : 'PRIMARY'}
           disabled={isAdded || isLoading}
           isLoading={isLoading}
         />
       </ThemedView>
     </ThemedView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   itemRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
     marginBottom: 12,
     borderWidth: 1,
@@ -103,25 +103,25 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   posterPlaceholder: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   itemMeta: {
     flex: 1,
   },
   itemTitle: {
-    fontWeight: "600",
+    fontWeight: '600',
   },
   itemYear: {
     opacity: 0.8,
   },
   buttonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   emptyState: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 16,
   },
-});
+})

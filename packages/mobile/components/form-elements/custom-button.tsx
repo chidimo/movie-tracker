@@ -1,54 +1,54 @@
-import { useThemeColor } from "@/hooks/use-theme-color";
-import React, { ReactNode } from "react";
-import {
-  ActivityIndicator,
+import React from 'react'
+import { ActivityIndicator, Pressable } from 'react-native'
+import { ThemedText } from '../themed-text'
+import { ThemedView } from '../themed-view'
+import type {
   GestureResponderEvent,
-  Pressable,
   StyleProp,
   TextStyle,
   ViewStyle,
-} from "react-native";
-import { ThemedText } from "../themed-text";
-import { ThemedView } from "../themed-view";
+} from 'react-native'
+import type { ReactNode } from 'react'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export type BtnVariant =
-  | "CANCEL"
-  | "DANGER"
-  | "PRIMARY"
-  | "SUCCESS"
-  | "SECONDARY";
+  | 'CANCEL'
+  | 'DANGER'
+  | 'PRIMARY'
+  | 'SUCCESS'
+  | 'SECONDARY'
 
 type Props = {
-  title: string | ReactNode;
-  disabled?: boolean;
-  isLoading?: boolean;
-  variant?: BtnVariant;
-  textStyle?: StyleProp<TextStyle>;
-  containerStyle?: StyleProp<ViewStyle>;
-  onPress?: (event: GestureResponderEvent) => void;
-};
+  title: string | ReactNode
+  disabled?: boolean
+  isLoading?: boolean
+  variant?: BtnVariant
+  textStyle?: StyleProp<TextStyle>
+  containerStyle?: StyleProp<ViewStyle>
+  onPress?: (event: GestureResponderEvent) => void
+}
 
 export const CustomButton = (props: Props) => {
   const {
-    title = "",
+    title = '',
     onPress,
     disabled = false,
     isLoading = false,
     textStyle = {},
     containerStyle = {},
-    variant = "SUCCESS",
-  } = props;
+    variant = 'SUCCESS',
+  } = props
 
   const { tint, surface, surfaceAlt, success, danger, onTint, text } =
     useThemeColor({}, [
-      "tint",
-      "surface",
-      "surfaceAlt",
-      "success",
-      "danger",
-      "onTint",
-      "text",
-    ]);
+      'tint',
+      'surface',
+      'surfaceAlt',
+      'success',
+      'danger',
+      'onTint',
+      'text',
+    ])
 
   const variantBg: Record<BtnVariant, string> = {
     PRIMARY: tint,
@@ -56,14 +56,14 @@ export const CustomButton = (props: Props) => {
     SUCCESS: success,
     DANGER: danger,
     CANCEL: surfaceAlt,
-  };
+  }
   const variantText: Record<BtnVariant, string> = {
     PRIMARY: onTint,
     SECONDARY: text,
     SUCCESS: onTint,
     DANGER: onTint,
     CANCEL: text,
-  };
+  }
 
   return (
     <Pressable
@@ -71,12 +71,12 @@ export const CustomButton = (props: Props) => {
       onPress={disabled ? () => null : onPress}
       style={({ pressed }) => {
         return [
-          typeof title === "string"
+          typeof title === 'string'
             ? {
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
                 height: 50,
                 borderRadius: 4,
                 paddingVertical: 8,
@@ -85,15 +85,15 @@ export const CustomButton = (props: Props) => {
               }
             : {},
           containerStyle,
-        ];
+        ]
       }}
     >
       <ThemedView
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "transparent",
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'transparent',
         }}
       >
         {isLoading && (
@@ -103,12 +103,12 @@ export const CustomButton = (props: Props) => {
             style={[{ marginRight: 3 }]}
           />
         )}
-        {typeof title === "string" ? (
+        {typeof title === 'string' ? (
           <ThemedText
             style={[
               {
                 fontSize: 18,
-                fontWeight: "bold",
+                fontWeight: 'bold',
                 color: variantText[variant],
               },
               textStyle,
@@ -121,5 +121,5 @@ export const CustomButton = (props: Props) => {
         )}
       </ThemedView>
     </Pressable>
-  );
-};
+  )
+}

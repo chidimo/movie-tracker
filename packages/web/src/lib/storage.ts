@@ -1,8 +1,4 @@
-import type {
-  TrackerState,
-  Show,
-  UserProfile,
-} from '@movie-tracker/core'
+import type { Show, TrackerState, UserProfile } from '@movie-tracker/core'
 
 const STORAGE_KEY = 'series-tracker'
 

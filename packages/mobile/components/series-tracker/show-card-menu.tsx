@@ -1,41 +1,41 @@
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { Modal, Pressable, StyleSheet } from "react-native";
+import { Ionicons } from '@expo/vector-icons'
+import { useState } from 'react'
+import { Modal, Pressable, StyleSheet } from 'react-native'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 type Props = {
-  showId: string;
-  showTitle: string;
-};
+  showId: string
+  showTitle: string
+}
 
 export const ShowCardMenu = ({ showId, showTitle }: Props) => {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const { moveShowToTop } = useSeriesTracker();
+  const [menuVisible, setMenuVisible] = useState(false)
+  const { moveShowToTop } = useSeriesTracker()
   const { background: backgroundColor, border: borderColor } = useThemeColor(
     {},
-    ["background", "border"],
-  );
+    ['background', 'border'],
+  )
 
   const handleMoveToTop = async () => {
-    await moveShowToTop(showId);
-    setMenuVisible(false);
-  };
+    await moveShowToTop(showId)
+    setMenuVisible(false)
+  }
 
   const menuItems = [
     {
-      icon: "arrow-up" as const,
-      title: "Move to Top",
+      icon: 'arrow-up' as const,
+      title: 'Move to Top',
       onPress: handleMoveToTop,
     },
     {
-      icon: "close" as const,
-      title: "Cancel",
+      icon: 'close' as const,
+      title: 'Cancel',
       onPress: () => setMenuVisible(false),
     },
-  ];
+  ]
 
   return (
     <>
@@ -76,8 +76,8 @@ export const ShowCardMenu = ({ showId, showTitle }: Props) => {
         </Pressable>
       </Modal>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   menuButton: {
@@ -86,16 +86,16 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   menuContainer: {
     borderRadius: 8,
     padding: 16,
     minWidth: 200,
     borderWidth: 1,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -103,13 +103,13 @@ const styles = StyleSheet.create({
   },
   menuTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 12,
-    textAlign: "center",
+    textAlign: 'center',
   },
   menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 4,
   },
@@ -119,4 +119,4 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontSize: 14,
   },
-});
+})

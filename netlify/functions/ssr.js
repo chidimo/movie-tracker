@@ -11,7 +11,9 @@ async function loadServer() {
 
 exports.handler = async (event) => {
   const server = await loadServer()
-  const url = new URL(event.rawUrl || `https://${event.headers.host}${event.path}`)
+  const url = new URL(
+    event.rawUrl || `https://${event.headers.host}${event.path}`,
+  )
 
   if (!event.rawUrl && event.queryStringParameters) {
     for (const [key, value] of Object.entries(event.queryStringParameters)) {

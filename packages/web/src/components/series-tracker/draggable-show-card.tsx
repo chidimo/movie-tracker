@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { CardMenu } from './card-menu'
+import {
+  CastDisplay,
+  RatingsDisplay,
+  SeriesProgress,
+} from './show-info-components'
 import type { Show } from '@movie-tracker/core'
-import { CastDisplay, RatingsDisplay, SeriesProgress } from './show-info-components'
 
 type Props = {
   show: Show

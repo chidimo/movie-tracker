@@ -1,113 +1,107 @@
-import { Checkbox } from "@/components/form-elements/checkbox";
-import { ThemedText } from "@/components/themed-text";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useClipboard } from "@/hooks/use-clipboard";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { normalizeShowTransfer } from "@movie-tracker/core";
-import { importShows } from "@/lib/import-utils";
-import type { Show } from "@movie-tracker/core";
-import { router } from "expo-router";
-import { useCallback, useMemo, useState } from "react";
-import { Dimensions, StyleSheet, TextInput, View } from "react-native";
-import { BackButton } from "../back-button";
-import { CustomButton } from "../form-elements/custom-button";
-import { HorizontalSeparator } from "../horizontal-separator";
-import ParallaxScrollView from "../parallax-scroll-view";
-import { ImportItem } from "./import-item";
+import { normalizeShowTransfer } from '@movie-tracker/core'
+import { router } from 'expo-router'
+import { useCallback, useMemo, useState } from 'react'
+import { Dimensions, StyleSheet, TextInput, View } from 'react-native'
+import { BackButton } from '../back-button'
+import { CustomButton } from '../form-elements/custom-button'
+import { HorizontalSeparator } from '../horizontal-separator'
+import ParallaxScrollView from '../parallax-scroll-view'
+import { ImportItem } from './import-item'
+import type { Show } from '@movie-tracker/core'
+import { importShows } from '@/lib/import-utils'
+import { useThemeColor } from '@/hooks/use-theme-color'
+import { useClipboard } from '@/hooks/use-clipboard'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { ThemedText } from '@/components/themed-text'
+import { Checkbox } from '@/components/form-elements/checkbox'
 
 export const ImportSeries = () => {
-  const { fetchCopiedText } = useClipboard();
-  const { state, replaceState } = useSeriesTracker();
+  const { fetchCopiedText } = useClipboard()
+  const { state, replaceState } = useSeriesTracker()
   const {
     background: inputBackground,
     text: inputTextColor,
     border: inputBorderColor,
     mutedText: placeholderColor,
     danger: dangerColor,
-  } = useThemeColor({}, [
-    "background",
-    "text",
-    "border",
-    "mutedText",
-    "danger",
-  ]);
-  const [pasted, setPasted] = useState("");
-  const [parsing, setParsing] = useState(false);
-  const [error, setError] = useState<string | undefined>();
-  const [importedShows, setImportedShows] = useState<Partial<Show>[]>([]);
+  } = useThemeColor({}, ['background', 'text', 'border', 'mutedText', 'danger'])
+  const [pasted, setPasted] = useState('')
+  const [parsing, setParsing] = useState(false)
+  const [error, setError] = useState<string | undefined>()
+  const [importedShows, setImportedShows] = useState<Array<Partial<Show>>>([])
   const [importSelected, setImportSelected] = useState<Record<string, boolean>>(
     {},
-  );
-  const [includeEpisodes, setIncludeEpisodes] = useState(false);
+  )
+  const [includeEpisodes, setIncludeEpisodes] = useState(false)
 
   const maxTextareaHeight = useMemo(
-    () => Dimensions.get("window").height / 6,
+    () => Dimensions.get('window').height / 6,
     [],
-  );
+  )
 
   const onParse = useCallback(() => {
     try {
-      setParsing(true);
-      setError(undefined);
-      const json = JSON.parse(pasted || "{}");
-      let shows: any[] = [];
+      setParsing(true)
+      setError(undefined)
+      const json = JSON.parse(pasted || '{}')
+      let shows: Array<any> = []
       if (Array.isArray(json?.shows)) {
-        shows = json.shows;
+        shows = json.shows
       } else if (Array.isArray(json)) {
-        shows = json;
+        shows = json
       }
-      const normalized: Partial<Show>[] = shows.map((s: any) =>
+      const normalized: Array<Partial<Show>> = shows.map((s: any) =>
         normalizeShowTransfer(s, { includeEpisodes }),
-      );
-      const sel: Record<string, boolean> = {};
+      )
+      const sel: Record<string, boolean> = {}
       for (const s of normalized)
         if (s.imdbId) {
-          sel[s.imdbId] = true;
+          sel[s.imdbId] = true
         }
-      setImportedShows(normalized);
-      setImportSelected(sel);
+      setImportedShows(normalized)
+      setImportSelected(sel)
     } catch {
-      setError("Invalid JSON. Paste an export from this app.");
-      setImportedShows([]);
-      setImportSelected({});
+      setError('Invalid JSON. Paste an export from this app.')
+      setImportedShows([])
+      setImportSelected({})
     } finally {
-      setParsing(false);
+      setParsing(false)
     }
-  }, [includeEpisodes, pasted]);
+  }, [includeEpisodes, pasted])
 
   const toggleAll = useCallback(
     (checked: boolean) => {
-      const sel: Record<string, boolean> = {};
-      for (const s of importedShows) if (s.imdbId) sel[s.imdbId] = checked;
-      setImportSelected(sel);
+      const sel: Record<string, boolean> = {}
+      for (const s of importedShows) if (s.imdbId) sel[s.imdbId] = checked
+      setImportSelected(sel)
     },
     [importedShows],
-  );
+  )
 
   const canImport = useMemo(
     () => importedShows.some((s) => s.imdbId && importSelected[s.imdbId]),
     [importedShows, importSelected],
-  );
+  )
 
   const onConfirm = useCallback(async () => {
     const nextState = importShows(state, importedShows, importSelected, {
       includeEpisodes,
-    });
-    await replaceState(nextState);
+    })
+    await replaceState(nextState)
     // Navigate back to Home tab after import completes
-    setPasted("");
-    router.navigate("/");
-  }, [state, importedShows, importSelected, replaceState, includeEpisodes]);
+    setPasted('')
+    router.navigate('/')
+  }, [state, importedShows, importSelected, replaceState, includeEpisodes])
 
   const onPaste = useCallback(async () => {
     try {
       await fetchCopiedText((text: string) => {
-        if (typeof text === "string") setPasted(text);
-      });
+        if (typeof text === 'string') setPasted(text)
+      })
     } catch {
       // no-op
     }
-  }, [fetchCopiedText]);
+  }, [fetchCopiedText])
 
   return (
     <ParallaxScrollView>
@@ -137,13 +131,13 @@ export const ImportSeries = () => {
           onPress={onPaste}
           variant="CANCEL"
           title="Paste"
-          containerStyle={{ width: "45%" }}
+          containerStyle={{ width: '45%' }}
         />
         <CustomButton
           onPress={onParse}
           variant="CANCEL"
           title="Parse"
-          containerStyle={{ width: "45%" }}
+          containerStyle={{ width: '45%' }}
           isLoading={parsing}
         />
       </View>
@@ -175,9 +169,9 @@ export const ImportSeries = () => {
           <HorizontalSeparator style={{ marginVertical: 6 }} />
           {importedShows.map((item) => {
             if (!item.imdbId) {
-              return null;
+              return null
             }
-            const id = item.imdbId;
+            const id = item.imdbId
             return (
               <View key={id}>
                 <ImportItem
@@ -193,7 +187,7 @@ export const ImportSeries = () => {
                 />
                 <HorizontalSeparator style={{ marginVertical: 6 }} />
               </View>
-            );
+            )
           })}
 
           <CustomButton
@@ -205,8 +199,8 @@ export const ImportSeries = () => {
         </View>
       )}
     </ParallaxScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -223,15 +217,15 @@ const styles = StyleSheet.create({
   error: {},
   results: { gap: 12 },
   selectAllRow: { marginTop: 8 },
-  loadingRow: { flexDirection: "row", gap: 8, alignItems: "center" },
+  loadingRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   list: { maxHeight: 320 },
   actionsRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 8,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     marginTop: 8,
   },
   actionBtnGrow: {
     flex: 1,
   },
-});
+})

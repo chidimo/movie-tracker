@@ -4,7 +4,7 @@ import type { OmdbTitleResponse, Show } from '@movie-tracker/core'
 export const normalizeOmdbShow = (full: OmdbTitleResponse) => {
   const show: Show = {
     imdbId: full.imdbID,
-    title: full.Title,  
+    title: full.Title,
     thumbnail: full.Poster,
     imdbUrl: `https://www.imdb.com/title/${full.imdbID}`,
     releaseYear: full.Year,

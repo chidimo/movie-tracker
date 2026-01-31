@@ -1,45 +1,45 @@
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Season, Show } from "@movie-tracker/core";
-import { useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-import { EpisodeCard } from "./episode-card";
-import { CustomSwitch } from "../form-elements/custom-switch";
-import { SeasonProgress } from "./show-info-components/series-progress";
+import { useMemo } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { CustomSwitch } from '../form-elements/custom-switch'
+import { EpisodeCard } from './episode-card'
+import { SeriesProgress } from './show-info-components/series-progress'
+import type { Season, Show } from '@movie-tracker/core'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export const SeasonContainer = ({
   season,
   show,
   hideWatched,
 }: {
-  season: Season;
-  show: Show;
-  hideWatched: boolean;
+  season: Season
+  show: Show
+  hideWatched: boolean
 }) => {
-  const { updateShow } = useSeriesTracker();
+  const { updateShow } = useSeriesTracker()
   const { border: borderColor, mutedText: mutedTextColor } = useThemeColor({}, [
-    "border",
-    "mutedText",
-  ]);
+    'border',
+    'mutedText',
+  ])
 
   const episodes = useMemo(() => {
-    const list = season.episodes || [];
-    return hideWatched ? list.filter((e) => !e.watched) : list;
-  }, [season.episodes, hideWatched]);
+    const list = season.episodes || []
+    return hideWatched ? list.filter((e) => !e.watched) : list
+  }, [season.episodes, hideWatched])
 
-  const allWatched = episodes.every((e) => e.watched);
+  const allWatched = episodes.every((e) => e.watched)
   const handleToggleAllWatched = (checked: boolean) => {
     if (!show) {
-      return;
+      return
     }
     if (!season.seasonNumber) {
-      return;
+      return
     }
     const nextSeasons = (show.seasons || []).map((s) => {
       if (s.seasonNumber !== season.seasonNumber) {
-        return s;
+        return s
       }
       return {
         ...s,
@@ -47,26 +47,26 @@ export const SeasonContainer = ({
           ...e,
           watched: checked,
         })),
-      };
-    });
-    updateShow({ ...show, seasons: nextSeasons });
-  };
+      }
+    })
+    updateShow({ ...show, seasons: nextSeasons })
+  }
 
   return (
     <ThemedView style={[styles.container, { borderColor }]}>
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           marginBottom: 8,
         }}
       >
         <View style={{}}>
           <ThemedText style={styles.title}>
-            {season.title || `Season ${season.seasonNumber ?? ""}`}
+            {season.title || `Season ${season.seasonNumber ?? ''}`}
           </ThemedText>
-          <SeasonProgress season={season} />
+          <SeriesProgress season={season} />
         </View>
         <CustomSwitch
           value={allWatched}
@@ -75,7 +75,7 @@ export const SeasonContainer = ({
       </View>
       {episodes.length === 0 ? (
         <ThemedText style={[styles.empty, { color: mutedTextColor }]}>
-          {allWatched ? "All watched" : "No episodes"}
+          {allWatched ? 'All watched' : 'No episodes'}
         </ThemedText>
       ) : (
         <View style={styles.episodeList}>
@@ -90,8 +90,8 @@ export const SeasonContainer = ({
         </View>
       )}
     </ThemedView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   title: {
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 8,
   },
   empty: {
@@ -110,13 +110,13 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   epRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   epNum: {
     width: 28,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   epTitle: {
     flex: 1,
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
     height: 1,
     marginVertical: 4,
   },
-});
+})

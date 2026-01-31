@@ -2,7 +2,7 @@
 export class Logger {
   private static get DEBUG_MODE(): boolean {
     try {
-      return process?.env?.EXPO_PUBLIC_DEBUG_AI === "true"
+      return process?.env?.EXPO_PUBLIC_DEBUG_AI === 'true'
     } catch {
       return false
     }
@@ -10,19 +10,19 @@ export class Logger {
 
   static log(message: string, data?: any) {
     if ((typeof __DEV__ !== 'undefined' && __DEV__) || Logger.DEBUG_MODE) {
-      console.log(`[AI] ${message}`, data || "")
+      console.log(`[AI] ${message}`, data || '')
     }
   }
 
   static error(message: string, error?: any) {
     if ((typeof __DEV__ !== 'undefined' && __DEV__) || Logger.DEBUG_MODE) {
-      console.error(`[AI] ${message}`, error || "")
+      console.error(`[AI] ${message}`, error || '')
     }
   }
 
   static warn(message: string, data?: any) {
     if ((typeof __DEV__ !== 'undefined' && __DEV__) || Logger.DEBUG_MODE) {
-      console.warn(`[AI] ${message}`, data || "")
+      console.warn(`[AI] ${message}`, data || '')
     }
   }
 }

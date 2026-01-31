@@ -1,8 +1,8 @@
+import { Switcher } from '../switcher'
+import { EpisodeCard } from './episode-card'
+import { SeriesProgress } from './show-info-components'
 import type { Season, Show } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import { EpisodeCard } from './episode-card'
-import { Switcher } from '../switcher'
-import { SeasonProgress } from './show-info-components'
 
 export const SeasonContainer = ({
   show,
@@ -16,12 +16,11 @@ export const SeasonContainer = ({
   const { updateShow } = useSeriesTracker()
 
   const toggleSeason = (seasonNumber: number, watched: boolean) => {
-    if (!show) return
-    const nextSeasons = (show.seasons || []).map((s) => {
+    const nextSeasons = show.seasons.map((s) => {
       if (s.seasonNumber !== seasonNumber) return s
       return {
         ...s,
-        episodes: (s.episodes || []).map((e) => ({ ...e, watched })),
+        episodes: s.episodes.map((e) => ({ ...e, watched })),
       }
     })
     updateShow({ ...show, seasons: nextSeasons })
@@ -35,7 +34,7 @@ export const SeasonContainer = ({
         <div>
           <h2 className="font-semibold">{season.title}</h2>
 
-          <SeasonProgress
+          <SeriesProgress
             season={season}
             className="mt-2"
             label="Progress"

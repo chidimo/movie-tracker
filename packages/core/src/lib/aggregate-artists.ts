@@ -6,7 +6,9 @@ export interface ArtistFrequency {
   shows: Array<string> // Array of show titles where this artist appears
 }
 
-export const getCommonArtists = (shows: Array<Show>): Array<ArtistFrequency> => {
+export const getCommonArtists = (
+  shows: Array<Show>,
+): Array<ArtistFrequency> => {
   const artistMap = new Map<string, { count: number; shows: Array<string> }>()
 
   shows.forEach((show) => {
@@ -51,19 +53,4 @@ export const getTopArtists = (
   limit: number = 10,
 ): Array<ArtistFrequency> => {
   return getCommonArtists(shows).slice(0, limit)
-}
-
-// Legacy export for backward compatibility
-export interface ArtistCount {
-  name: string
-  count: number
-  shows: Array<string>
-}
-
-export const getCommonArtistsLegacy = (shows: Array<Show>): Array<ArtistCount> => {
-  return getCommonArtists(shows).map(artist => ({
-    name: artist.name,
-    count: artist.frequency,
-    shows: artist.shows
-  }))
 }

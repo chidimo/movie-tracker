@@ -1,26 +1,27 @@
-import { CustomButton } from "@/components/form-elements/custom-button";
-import { SearchResult } from "@/components/series-tracker/search-result";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useOmdbTitleMutation } from "@/hooks/use-movies-legacy";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { aiDiscovery, AIRecommendation, OmdbSearchItem } from "@movie-tracker/core";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { PressablePill } from "../pressable-pill";
+import { aiDiscovery } from '@movie-tracker/core'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { PressablePill } from '../pressable-pill'
+import type { AIRecommendation, OmdbSearchItem } from '@movie-tracker/core'
+import { CustomButton } from '@/components/form-elements/custom-button'
+import { SearchResult } from '@/components/series-tracker/search-result'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useOmdbTitleMutation } from '@/hooks/use-movies-legacy'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export const PersonalizedRecommendations = () => {
-  const { state, addShow } = useSeriesTracker();
+  const { state, addShow } = useSeriesTracker()
   const { mutedText: mutedTextColor, surface: surfaceColor } = useThemeColor(
     {},
-    ["mutedText", "surface"],
-  );
+    ['mutedText', 'surface'],
+  )
 
-  const [selectedMood, setSelectedMood] = useState<string>("");
+  const [selectedMood, setSelectedMood] = useState<string>('')
 
-  const { mutateAsync: fetchTitle, isPending } = useOmdbTitleMutation();
+  const { mutateAsync: fetchTitle, isPending } = useOmdbTitleMutation()
 
   // Get personalized recommendations based on user's shows
   const {
@@ -28,11 +29,11 @@ export const PersonalizedRecommendations = () => {
     isFetching: isLoadingRecommendations,
     refetch: refetchRecommendations,
   } = useQuery({
-    queryKey: ["personalized-recommendations", state.shows.length],
+    queryKey: ['personalized-recommendations', state.shows.length],
     queryFn: () => aiDiscovery.getPersonalizedRecommendations(state.shows),
     enabled: state.shows.length > 0,
     staleTime: 1000 * 60 * 30, // 30 minutes
-  });
+  })
 
   // Get mood-based recommendations
   const {
@@ -41,32 +42,32 @@ export const PersonalizedRecommendations = () => {
     mutate: getMoodRecommendations,
   } = useMutation({
     mutationFn: (mood: string) => aiDiscovery.getMoodBasedRecommendations(mood),
-  });
+  })
 
   const moods = [
-    { emoji: "😊", label: "Feel-good", value: "feel-good comedy" },
-    { emoji: "🧠", label: "Mind-bending", value: "mind-bending thriller" },
-    { emoji: "❤️", label: "Romantic", value: "romantic drama" },
-    { emoji: "😂", label: "Laugh", value: "hilarious comedy" },
-    { emoji: "🔥", label: "Intense", value: "intense action drama" },
-    { emoji: "🌙", label: "Relaxing", value: "relaxing slice of life" },
-  ];
+    { emoji: '😊', label: 'Feel-good', value: 'feel-good comedy' },
+    { emoji: '🧠', label: 'Mind-bending', value: 'mind-bending thriller' },
+    { emoji: '❤️', label: 'Romantic', value: 'romantic drama' },
+    { emoji: '😂', label: 'Laugh', value: 'hilarious comedy' },
+    { emoji: '🔥', label: 'Intense', value: 'intense action drama' },
+    { emoji: '🌙', label: 'Relaxing', value: 'relaxing slice of life' },
+  ]
 
   const onAdd = async (item: OmdbSearchItem) => {
-    const show = await fetchTitle(item.imdbID);
-    if (!show) return;
-    await addShow(show);
-  };
+    const show = await fetchTitle(item.imdbID)
+    if (!show) return
+    await addShow(show)
+  }
 
   const onMoodSelect = (mood: string) => {
-    setSelectedMood(mood);
-    getMoodRecommendations(mood);
-  };
+    setSelectedMood(mood)
+    getMoodRecommendations(mood)
+  }
 
   const renderRecommendationCard = (recommendation: AIRecommendation) => {
     const isAdded = state.shows.some(
       (s) => s.imdbId === recommendation.show.imdbID,
-    );
+    )
 
     return (
       <SearchResult
@@ -76,8 +77,8 @@ export const PersonalizedRecommendations = () => {
         isAdded={isAdded}
         isLoading={isPending}
       />
-    );
-  };
+    )
+  }
 
   return (
     <ThemedView style={styles.section}>
@@ -150,30 +151,30 @@ export const PersonalizedRecommendations = () => {
         </>
       )}
     </ThemedView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   section: {
     gap: 12,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   refreshButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    width: "auto",
+    width: 'auto',
   },
   emptyState: {
     padding: 16,
     borderRadius: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
   emptyText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 14,
   },
   moodTitle: {
@@ -181,14 +182,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   moodGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
     marginBottom: 12,
   },
   moodPill: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
@@ -196,22 +197,22 @@ const styles = StyleSheet.create({
   },
   selectedMood: {
     borderWidth: 2,
-    borderColor: "#007AFF",
+    borderColor: '#007AFF',
   },
   moodEmoji: {
     fontSize: 16,
   },
   moodLabel: {
     fontSize: 12,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   moodRecommendation: {
     marginTop: 8,
   },
   moodReason: {
     fontSize: 12,
-    fontStyle: "italic",
+    fontStyle: 'italic',
     marginBottom: 4,
     opacity: 0.8,
   },
-});
+})

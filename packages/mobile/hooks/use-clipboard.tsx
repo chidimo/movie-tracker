@@ -1,14 +1,14 @@
-import * as Clipboard from "expo-clipboard";
+import * as Clipboard from 'expo-clipboard'
 
 export const useClipboard = () => {
   const copyToClipboard = async (text: string) => {
-    await Clipboard.setStringAsync(text);
-  };
+    await Clipboard.setStringAsync(text)
+  }
 
   const fetchCopiedText = async (onCopy: (text: string) => void) => {
-    const text = await Clipboard.getStringAsync();
-    onCopy(text);
-  };
+    const text = await Clipboard.getStringAsync()
+    onCopy(text)
+  }
 
-  return { copyToClipboard, fetchCopiedText };
-};
+  return { copyToClipboard, fetchCopiedText }
+}

@@ -1,12 +1,12 @@
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { StyleSheet, Switch, View } from "react-native";
-import { ThemedText } from "../themed-text";
+import { StyleSheet, Switch, View } from 'react-native'
+import { ThemedText } from '../themed-text'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 type Props = {
-  value: boolean;
-  label?: string;
-  onChange: (value: boolean) => void;
-};
+  value: boolean
+  label?: string
+  onChange: (value: boolean) => void
+}
 
 export const CustomSwitch = ({ value, label, onChange }: Props) => {
   const {
@@ -14,7 +14,7 @@ export const CustomSwitch = ({ value, label, onChange }: Props) => {
     mutedText: mutedTextColor,
     tint: tintColor,
     switchKnob: switchKnobColor,
-  } = useThemeColor({}, ["border", "mutedText", "tint", "switchKnob"]);
+  } = useThemeColor({}, ['border', 'mutedText', 'tint', 'switchKnob'])
 
   return (
     <View style={[styles.switchCol, { borderColor }]}>
@@ -28,17 +28,17 @@ export const CustomSwitch = ({ value, label, onChange }: Props) => {
         trackColor={{ false: borderColor, true: tintColor }}
         thumbColor={switchKnobColor}
         onValueChange={(checked) => {
-          onChange(checked);
+          onChange(checked)
         }}
       />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   switchCol: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
 
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     fontSize: 12,
   },
-});
+})

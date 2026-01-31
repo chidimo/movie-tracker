@@ -1,32 +1,33 @@
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { ArtistFrequency, getCommonArtists } from "@movie-tracker/core";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { getCommonArtists } from '@movie-tracker/core'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import type { ArtistFrequency } from '@movie-tracker/core'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 const ArtistItem = ({ artist }: { artist: ArtistFrequency }) => {
-  const { mutedText: mutedTextColor } = useThemeColor({}, ["mutedText"]);
+  const { mutedText: mutedTextColor } = useThemeColor({}, ['mutedText'])
 
   return (
     <View style={styles.artistItem}>
       <ThemedText style={styles.artistName}>{artist.name}</ThemedText>
       <ThemedText style={[styles.frequency, { color: mutedTextColor }]}>
-        {artist.frequency} show{artist.frequency !== 1 ? "s" : ""}
+        {artist.frequency} show{artist.frequency !== 1 ? 's' : ''}
       </ThemedText>
       <ThemedText style={[styles.showsList, { color: mutedTextColor }]}>
-        Appears in: {artist.shows.slice(0, 3).join(", ")}
+        Appears in: {artist.shows.slice(0, 3).join(', ')}
         {artist.shows.length > 3 && ` +${artist.shows.length - 3} more`}
       </ThemedText>
     </View>
-  );
-};
+  )
+}
 
 export const CommonArtists = () => {
-  const { state } = useSeriesTracker();
-  const { border: borderColor } = useThemeColor({}, ["border"]);
+  const { state } = useSeriesTracker()
+  const { border: borderColor } = useThemeColor({}, ['border'])
 
-  const commonArtists = getCommonArtists(state.shows);
+  const commonArtists = getCommonArtists(state.shows)
 
   if (commonArtists.length === 0) {
     return (
@@ -37,7 +38,7 @@ export const CommonArtists = () => {
           artists.
         </ThemedText>
       </ThemedView>
-    );
+    )
   }
 
   return (
@@ -52,8 +53,8 @@ export const CommonArtists = () => {
         ))}
       </ScrollView>
     </ThemedView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -64,13 +65,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 12,
   },
   noData: {
     fontSize: 14,
     opacity: 0.7,
-    fontStyle: "italic",
+    fontStyle: 'italic',
   },
   scrollContainer: {
     maxHeight: 300,
@@ -78,11 +79,11 @@ const styles = StyleSheet.create({
   artistItem: {
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: '#f0f0f0',
   },
   artistName: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   frequency: {
     fontSize: 12,
@@ -91,6 +92,6 @@ const styles = StyleSheet.create({
   showsList: {
     fontSize: 12,
     marginTop: 4,
-    fontStyle: "italic",
+    fontStyle: 'italic',
   },
-});
+})

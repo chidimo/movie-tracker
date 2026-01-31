@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react'
-import type { Show } from '@movie-tracker/core'
+import { useEffect, useRef, useState } from 'react'
 import { RemoveShow } from './remove-show'
 import {
   MoveToTopButton,
   OpenIMDbButton,
   ViewDetailsButton,
 } from './card-menu-buttons'
+import type { Show } from '@movie-tracker/core'
 
 type Props = {
   show: Show

@@ -1,5 +1,5 @@
-import { ExportSeries } from "@/components/series-tracker/export-series";
+import { ExportSeries } from '@/components/series-tracker/export-series'
 
 export default function ExportScreen() {
-  return <ExportSeries />;
+  return <ExportSeries />
 }

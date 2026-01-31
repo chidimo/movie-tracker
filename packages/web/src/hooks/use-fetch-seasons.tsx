@@ -4,7 +4,9 @@ import type { Episode, Season } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
 
 const { omdbGetSeason, omdbGetTitle } = createWebOmdbFunctions({
-  omdbFunctionPath: import.meta.env.DEV ? '/api/omdb' : '/.netlify/functions/omdb'
+  omdbFunctionPath: import.meta.env.DEV
+    ? '/api/omdb'
+    : '/.netlify/functions/omdb',
 })
 
 const getSingleSeason = async (

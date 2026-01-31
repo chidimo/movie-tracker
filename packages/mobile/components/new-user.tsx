@@ -1,30 +1,30 @@
-import ParallaxScrollView from "@/components/parallax-scroll-view";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { Colors } from "@/constants/theme";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Image } from "expo-image";
-import { useRouter } from "expo-router";
-import { Pressable, StyleSheet } from "react-native";
-import { SetupProfile } from "./user/setup-profile";
-import { Welcome } from "./welcome";
+import { Image } from 'expo-image'
+import { useRouter } from 'expo-router'
+import { Pressable, StyleSheet } from 'react-native'
+import { SetupProfile } from './user/setup-profile'
+import { Welcome } from './welcome'
+import ParallaxScrollView from '@/components/parallax-scroll-view'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { Colors } from '@/constants/theme'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export const NewUser = () => {
-  const router = useRouter();
-  const { state, hasShows } = useSeriesTracker();
-  const hasProfile = !!state.profile?.name;
+  const router = useRouter()
+  const { state, hasShows } = useSeriesTracker()
+  const hasProfile = !!state.profile?.name
   const { border: borderColor, success: successColor } = useThemeColor({}, [
-    "border",
-    "success",
-  ]);
+    'border',
+    'success',
+  ])
 
   const handlePressSearch = () => {
     if (!hasProfile) {
-      return;
+      return
     }
-    router.push("/search");
-  };
+    router.push('/search')
+  }
 
   return (
     <ParallaxScrollView
@@ -34,7 +34,7 @@ export const NewUser = () => {
       }}
       headerImage={
         <Image
-          source={require("@/assets/images/popcorn-time.png")}
+          source={require('@/assets/images/popcorn-time.png')}
           style={[styles.reactLogo, { borderColor }]}
         />
       }
@@ -48,7 +48,7 @@ export const NewUser = () => {
             styles.stepContainer,
             {
               opacity: hasProfile ? 1 : 0.5,
-              pointerEvents: hasProfile ? "auto" : "none",
+              pointerEvents: hasProfile ? 'auto' : 'none',
             },
           ]}
         >
@@ -67,8 +67,8 @@ export const NewUser = () => {
         </ThemedView>
       </Pressable>
     </ParallaxScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   stepContainer: {
@@ -76,17 +76,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   stepHeaderRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     gap: 8,
   },
   reactLogo: {
-    height: "100%",
-    width: "100%",
+    height: '100%',
+    width: '100%',
     bottom: 0,
     left: 0,
-    position: "absolute",
+    position: 'absolute',
     borderBottomWidth: 1,
   },
-});
+})

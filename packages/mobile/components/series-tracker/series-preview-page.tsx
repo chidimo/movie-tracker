@@ -1,21 +1,21 @@
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useGetShow } from "@/hooks/use-movies-legacy";
-import { ActivityIndicator } from "react-native";
-import { SeriesDetailView } from "./series-detail-view";
+import { ActivityIndicator } from 'react-native'
+import { SeriesDetailView } from './series-detail-view'
+import { ThemedText } from '@/components/themed-text'
+import { ThemedView } from '@/components/themed-view'
+import { useGetShow } from '@/hooks/use-movies-legacy'
 
 export const SeriesPreviewPage = ({ imdbId }: { imdbId: string }) => {
-  const { data: show, isLoading, error } = useGetShow(imdbId);
+  const { data: show, isLoading, error } = useGetShow(imdbId)
 
   if (isLoading) {
     return (
       <ThemedView
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
         <ActivityIndicator size="large" />
         <ThemedText>Loading show details...</ThemedText>
       </ThemedView>
-    );
+    )
   }
 
   if (error || !show) {
@@ -23,8 +23,8 @@ export const SeriesPreviewPage = ({ imdbId }: { imdbId: string }) => {
       <ThemedView
         style={{
           flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: 'center',
+          alignItems: 'center',
           padding: 16,
         }}
       >
@@ -35,8 +35,8 @@ export const SeriesPreviewPage = ({ imdbId }: { imdbId: string }) => {
           </ThemedText>
         )}
       </ThemedView>
-    );
+    )
   }
 
-  return <SeriesDetailView show={show} />;
-};
+  return <SeriesDetailView show={show} />
+}

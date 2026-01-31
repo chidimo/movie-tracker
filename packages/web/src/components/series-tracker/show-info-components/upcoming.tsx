@@ -1,4 +1,8 @@
-import { findUpcomingForShow, formatTentative, getPaddedNumber } from '@movie-tracker/core'
+import {
+  findUpcomingForShow,
+  formatTentative,
+  getPaddedNumber,
+} from '@movie-tracker/core'
 import type { Show } from '@movie-tracker/core'
 
 export const UpcomingRibbon = ({

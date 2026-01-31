@@ -6,13 +6,15 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "vite --port 3000",
     "build": "vite build && tsc",
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier",
     "check": "prettier --write . && eslint --fix",
+    "web:dev": "cd packages/web && npx vite",
+    "web:build": "cd packages/web && npx tsc && npx vite build",
+    "web:preview": "cd packages/web && npx vite preview",
     "mobile:start": "cd packages/mobile && npx expo start --dev-client",
     "mobile:android": "cd packages/mobile && npx expo run:android",
     "mobile:ios": "cd packages/mobile && npx expo run:ios",
@@ -21,9 +23,6 @@
     "mobile:prebuild": "cd packages/mobile && npx expo prebuild",
     "mobile:build:dev": "cd packages/mobile && npx eas-cli@latest workflow:run create-development-builds.yml",
     "mobile:build:prod": "cd packages/mobile && npx eas-cli@latest workflow:run create-production-builds.yml",
-    "web:dev": "cd packages/web && npx vite",
-    "web:build": "cd packages/web && npx tsc && npx vite build",
-    "web:preview": "cd packages/web && npx vite preview",
     "start:all": "concurrently \"yarn web:dev\" \"yarn mobile:android\"",
     "start:web+android": "concurrently \"yarn web:dev\" \"yarn mobile:android\""
   },

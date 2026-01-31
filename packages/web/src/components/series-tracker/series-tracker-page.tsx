@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { TrackerState } from '@movie-tracker/core'
 import { ProfileModal } from '@/components/series-tracker/profile-modal'
 import { ExportSeries } from '@/components/series-tracker/export-series'
 import { ImportSeries } from '@/components/series-tracker/import-series'
@@ -6,10 +7,10 @@ import { DraggableShowCard } from '@/components/series-tracker/draggable-show-ca
 import { SearchSeries } from '@/components/series-tracker/search-series'
 import { CommonArtists } from '@/components/series-tracker/show-info-components/common-artists'
 import { useSeriesTracker } from '@/context/series-tracker-context'
-import type { TrackerState } from '@movie-tracker/core'
 
 export const SeriesTrackerPage = () => {
-  const { state, removeShow, replaceState, getOrderedShows, reorderShows } = useSeriesTracker()
+  const { state, removeShow, replaceState, getOrderedShows, reorderShows } =
+    useSeriesTracker()
   const orderedShows = getOrderedShows()
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
 

@@ -1,16 +1,16 @@
-import { ThemedText } from "@/components/themed-text";
-import { useSeriesTracker } from "@/context/series-tracker-context";
-import { useOnOffSwitch } from "@/hooks/use-on-off-switch";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { Pressable, StyleSheet, View } from "react-native";
-import { ProfileFormModal } from "./profile-form-modal";
+import { Pressable, StyleSheet, View } from 'react-native'
+import { ProfileFormModal } from './profile-form-modal'
+import { ThemedText } from '@/components/themed-text'
+import { useSeriesTracker } from '@/context/series-tracker-context'
+import { useOnOffSwitch } from '@/hooks/use-on-off-switch'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export const ProfileSettings = () => {
-  const { hasProfile, state } = useSeriesTracker();
-  const { success: successColor } = useThemeColor({}, ["success"]);
-  const { isOn, setOn, setOff } = useOnOffSwitch();
+  const { hasProfile, state } = useSeriesTracker()
+  const { success: successColor } = useThemeColor({}, ['success'])
+  const { isOn, setOn, setOff } = useOnOffSwitch()
 
-  const profileName = state?.profile?.name || "Not set";
+  const profileName = state?.profile?.name || 'Not set'
 
   return (
     <View style={styles.container}>
@@ -35,16 +35,16 @@ export const ProfileSettings = () => {
         submitButtonText="Update"
       />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: 8,
   },
   profileHeader: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
     marginBottom: 4,
   },
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
   description: {
     opacity: 0.7,
   },
-});
+})

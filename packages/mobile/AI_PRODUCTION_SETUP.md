@@ -72,22 +72,22 @@ The current implementation expects an Ollama-compatible API. For other services,
 
 ```typescript
 // In ai-discovery.ts callAI method
-if (this.baseUrl.includes("openai.com")) {
+if (this.baseUrl.includes('openai.com')) {
   const response = await fetch(`${this.baseUrl}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${process.env.EXPO_PUBLIC_OPENAI_API_KEY}`,
     },
     body: JSON.stringify({
       model: this.model,
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: 'user', content: prompt }],
       max_tokens: 1000,
     }),
-  });
+  })
 
-  const data = await response.json();
-  return data.choices[0].message.content;
+  const data = await response.json()
+  return data.choices[0].message.content
 }
 ```
 

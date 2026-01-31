@@ -1,19 +1,19 @@
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import { useThemeColor } from "@/hooks/use-theme-color";
-import { MaterialIcons } from "@expo/vector-icons";
-import * as React from "react";
-import { Modal, Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThemedText } from "./themed-text";
-import { ThemedView } from "./themed-view";
+import { MaterialIcons } from '@expo/vector-icons'
+import * as React from 'react'
+import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ThemedText } from './themed-text'
+import { ThemedView } from './themed-view'
+import { useThemeColor } from '@/hooks/use-theme-color'
+import { useColorScheme } from '@/hooks/use-color-scheme'
+import { Colors } from '@/constants/theme'
 
 type Props = {
-  title: string | React.ReactNode;
-  visible: boolean;
-  modalBehavior?: "slide-from-bottom" | "fade-into-view";
-  onRequestClose: () => void;
-};
+  title: string | React.ReactNode
+  visible: boolean
+  modalBehavior?: 'slide-from-bottom' | 'fade-into-view'
+  onRequestClose: () => void
+}
 
 export const DefaultModal = (props: React.PropsWithChildren<Props>) => {
   const {
@@ -21,24 +21,24 @@ export const DefaultModal = (props: React.PropsWithChildren<Props>) => {
     children,
     visible,
     onRequestClose,
-    modalBehavior = "slide-from-bottom",
-  } = props;
-  const { bottom } = useSafeAreaInsets();
-  const scheme = useColorScheme() ?? "light";
+    modalBehavior = 'slide-from-bottom',
+  } = props
+  const { bottom } = useSafeAreaInsets()
+  const scheme = useColorScheme() ?? 'light'
   const {
     background: bgColor,
     text: textColor,
     overlay: overlayColor,
-  } = useThemeColor({}, ["background", "text", "overlay"]);
-  const dividerColor = Colors[scheme].icon;
+  } = useThemeColor({}, ['background', 'text', 'overlay'])
+  const dividerColor = Colors[scheme].icon
 
   const modalViewStyle =
-    modalBehavior === "slide-from-bottom"
+    modalBehavior === 'slide-from-bottom'
       ? {
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }
-      : { borderRadius: 10, paddingVertical: 20 };
+      : { borderRadius: 10, paddingVertical: 20 }
 
   return (
     <ThemedView style={{ flex: 1 }}>
@@ -53,7 +53,7 @@ export const DefaultModal = (props: React.PropsWithChildren<Props>) => {
             styles.innerCenter,
             {
               justifyContent:
-                modalBehavior === "slide-from-bottom" ? "flex-end" : "center",
+                modalBehavior === 'slide-from-bottom' ? 'flex-end' : 'center',
               marginBottom: bottom,
               backgroundColor: overlayColor,
             },
@@ -72,8 +72,8 @@ export const DefaultModal = (props: React.PropsWithChildren<Props>) => {
                 { borderBottomColor: dividerColor },
               ]}
             >
-              <View style={{ width: "89%" }}>
-                {typeof title === "string" ? (
+              <View style={{ width: '89%' }}>
+                {typeof title === 'string' ? (
                   <ThemedText style={[styles.title, { color: textColor }]}>
                     {title}
                   </ThemedText>
@@ -90,19 +90,19 @@ export const DefaultModal = (props: React.PropsWithChildren<Props>) => {
         </View>
       </Modal>
     </ThemedView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   titleContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 8,
     borderBottomWidth: 1,
     marginVertical: 10,
@@ -120,4 +120,4 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-});
+})

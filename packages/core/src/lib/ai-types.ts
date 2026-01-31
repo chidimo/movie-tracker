@@ -1,8 +1,8 @@
 type AIREcommendationCategory =
-  | "similar"
-  | "trending"
-  | "hidden_gem"
-  | "mood_based"
+  | 'similar'
+  | 'trending'
+  | 'hidden_gem'
+  | 'mood_based'
 
 export interface AIRecommendation {
   show: {
@@ -35,13 +35,13 @@ export interface AIPromptTemplate {
 }
 
 const AI_RESPONSE_FIELDS = {
-  title: "Title",
-  year: "Year",
-  reason: "Brief reason for recommendation",
-  confidence: "Confidence score (0-1)",
-  imdbId: "IMDB ID if possible",
+  title: 'Title',
+  year: 'Year',
+  reason: 'Brief reason for recommendation',
+  confidence: 'Confidence score (0-1)',
+  imdbId: 'IMDB ID if possible',
   posterUrl:
-    "Poster URL (use TMDB/JustWatch/official sources, or placeholder if not found)",
+    'Poster URL (use TMDB/JustWatch/official sources, or placeholder if not found)',
 }
 
 export const generateAIPrompt = (template: AIPromptTemplate): string => {
@@ -58,7 +58,7 @@ export const generateAIPrompt = (template: AIPromptTemplate): string => {
     5. ${AI_RESPONSE_FIELDS.imdbId}
     6. ${AI_RESPONSE_FIELDS.posterUrl}
 
-    ${additionalInstructions || ""}
+    ${additionalInstructions || ''}
 
     Format as JSON array with fields: title, year, reason, confidence, imdbId, posterUrl`
 }

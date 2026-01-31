@@ -1,15 +1,15 @@
 // Fallback for using MaterialIcons on Android and web.
 
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { SymbolViewProps, SymbolWeight } from "expo-symbols";
-import { ComponentProps } from "react";
-import { OpaqueColorValue, type StyleProp, type TextStyle } from "react-native";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import type { OpaqueColorValue, StyleProp, TextStyle } from 'react-native'
+import type { SymbolViewProps, SymbolWeight } from 'expo-symbols'
+import type { ComponentProps } from 'react'
 
 type IconMapping = Record<
-  SymbolViewProps["name"],
-  ComponentProps<typeof MaterialIcons>["name"]
->;
-type IconSymbolName = keyof typeof MAPPING;
+  SymbolViewProps['name'],
+  ComponentProps<typeof MaterialIcons>['name']
+>
+type IconSymbolName = keyof typeof MAPPING
 
 /**
  * Add your SF Symbols to Material Icons mappings here.
@@ -17,17 +17,17 @@ type IconSymbolName = keyof typeof MAPPING;
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
 const MAPPING = {
-  "house.fill": "home",
-  "paperplane.fill": "send",
-  "chevron.left.forwardslash.chevron.right": "code",
-  "chevron.right": "chevron-right",
+  'house.fill': 'home',
+  'paperplane.fill': 'send',
+  'chevron.left.forwardslash.chevron.right': 'code',
+  'chevron.right': 'chevron-right',
   // Import/Export tabs
-  "square.and.arrow.down": "file-download",
-  "square.and.arrow.up": "file-upload",
+  'square.and.arrow.down': 'file-download',
+  'square.and.arrow.up': 'file-upload',
   // Settings tab
-  "gearshape.fill": "settings",
-  "gobackward": "arrow-back",
-} as IconMapping;
+  'gearshape.fill': 'settings',
+  gobackward: 'arrow-back',
+} as IconMapping
 
 /**
  * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
@@ -40,11 +40,11 @@ export const IconSymbol = ({
   color,
   style,
 }: {
-  name: IconSymbolName;
-  size?: number;
-  color: string | OpaqueColorValue;
-  style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
+  name: IconSymbolName
+  size?: number
+  color: string | OpaqueColorValue
+  style?: StyleProp<TextStyle>
+  weight?: SymbolWeight
 }) => {
   return (
     <MaterialIcons
@@ -53,5 +53,5 @@ export const IconSymbol = ({
       name={MAPPING[name]}
       style={style}
     />
-  );
-};
+  )
+}
