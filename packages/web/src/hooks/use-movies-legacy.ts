@@ -1,16 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import type { UseQueryResult } from "@tanstack/react-query"
 import { 
+  normalizeOmdbShow, 
   omdbGetSeason, 
   omdbGetTitle, 
-  omdbSearch, 
-  normalizeOmdbShow 
+  omdbSearch 
 } from "@movie-tracker/core"
+import type { UseQueryResult } from "@tanstack/react-query"
 import type { 
   OmdbSearchItem, 
   OmdbSeasonResponse, 
-  Show,
-  OmdbSearchResponse
+  Show
 } from "@movie-tracker/core"
 
 // Export types for external use
@@ -32,12 +31,12 @@ export const useSearchSeries = (
 ) => {
   const enabled = !!query && (options.enabled ?? true)
 
-  return useQuery<OmdbSearchItem[]>({
+  return useQuery<Array<OmdbSearchItem>>({
     queryKey: ["omdb", "search", { query }],
     enabled,
     queryFn: async () => {
-      const result = await omdbSearch(query) as unknown as OmdbSearchResponse
-      return result?.Search || []
+      const result = await omdbSearch(query)
+      return result
     },
     ...options,
   })
@@ -50,7 +49,7 @@ export const useFetchSeasons = (
 ) => {
   const enabled = !!imdbID && !!seasonString && (options.enabled ?? true)
 
-  return useQuery<OmdbSeasonResponse[]>({
+  return useQuery<Array<OmdbSeasonResponse>>({
     queryKey: ["omdb", "seasons", { imdbID, seasonString }],
     enabled,
     queryFn: async () => {

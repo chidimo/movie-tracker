@@ -12,7 +12,13 @@
     "prebuild": "npx expo prebuild",
     "build:dev": "npx eas-cli@latest workflow:run create-development-builds.yml",
     "build:prod": "npx eas-cli@latest workflow:run create-production-builds.yml",
-    "test:ai": "node test-ai-connection.js"
+    "test:ai": "node test-ai-connection.js",
+    "build:android": "eas build --profile development --platform android",
+    "build:android:production": "eas build --profile production --platform android",
+    "submit:android": "eas submit --platform android --profile production",
+    "build:ios": "eas build --profile development --platform ios",
+    "build:ios:production": "eas build --profile development --platform ios",
+    "submit:ios": "eas submit --platform ios --profile production"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

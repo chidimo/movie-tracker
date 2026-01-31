@@ -61,17 +61,23 @@ export type OmdbSeasonResponse = {
   Error?: string
 }
 
-// Web implementation using Netlify functions
-export function createWebOmdbFunctions(options: { omdbFunctionPath: string }) {
-  const { omdbFunctionPath } = options
+function buildOmdbFunctionUrl(params: Record<string, string>): string {
+  // Always use the current window's origin and detect environment dynamically
+  const baseUrl = globalThis.window.location.origin || 'http://localhost:5174'
+  const isDevelopment = globalThis.window.location.hostname === 'localhost'
+  const functionPath = isDevelopment ? '/api/omdb' : '/.netlify/functions/omdb'
 
-  function buildOmdbFunctionUrl(params: Record<string, string>): string {
-    const url = new URL(omdbFunctionPath, 'http://localhost')
-    for (const [k, v] of Object.entries(params)) {
-      url.searchParams.set(k, v)
-    }
-    return `${url.pathname}${url.search}`
+  const url = new URL(functionPath, baseUrl)
+  for (const [k, v] of Object.entries(params)) {
+    url.searchParams.set(k, v)
   }
+  return `${url.pathname}${url.search}`
+}
+
+// Web implementation using Netlify functions
+export function createWebOmdbFunctions(_options: { omdbFunctionPath: string }) {
+  // Note: omdbFunctionPath parameter is kept for API compatibility but not used
+  // since we detect environment dynamically at runtime
 
   return {
     async omdbSearch(q: string): Promise<Array<OmdbSearchItem>> {
@@ -83,9 +89,7 @@ export function createWebOmdbFunctions(options: { omdbFunctionPath: string }) {
       return []
     },
 
-    async omdbGetTitle(
-      imdbID: string,
-    ): Promise<OmdbTitleResponse | null> {
+    async omdbGetTitle(imdbID: string): Promise<OmdbTitleResponse | null> {
       const url = buildOmdbFunctionUrl({ i: imdbID, plot: 'short' })
       const res = await fetch(url)
       const data = (await res.json()) as OmdbTitleResponse
@@ -102,16 +106,16 @@ export function createWebOmdbFunctions(options: { omdbFunctionPath: string }) {
       const data = (await res.json()) as OmdbSeasonResponse
       if (data.Response === 'True') return data
       return null
-    }
+    },
   }
 }
 
 // Mobile implementation using direct OMDB API
 export function createMobileOmdbFunctions(apiKey?: string) {
   function buildOmdbUrl(params: Record<string, string>): URL {
-    if (!apiKey) return new URL("")
-    const url = new URL("https://www.omdbapi.com/")
-    url.searchParams.set("apikey", apiKey)
+    if (!apiKey) return new URL('')
+    const url = new URL('https://www.omdbapi.com/')
+    url.searchParams.set('apikey', apiKey)
     for (const [k, v] of Object.entries(params)) {
       url.searchParams.set(k, v)
     }
@@ -121,34 +125,33 @@ export function createMobileOmdbFunctions(apiKey?: string) {
   return {
     async omdbSearch(q: string): Promise<Array<OmdbSearchItem>> {
       if (!apiKey || !q.trim()) return []
-      const url = buildOmdbUrl({ type: "series", s: q })
+      const url = buildOmdbUrl({ type: 'series', s: q })
+      console.log('lsearch', { url: url.toString() })
       const res = await fetch(url.toString())
       const data = (await res.json()) as OmdbSearchResponse
-      if (data.Response === "True") return (data.Search || []).slice(0, 5)
+      if (data.Response === 'True') return (data.Search || []).slice(0, 5)
       return []
     },
 
-    async omdbGetTitle(
-      imdbID: string
-    ): Promise<OmdbTitleResponse | null> {
+    async omdbGetTitle(imdbID: string): Promise<OmdbTitleResponse | null> {
       if (!apiKey) return null
-      const url = buildOmdbUrl({ i: imdbID, plot: "short" })
+      const url = buildOmdbUrl({ i: imdbID, plot: 'short' })
       const res = await fetch(url.toString())
       const data = (await res.json()) as OmdbTitleResponse
-      if (data.Response === "True") return data
+      if (data.Response === 'True') return data
       return null
     },
 
     async omdbGetSeason(
       imdbID: string,
-      season: number
+      season: number,
     ): Promise<OmdbSeasonResponse | null> {
       if (!apiKey) return null
       const url = buildOmdbUrl({ i: imdbID, Season: String(season) })
       const res = await fetch(url.toString())
       const data = (await res.json()) as OmdbSeasonResponse
-      if (data.Response === "True") return data
+      if (data.Response === 'True') return data
       return null
-    }
+    },
   }
 }

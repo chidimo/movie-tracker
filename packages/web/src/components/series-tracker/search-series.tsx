@@ -12,7 +12,7 @@ export const SearchSeries = () => {
     enabled: false,
   })
 
-  const results = (data as Array<OmdbSearchItem> | undefined) ?? []
+  const results = (data) ?? []
 
   const onSearch = async () => {
     if (!q.trim()) return

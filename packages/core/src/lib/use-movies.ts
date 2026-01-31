@@ -2,7 +2,6 @@ import {
   createMobileOmdbFunctions, 
   createWebOmdbFunctions
 } from "./omdb"
-import { normalizeOmdbShow } from "./compute-omdb"
 
 // Platform-specific OMDB functions
 const getOmdbFunctions = () => {
@@ -11,18 +10,26 @@ const getOmdbFunctions = () => {
     return createMobileOmdbFunctions(process.env.EXPO_PUBLIC_OMDB_API_KEY)
   }
   
-  // Default to web environment
+  // Default to web environment - check for development at runtime
+  const isDevelopment = () => {
+    if (typeof globalThis !== 'undefined' && globalThis.window?.location?.hostname === 'localhost') {
+      return true
+    }
+    return false
+  }
+  
+  console.log('Environment detection function created')
+  
   return createWebOmdbFunctions({
-    omdbFunctionPath: (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') 
-      ? '/api/omdb' 
-      : '/.netlify/functions/omdb'
+    omdbFunctionPath: isDevelopment() ? '/api/omdb' : '/.netlify/functions/omdb'
   })
 }
 
 const { omdbGetSeason, omdbGetTitle, omdbSearch } = getOmdbFunctions()
 
 // Export the raw functions for custom hook creation
-export { omdbGetSeason, omdbGetTitle, omdbSearch, getOmdbFunctions, normalizeOmdbShow }
+export { omdbGetSeason, omdbGetTitle, omdbSearch, getOmdbFunctions }
+export { normalizeOmdbShow } from "./compute-omdb"
 
 // Export types for external use
 export type SearchOptionsType = {
