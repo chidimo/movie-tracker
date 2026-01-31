@@ -66,8 +66,8 @@ export function SeriesTrackerProvider({
         setState(StorageRepo.getState())
       }
     }
-    globalThis.addEventListener?.('storage', onStorage as any)
-    return () => globalThis.removeEventListener?.('storage', onStorage as any)
+    globalThis.addEventListener('storage', onStorage as any)
+    return () => globalThis.removeEventListener('storage', onStorage as any)
   }, [])
 
   const refresh = useCallback(() => {
@@ -89,7 +89,7 @@ export function SeriesTrackerProvider({
     const updated: TrackerState = {
       ...current,
       shows: [...current.shows, show],
-      showOrder: [...(current.showOrder || []), show.imdbId],
+      showOrder: [show.imdbId, ...(current.showOrder || [])],
     }
     StorageRepo.setState(updated)
     setState(updated)
@@ -131,9 +131,9 @@ export function SeriesTrackerProvider({
   const getShowProgress = useCallback(
     (imdbId: string) => {
       const show = getShowById(imdbId)
-      const allEpisodes = (show?.seasons || []).flatMap(
-        (s: Season) => s.episodes || [],
-      )
+      const allEpisodes = show?.seasons.flatMap(
+        (s: Season) => s.episodes,
+      ) ?? []
       const total = allEpisodes.length
       const watched = allEpisodes.filter((e) => e.watched).length
       return { watched, total }

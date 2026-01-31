@@ -13,7 +13,7 @@ const ArtistItem = ({ artist }: { artist: ArtistFrequency }) => {
     <View style={styles.artistItem}>
       <ThemedText style={styles.artistName}>{artist.name}</ThemedText>
       <ThemedText style={[styles.frequency, { color: mutedTextColor }]}>
-        {artist.frequency} show{artist.frequency !== 1 ? 's' : ''}
+        {artist.frequency === 1 ? 'show' : 'shows'}
       </ThemedText>
       <ThemedText style={[styles.showsList, { color: mutedTextColor }]}>
         Appears in: {artist.shows.slice(0, 3).join(', ')}

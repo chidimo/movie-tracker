@@ -97,7 +97,7 @@ export const SeriesTrackerProvider = ({
       } else {
         const updated: TrackerState = {
           ...next,
-          showOrder: [...(next.showOrder || []), show.imdbId],
+          showOrder: [show.imdbId, ...(next.showOrder || [])],
         }
         await StorageRepo.setState(updated)
         setState(updated)
@@ -156,9 +156,9 @@ export const SeriesTrackerProvider = ({
   const getShowProgress = useCallback(
     (imdbId: string) => {
       const show = getShowById(imdbId)
-      const allEpisodes = (show?.seasons || []).flatMap(
-        (s: Season) => s.episodes || [],
-      )
+      const allEpisodes = show?.seasons.flatMap(
+        (s: Season) => s.episodes,
+      ) || []
       const total = allEpisodes.length
       const watched = allEpisodes.filter((e) => e.watched).length
       return { watched, total }
@@ -240,7 +240,7 @@ export const SeriesTrackerProvider = ({
       moveShowToTop,
       getOrderedShows,
       hasProfile: !!state.profile?.name,
-      hasShows: (state.shows?.length ?? 0) > 0,
+      hasShows: state.shows.length > 0,
       profile: state.profile,
     }),
     [
