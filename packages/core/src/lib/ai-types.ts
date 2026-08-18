@@ -44,6 +44,55 @@ const AI_RESPONSE_FIELDS = {
     'Poster URL (use TMDB/JustWatch/official sources, or placeholder if not found)',
 }
 
+// ---------------------------------------------------------------------------
+// Movie Q&A / auto-tagging / natural language search (plain-LLM features)
+// ---------------------------------------------------------------------------
+
+export interface MovieContext {
+  title: string
+  year: number
+  genres: Array<string>
+  director?: string
+  synopsis?: string
+}
+
+export interface MovieTags {
+  mood: Array<string> // e.g. ["dark", "thought-provoking", "tense"]
+  occasion: Array<string> // e.g. ["date night", "solo watch", "family"]
+  pacing: string // "slow burn" | "fast-paced" | "balanced"
+  rewatchable: boolean
+}
+
+export interface SearchFilters {
+  genres?: Array<string>
+  mood?: Array<string>
+  watched?: boolean | null
+  pacing?: string | null
+  occasion?: Array<string>
+}
+
+// ---------------------------------------------------------------------------
+// Catalogue-based recommendations (naive RAG)
+// ---------------------------------------------------------------------------
+
+export interface CatalogueMovie {
+  id: string
+  title: string
+  year: number
+  genres: Array<string>
+  director?: string
+  synopsis?: string
+  userRating?: number // 1-5, only present if the user has watched it
+  watched: boolean
+}
+
+export interface CatalogueRecommendation {
+  movieId: string
+  title: string
+  reason: string // explanation, e.g. "You loved Nolan's Interstellar..."
+  matchScore: number // 1-10
+}
+
 export const generateAIPrompt = (template: AIPromptTemplate): string => {
   const { context, additionalInstructions } = template
 
