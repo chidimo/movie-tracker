@@ -23,9 +23,18 @@ export const unstable_settings = {
   anchor: '(tabs)',
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
+
 export default function RootLayout() {
   const colorScheme = useColorScheme()
-  const queryClient = new QueryClient()
   const windowWidth = Dimensions.get('window').width
   const { background: backgroundColor } = useThemeColor({}, ['background'])
 

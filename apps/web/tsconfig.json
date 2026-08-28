@@ -1,15 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
     "rootDir": "./src",
-    "noEmit": false,
     "allowImportingTsExtensions": false,
     "verbatimModuleSyntax": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@movie-tracker/core": ["../../core/src"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*"],

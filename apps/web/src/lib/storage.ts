@@ -1,3 +1,4 @@
+import { normalizeTrackerState } from '@movie-tracker/core'
 import type { Show, TrackerState, UserProfile } from '@movie-tracker/core'
 
 const STORAGE_KEY = 'series-tracker'
@@ -6,7 +7,7 @@ function read(): TrackerState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return { shows: [] }
-    return JSON.parse(raw) as TrackerState
+    return normalizeTrackerState(JSON.parse(raw))
   } catch {
     return { shows: [] }
   }

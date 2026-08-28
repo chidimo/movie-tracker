@@ -2273,9 +2273,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@movie-tracker/mobile@workspace:packages/mobile":
+"@movie-tracker/mobile@workspace:apps/mobile":
   version: 0.0.0-use.local
-  resolution: "@movie-tracker/mobile@workspace:packages/mobile"
+  resolution: "@movie-tracker/mobile@workspace:apps/mobile"
   dependencies:
     "@expo/vector-icons": "npm:^15.0.3"
     "@movie-tracker/core": "workspace:*"
@@ -2322,13 +2322,13 @@ __metadata:
     react-native-vector-icons: "npm:^10.3.0"
     react-native-web: "npm:~0.21.0"
     react-native-worklets: "npm:0.5.1"
-    typescript: "npm:~5.9.2"
+    typescript: "npm:^5.7.2"
   languageName: unknown
   linkType: soft
 
-"@movie-tracker/web@workspace:packages/web":
+"@movie-tracker/web@workspace:apps/web":
   version: 0.0.0-use.local
-  resolution: "@movie-tracker/web@workspace:packages/web"
+  resolution: "@movie-tracker/web@workspace:apps/web"
   dependencies:
     "@headlessui/react": "npm:^2.2.9"
     "@heroicons/react": "npm:^2.2.0"

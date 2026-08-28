@@ -29,7 +29,6 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
       "@movie-tracker/core": ["./packages/core/src"]
     }
   }

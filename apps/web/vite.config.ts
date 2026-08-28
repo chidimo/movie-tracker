@@ -1,10 +1,8 @@
-import { URL, fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
-import { devtools } from '@tanstack/devtools-vite'
 import viteReact from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
 
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
+import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -12,14 +10,20 @@ export default defineConfig(({ mode }) => {
   const omdbApiKey = env.OMDB_API_KEY
 
   return {
+    server: {
+      port: 5174,
+    },
+    build: {
+      // Emit to the single top-level dist/ at the repo root
+      outDir: fileURLToPath(new URL('../../dist/web', import.meta.url)),
+      emptyOutDir: true,
+    },
     plugins: [
-      devtools(),
       tanstackRouter({
         target: 'react',
         autoCodeSplitting: true,
       }),
       viteReact(),
-      tailwindcss(),
       {
         name: 'omdb-dev-proxy',
         configureServer(server) {
@@ -62,6 +66,9 @@ export default defineConfig(({ mode }) => {
         },
       },
     ],
+    optimizeDeps: {
+      include: ['@movie-tracker/core'],
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
