@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react'
+import { orderShows } from '@movie-tracker/core'
 import type {
   Season,
   Show,
@@ -153,7 +154,9 @@ export function SeriesTrackerProvider({
 
   const reorderShows = useCallback((fromIndex: number, toIndex: number) => {
     const current = StorageRepo.getState()
-    const order = current.showOrder || current.shows.map((s) => s.imdbId)
+    const order = orderShows(current.shows, current.showOrder).map(
+      (s) => s.imdbId,
+    )
     const newOrder = [...order]
     const [movedItem] = newOrder.splice(fromIndex, 1)
     newOrder.splice(toIndex, 0, movedItem)
@@ -168,7 +171,9 @@ export function SeriesTrackerProvider({
 
   const moveShowToTop = useCallback((imdbId: string) => {
     const current = StorageRepo.getState()
-    const order = current.showOrder || current.shows.map((s) => s.imdbId)
+    const order = orderShows(current.shows, current.showOrder).map(
+      (s) => s.imdbId,
+    )
     const currentIndex = order.indexOf(imdbId)
     if (currentIndex > 0) {
       const newOrder = [imdbId, ...order.filter((id) => id !== imdbId)]
@@ -182,11 +187,7 @@ export function SeriesTrackerProvider({
   }, [])
 
   const getOrderedShows = useCallback(() => {
-    const order = state.showOrder || state.shows.map((s) => s.imdbId)
-    const showMap = new Map(state.shows.map((s) => [s.imdbId, s]))
-    return order
-      .map((id) => showMap.get(id))
-      .filter((s): s is Show => s !== undefined)
+    return orderShows(state.shows, state.showOrder)
   }, [state])
 
   const value = useMemo<SeriesTrackerContextValue>(

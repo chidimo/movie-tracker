@@ -14,6 +14,7 @@ export const importShows = (
   const { includeEpisodes = false } = options
 
   const toApply: Array<Show> = [...currentState.shows]
+  const addedIds: Array<string> = []
   const existingByTitle = new Map<string, Show>()
 
   // Build a map of existing shows by title for quick lookup
@@ -42,7 +43,17 @@ export const importShows = (
       title: s.title || s.imdbId,
       imdbUrl: s.imdbUrl || `${IMDB_BASE_URL}/${s.imdbId}`,
     })
+    addedIds.push(s.imdbId)
   }
 
-  return { ...currentState, shows: toApply }
+  // Keep showOrder in sync so imported shows land in the user's ordering
+  // instead of only being appended by the defensive `orderShows` fallback.
+  const baseOrder =
+    currentState.showOrder ?? currentState.shows.map((sh) => sh.imdbId)
+
+  return {
+    ...currentState,
+    shows: toApply,
+    showOrder: [...baseOrder, ...addedIds],
+  }
 }

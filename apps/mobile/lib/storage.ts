@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { normalizeTrackerState } from '@movie-tracker/core'
 import type { Show, TrackerState, UserProfile } from '@movie-tracker/core'
 
 // NOTE: AsyncStorage is asynchronous; all methods below return Promises
@@ -9,7 +10,7 @@ async function read(): Promise<TrackerState> {
   try {
     const raw = await AsyncStorage.getItem(STORAGE_KEY)
     if (!raw) return { shows: [] }
-    return JSON.parse(raw) as TrackerState
+    return normalizeTrackerState(JSON.parse(raw))
   } catch {
     return { shows: [] }
   }
@@ -40,16 +41,16 @@ export const StorageRepo = {
   },
   async addShow(show: Show): Promise<void> {
     const s = await read()
-    const exists = (s.shows || []).some((x) => x.imdbId === show.imdbId)
+    const exists = s.shows.some((x) => x.imdbId === show.imdbId)
     if (exists) return
     const showWithDefaults = { ...show, hideWatched: true }
-    await write({ ...s, shows: [showWithDefaults, ...(s.shows || [])] })
+    await write({ ...s, shows: [showWithDefaults, ...s.shows] })
   },
   async removeShow(imdbId: string): Promise<void> {
     const s = await read()
     await write({
       ...s,
-      shows: (s.shows || []).filter((x) => x.imdbId !== imdbId),
+      shows: s.shows.filter((x) => x.imdbId !== imdbId),
     })
   },
   async setNotification(day: number): Promise<void> {
