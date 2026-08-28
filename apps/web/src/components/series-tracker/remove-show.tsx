@@ -27,7 +27,7 @@ export const RemoveShow = ({
   return (
     <>
       <button
-        className="w-full text-left px-3 py-2 text-sm hover:bg-red-50 text-red-600 flex items-center gap-2"
+        className="w-full text-left px-3 py-2 text-sm hover:bg-destructive/10 text-destructive flex items-center gap-2"
         onClick={() => requestRemove(showId)}
       >
         <svg

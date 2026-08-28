@@ -35,25 +35,30 @@ export const SeriesTrackerPage = () => {
   }
 
   return (
-    <div>
+    <div className="space-y-8">
       <ProfileModal />
 
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-1">
-          {state.profile?.name ? `${state.profile.name}!` : 'Welcome!'} 👋
-        </h2>
-        <p className="text-gray-600 mb-4">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          {state.profile?.name ? `Hey, ${state.profile.name}` : 'Welcome'} 👋
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Track your favorite shows and see what&apos;s next.
         </p>
       </div>
 
       <SearchSeries />
 
-      <CommonArtists />
-
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold">Your Shows</h3>
+      <section>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 className="text-lg font-semibold tracking-tight">
+            Your Shows
+            {orderedShows.length > 0 && (
+              <span className="ml-2 text-sm font-normal text-muted-foreground">
+                {orderedShows.length}
+              </span>
+            )}
+          </h2>
           <div className="flex gap-2">
             <ImportSeries
               onUpdateState={(s: TrackerState) => replaceState(s)}
@@ -61,12 +66,15 @@ export const SeriesTrackerPage = () => {
             <ExportSeries state={state} />
           </div>
         </div>
+
         {orderedShows.length === 0 ? (
-          <p className="text-gray-600">
-            No shows yet. Search above and add one.
-          </p>
+          <div className="rounded-xl border border-dashed border-border px-6 py-16 text-center">
+            <p className="text-sm text-muted-foreground">
+              No shows yet — search above to add your first one.
+            </p>
+          </div>
         ) : (
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {orderedShows.map((show, index) => (
               <DraggableShowCard
                 key={show.imdbId}
@@ -81,7 +89,9 @@ export const SeriesTrackerPage = () => {
             ))}
           </ul>
         )}
-      </div>
+      </section>
+
+      <CommonArtists />
     </div>
   )
 }

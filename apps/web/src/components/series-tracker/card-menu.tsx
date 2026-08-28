@@ -34,12 +34,13 @@ export const CardMenu = ({ show, onRemoveShow }: Props) => {
   return (
     <div className="relative" ref={menuRef}>
       <button
-        className="p-1 bg-white rounded border border-gray-300 hover:bg-gray-50 shadow-sm"
+        type="button"
+        className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-card text-muted-foreground shadow-sm outline-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring"
         onClick={() => setIsOpen(!isOpen)}
         title="More options"
       >
         <svg
-          className="w-4 h-4 text-gray-600"
+          className="h-4 w-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -54,12 +55,12 @@ export const CardMenu = ({ show, onRemoveShow }: Props) => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded border border-gray-200 shadow-lg z-50">
+        <div className="absolute right-0 top-full z-50 mt-1 w-48 overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-lg">
           <div className="py-1">
             <MoveToTopButton show={show} onClick={closeMenu} />
             <OpenIMDbButton show={show} onClick={closeMenu} />
             <ViewDetailsButton show={show} onClick={closeMenu} />
-            <hr className="my-1 border-gray-200" />
+            <hr className="my-1 border-border" />
             <RemoveShow showId={show.imdbId} onRemove={onRemoveShow} />
           </div>
         </div>

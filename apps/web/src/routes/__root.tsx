@@ -9,7 +9,7 @@ export const Route = createRootRoute({
   component: () => (
     <WorkOSProvider>
       <Header />
-      <main className="px-4 md:px-20 py-6 overflow-auto">
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <Outlet />
       </main>
       {import.meta.env.DEV && (

@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Enable class-based dark mode: `.dark` on <html> flips the token palette below. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 body {
   @apply m-0;
   font-family:
@@ -130,5 +133,8 @@ code {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  html {
+    color-scheme: light dark;
   }
 }

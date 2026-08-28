@@ -29,7 +29,7 @@ export const SeasonContainer = ({
   const seasonWatched = season.episodes.every((e) => e.watched)
 
   return (
-    <div key={season.seasonNumber ?? season.title} className="border rounded">
+    <div key={season.seasonNumber ?? season.title} className="rounded-lg border border-border">
       <div className="flex items-center justify-between mb-2 p-3">
         <div>
           <h2 className="font-semibold">{season.title}</h2>
@@ -52,7 +52,7 @@ export const SeasonContainer = ({
           }}
         />
       </div>
-      <ul className="divide-y">
+      <ul className="divide-y divide-border">
         {season.episodes
           .filter((e) => (hideWatched ? !e.watched : true))
           .map((e) => (
