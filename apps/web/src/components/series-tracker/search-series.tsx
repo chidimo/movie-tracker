@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { filterSearchResults } from '@movie-tracker/core'
 import { useSeriesTracker } from '../../context/series-tracker-context'
 import type { OmdbSearchItem } from '@movie-tracker/core'
 import {
@@ -7,6 +9,10 @@ import {
   useSearchSeries,
 } from '@/hooks/use-movies-legacy'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+
+const posterOf = (poster?: string) =>
+  poster && poster !== 'N/A' ? poster : undefined
 
 export const SearchSeries = () => {
   const [q, setQ] = useState('')
@@ -16,9 +22,19 @@ export const SearchSeries = () => {
     enabled: false,
   })
 
-  const results = data ?? []
+  const query = q.trim().toLowerCase()
 
-  const onSearch = async () => {
+  // Shows already in the library that match what's being typed — surfaced live.
+  const libraryMatches = useMemo(() => {
+    if (query.length < 2) return []
+    return state.shows.filter((s) => s.title.toLowerCase().includes(query))
+  }, [state.shows, query])
+
+  // OMDB hits, deduped and minus anything already in the library (those show
+  // in the "In your list" section above instead).
+  const newResults = filterSearchResults(data ?? [], state.shows)
+
+  const onSearch = () => {
     if (!q.trim()) return
     refetch()
   }
@@ -26,9 +42,11 @@ export const SearchSeries = () => {
   const { mutateAsync: fetchTitle, isPending } = useOmdbTitleMutation()
 
   const onAdd = async (item: OmdbSearchItem) => {
-    const full = await fetchTitle(item.imdbID)
-    if (!full) return
-    addShow(full)
+    try {
+      addShow(await fetchTitle(item.imdbID))
+    } catch {
+      // fetchTitle surfaces its own error state; nothing to add on failure
+    }
   }
 
   return (
@@ -62,47 +80,89 @@ export const SearchSeries = () => {
         <p className="mt-2 text-sm text-destructive">{String(error)}</p>
       ) : null}
 
-      {results.length > 0 ? (
+      {libraryMatches.length > 0 ? (
+        <div className="mt-4">
+          <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+            In your list
+          </h3>
+          <ul className="space-y-2">
+            {libraryMatches.map((s) => (
+              <li
+                key={s.imdbId}
+                className="flex items-center justify-between gap-3 rounded-lg border border-border bg-muted/40 p-2"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  {posterOf(s.thumbnail) ? (
+                    <img
+                      src={s.thumbnail}
+                      alt=""
+                      className="h-16 w-11 rounded object-cover"
+                    />
+                  ) : (
+                    <div className="h-16 w-11 rounded bg-muted" />
+                  )}
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-semibold">
+                      {s.title}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {s.releaseYear}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">Added</Badge>
+                  <Link to="/$imdbId" params={{ imdbId: s.imdbId }}>
+                    <Button size="sm" variant="outline">
+                      Open
+                    </Button>
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {newResults.length > 0 ? (
         <div className="mt-4">
           <h3 className="mb-2 text-sm font-medium text-muted-foreground">
             Results
           </h3>
           <ul className="space-y-2">
-            {results.map((r) => {
-              const isAdded = state.shows.some((s) => s.imdbId === r.imdbID)
-              return (
-                <li
-                  key={r.imdbID}
-                  className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card p-2"
-                >
-                  <div className="flex items-center gap-3">
-                    {r.Poster && r.Poster !== 'N/A' ? (
-                      <img
-                        src={r.Poster}
-                        alt=""
-                        className="h-16 w-11 rounded object-cover"
-                      />
-                    ) : (
-                      <div className="h-16 w-11 rounded bg-muted" />
-                    )}
-                    <div>
-                      <div className="text-sm font-semibold">{r.Title}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {r.Year}
-                      </div>
+            {newResults.map((r) => (
+              <li
+                key={r.imdbID}
+                className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card p-2"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  {posterOf(r.Poster) ? (
+                    <img
+                      src={r.Poster}
+                      alt=""
+                      className="h-16 w-11 rounded object-cover"
+                    />
+                  ) : (
+                    <div className="h-16 w-11 rounded bg-muted" />
+                  )}
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-semibold">
+                      {r.Title}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {r.Year}
                     </div>
                   </div>
-                  <Button
-                    size="sm"
-                    variant={isAdded ? 'secondary' : 'primary'}
-                    onClick={() => onAdd(r)}
-                    disabled={isAdded || isPending}
-                  >
-                    {isAdded ? 'Added' : isPending ? 'Adding…' : 'Add'}
-                  </Button>
-                </li>
-              )
-            })}
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => onAdd(r)}
+                  disabled={isPending}
+                >
+                  {isPending ? 'Adding…' : 'Add'}
+                </Button>
+              </li>
+            ))}
           </ul>
         </div>
       ) : null}
