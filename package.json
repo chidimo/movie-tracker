@@ -7,12 +7,15 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn web:build",
+    "build": "yarn core:build && yarn web:build",
     "preview": "yarn web:preview",
+    "clean": "rm -rf dist",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier",
     "check": "prettier --write . && eslint --fix",
+    "core:build": "cd packages/core && npx tsc",
+    "core:dev": "cd packages/core && npx tsc --watch",
     "web:dev": "cd apps/web && npx vite",
     "web:build": "cd apps/web && npx tsc && npx vite build",
     "web:preview": "cd apps/web && npx vite preview",
