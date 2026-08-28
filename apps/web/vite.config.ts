@@ -13,6 +13,11 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 5174,
     },
+    build: {
+      // Emit to a single top-level dist/ at the repo root
+      outDir: fileURLToPath(new URL('../../dist', import.meta.url)),
+      emptyOutDir: true,
+    },
     plugins: [
       tanstackRouter({
         target: 'react',
