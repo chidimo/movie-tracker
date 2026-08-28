@@ -1,6 +1,6 @@
 [build]
   command = "yarn web:build"
-  publish = "packages/web/dist"
+  publish = "apps/web/dist"
   functions = "netlify/functions"
 
 [build.environment]
