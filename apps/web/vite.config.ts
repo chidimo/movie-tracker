@@ -14,8 +14,8 @@ export default defineConfig(({ mode }) => {
       port: 5174,
     },
     build: {
-      // Emit to a single top-level dist/ at the repo root
-      outDir: fileURLToPath(new URL('../../dist', import.meta.url)),
+      // Emit to the single top-level dist/ at the repo root
+      outDir: fileURLToPath(new URL('../../dist/web', import.meta.url)),
       emptyOutDir: true,
     },
     plugins: [

@@ -3,22 +3,9 @@ import { createMobileOmdbFunctions } from './omdb'
 import { normalizeOmdbShow } from './compute-omdb'
 import { generateAIPrompt } from './ai-types'
 import { Logger } from './logger'
+import { isDev } from './is-dev'
 import type { AIPromptTemplate, AIRecommendation } from './ai-types'
 import type { Show } from './types'
-
-// Define __DEV__ for non-React Native environments
-declare global {
-  const __DEV__: boolean
-}
-
-// Provide fallback for environments where __DEV__ is not defined
-if ((globalThis as any).__DEV__ === undefined) {
-  try {
-    ;(globalThis as any).__DEV__ = process.env.NODE_ENV !== 'production'
-  } catch {
-    ;(globalThis as any).__DEV__ = true
-  }
-}
 
 const { omdbGetTitle } = createMobileOmdbFunctions(
   typeof process === 'undefined'
@@ -89,7 +76,7 @@ export class AIDiscoveryEngine {
       'window' in globalThis &&
       globalThis.window.location.protocol === 'https:'
     ) {
-      if (__DEV__) {
+      if (isDev()) {
         console.log('🤖 Switching to HTTPS for React Native compatibility')
       }
       this.baseUrl = this.baseUrl.replace('http://', 'https://')
@@ -144,7 +131,7 @@ export class AIDiscoveryEngine {
       return await this.enrichRecommendationsWithOMDB(response, 'similar')
     } catch (error) {
       Logger.error('Personalized recommendations failed', error)
-      if (__DEV__) {
+      if (isDev()) {
         console.error('AI recommendations failed, using fallback:', error)
       }
       return this.getFallbackRecommendations('similar')
@@ -164,7 +151,7 @@ export class AIDiscoveryEngine {
       const response = await this.callAI(generateAIPrompt(promptTemplate))
       return await this.enrichRecommendationsWithOMDB(response, 'trending')
     } catch (error) {
-      if (__DEV__) {
+      if (isDev()) {
         console.error('Trending recommendations failed:', error)
       }
       return this.getFallbackTrending()
@@ -186,7 +173,7 @@ export class AIDiscoveryEngine {
       const response = await this.callAI(generateAIPrompt(promptTemplate))
       return await this.enrichRecommendationsWithOMDB(response, 'mood_based')
     } catch (error) {
-      if (__DEV__) {
+      if (isDev()) {
         console.error('Mood-based recommendations failed:', error)
       }
       return this.getFallbackRecommendations('mood_based')
@@ -219,7 +206,7 @@ export class AIDiscoveryEngine {
   }
 
   private logAIRequest(prompt: string): void {
-    if (__DEV__) {
+    if (isDev()) {
       console.log('🤖 AI Request:', {
         provider: this.provider,
         baseUrl: this.baseUrl,
@@ -278,7 +265,7 @@ export class AIDiscoveryEngine {
     endpoint: string,
     requestBody: any,
   ): Promise<Response> {
-    if (__DEV__) {
+    if (isDev()) {
       console.log('🤖 Request Body:', JSON.stringify(requestBody, null, 2))
     }
 
@@ -325,7 +312,7 @@ export class AIDiscoveryEngine {
 
     Logger.error('AI API Error', errorInfo)
 
-    if (__DEV__) {
+    if (isDev()) {
       console.error('🤖 AI Response Error:', errorInfo)
     }
     throw new Error(
@@ -335,7 +322,7 @@ export class AIDiscoveryEngine {
 
   private async handleResponse(response: Response): Promise<string> {
     const data = await response.json()
-    if (__DEV__) {
+    if (isDev()) {
       console.log('🤖 AI Response Data:===========')
       console.log(data)
       console.log('=================================')
@@ -358,7 +345,7 @@ export class AIDiscoveryEngine {
   }
 
   private handleError(error: unknown): string {
-    if (__DEV__) {
+    if (isDev()) {
       console.error('🤖 AI Call Failed:', error)
     }
 
@@ -398,7 +385,7 @@ export class AIDiscoveryEngine {
       }
 
       const parsed = JSON.parse(jsonMatch[0])
-      if (__DEV__) {
+      if (isDev()) {
         console.log('🤖 Parsed AI Recommendations:===========')
         console.log(parsed)
         console.log('=================================')
@@ -452,14 +439,14 @@ export class AIDiscoveryEngine {
               category,
             }
 
-            if (__DEV__) {
+            if (isDev()) {
               console.log('🤖 Enriched recommendation:===========')
               console.log(recommendation)
               console.log('=================================')
             }
             return recommendation
           } catch (error) {
-            if (__DEV__) {
+            if (isDev()) {
               console.error('🤖 Failed to enrich recommendation:', error)
             }
             // Fallback to basic recommendation
@@ -481,7 +468,7 @@ export class AIDiscoveryEngine {
 
       return enrichedRecommendations
     } catch (error) {
-      if (__DEV__) {
+      if (isDev()) {
         console.error('🤖 Failed to parse AI response as JSON:', error)
         console.log('🤖 Raw AI Response:', aiResponse)
       }

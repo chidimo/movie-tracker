@@ -1,12 +1,10 @@
 {
   "name": "@movie-tracker/core",
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "module": "dist/esm/index.js",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./src/index.ts",
       "default": "./src/index.ts"
     }
@@ -14,7 +12,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf ../../dist/core"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.18",
