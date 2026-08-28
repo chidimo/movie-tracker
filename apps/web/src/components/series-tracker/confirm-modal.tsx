@@ -1,4 +1,5 @@
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { DialogShell } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 
 export const ConfirmModal = ({
   open,
@@ -18,32 +19,18 @@ export const ConfirmModal = ({
   onCancel: () => void
 }) => {
   return (
-    <Dialog open={open} onClose={onCancel} className="relative z-50">
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="mx-auto w-full max-w-md rounded bg-white p-6">
-          <DialogTitle className="text-lg font-semibold mb-2">
-            {title}
-          </DialogTitle>
-          {description ? (
-            <p className="text-sm text-gray-700 mb-4">{description}</p>
-          ) : null}
-          <div className="flex justify-end gap-2">
-            <button
-              className="px-4 py-2 rounded bg-gray-200"
-              onClick={onCancel}
-            >
-              {cancelText}
-            </button>
-            <button
-              className="px-4 py-2 rounded bg-red-600 text-white"
-              onClick={onConfirm}
-            >
-              {confirmText}
-            </button>
-          </div>
-        </DialogPanel>
+    <DialogShell open={open} onClose={onCancel} title={title}>
+      {description ? (
+        <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+      ) : null}
+      <div className="mt-5 flex justify-end gap-2">
+        <Button variant="secondary" onClick={onCancel}>
+          {cancelText}
+        </Button>
+        <Button variant="destructive" onClick={onConfirm}>
+          {confirmText}
+        </Button>
       </div>
-    </Dialog>
+    </DialogShell>
   )
 }

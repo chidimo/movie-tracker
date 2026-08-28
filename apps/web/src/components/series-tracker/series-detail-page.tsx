@@ -33,54 +33,67 @@ export const SeriesDetailPage = () => {
 
   if (!show) {
     return (
-      <main>
-        <p className="text-gray-700">Show not found in your list.</p>
-        <Link to="/" className="text-blue-700 hover:underline">
+      <div className="space-y-3">
+        <p className="text-sm text-muted-foreground">
+          Show not found in your list.
+        </p>
+        <Link
+          to="/"
+          className="text-sm font-medium text-primary hover:underline"
+        >
           ← Back
         </Link>
-      </main>
+      </div>
     )
   }
 
   return (
-    <main>
-      <div className="mb-4">
-        <Link to="/" className="text-blue-700 hover:underline">
+    <div>
+      <div className="mb-6">
+        <Link
+          to="/"
+          className="text-sm font-medium text-muted-foreground hover:text-foreground"
+        >
           ← Back to tracker
         </Link>
       </div>
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <div className="flex justify-center md:justify-start">
+      <div className="mb-8 flex flex-col gap-6 md:flex-row">
+        <div className="shrink-0">
           {show.thumbnail && show.thumbnail !== 'N/A' ? (
             <img
               src={show.thumbnail}
-              alt="poster"
-              className="object-cover rounded"
+              alt=""
+              className="w-full rounded-xl object-cover md:w-56"
             />
           ) : (
-            <div className="bg-gray-200 rounded" />
+            <div className="aspect-2/3 w-full rounded-xl bg-muted md:w-56" />
           )}
         </div>
-        <div className="flex-1 space-y-2">
+        <div className="flex-1 space-y-3">
           <UpcomingBanner show={show} className="" />
-          <h1 className="text-2xl font-bold">{show.title}</h1>
-          {show.releaseYear ? (
-            <div className="text-sm text-gray-600">{show.releaseYear}</div>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            {show.title}
+          </h1>
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            {show.releaseYear ? <span>{show.releaseYear}</span> : null}
+            <RatingsDisplay rating={show.rating} votes={show.votes} />
+          </div>
+          {show.plot ? (
+            <p className="text-sm text-muted-foreground">{show.plot}</p>
           ) : null}
-          {show.plot ? <p className="text-gray-700">{show.plot}</p> : null}
           <CastDisplay cast={show.mainCast} />
-          <RatingsDisplay rating={show.rating} votes={show.votes} />
           <SeriesProgress
             seriesId={imdbId}
-            showFraction={true}
-            showPercentage={true}
+            className="max-w-sm"
+            showFraction
+            showPercentage
           />
-          <div className="flex gap-3">
+          <div className="flex flex-wrap items-center gap-4 pt-1 text-sm font-medium">
             <a
               href={show.imdbUrl}
               target="_blank"
               rel="noreferrer"
-              className="text-blue-700 hover:underline"
+              className="text-primary hover:underline"
             >
               Open on IMDb
             </a>
@@ -88,7 +101,7 @@ export const SeriesDetailPage = () => {
               href={imdbVideosUrl}
               target="_blank"
               rel="noreferrer"
-              className="text-blue-700 hover:underline"
+              className="text-primary hover:underline"
             >
               Watch trailer
             </a>
@@ -98,8 +111,8 @@ export const SeriesDetailPage = () => {
       </div>
 
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold">Seasons</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold tracking-tight">Seasons</h2>
           <Switcher
             label="Hide watched episodes"
             checked={show?.hideWatched ?? false}
@@ -122,6 +135,6 @@ export const SeriesDetailPage = () => {
             ))}
         </div>
       </div>
-    </main>
+    </div>
   )
 }

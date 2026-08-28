@@ -1,9 +1,7 @@
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import type { HTMLAttributes } from 'react'
+import type { ClassValue } from 'clsx'
 
-export const mergeClasses = (
-  ...inputs: Array<HTMLAttributes<HTMLElement>['className']>
-) => {
-  return twMerge(clsx(...inputs))
+export const mergeClasses = (...inputs: Array<ClassValue>) => {
+  return twMerge(clsx(inputs))
 }

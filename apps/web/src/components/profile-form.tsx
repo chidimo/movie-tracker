@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { UserProfile } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
+import { Button } from '@/components/ui/button'
 
 function slugify(input: string) {
   return input
@@ -30,29 +31,25 @@ export const ProfileForm = ({ onSave, className = '' }: ProfileFormProps) => {
     }
     setProfile(profile)
     onSave?.(profile)
-    alert('Profile saved!')
   }
 
   return (
     <div className={className}>
-      <h3 className="text-lg font-semibold mb-2">Profile Settings</h3>
-      <p className="text-sm text-gray-700 mb-4">
-        Update your display name. This stays on your browser only.
+      <p className="mt-2 text-sm text-muted-foreground">
+        Your display name. Stored on this browser only.
       </p>
       <input
         value={name}
-        onChange={(e) => {
-          setName(e.target.value)
-        }}
+        onChange={(e) => setName(e.target.value)}
         placeholder="Your name"
-        className="w-full border rounded px-3 py-2 mb-4"
+        onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+        className="mt-4 h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring"
       />
-      <button
-        className="px-4 py-2 rounded bg-blue-600 text-white"
-        onClick={handleSave}
-      >
-        Save Profile
-      </button>
+      <div className="mt-5 flex justify-end">
+        <Button onClick={handleSave} disabled={!name.trim()}>
+          Save profile
+        </Button>
+      </div>
     </div>
   )
 }

@@ -5,6 +5,10 @@ import { routeTree } from './routeTree.gen'
 import './styles.css'
 import reportWebVitals from './reportWebVitals'
 import { SeriesTrackerProvider } from './context/series-tracker-context'
+import { initTheme } from './lib/theme'
+
+// Apply the saved theme before first paint to avoid a flash.
+initTheme()
 
 // Create a new router instance
 const router = createRouter({

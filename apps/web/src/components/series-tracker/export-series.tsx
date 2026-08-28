@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { normalizeShowTransfer } from '@movie-tracker/core'
 import type { Show } from '@movie-tracker/core'
+import { Button } from '@/components/ui/button'
+import { DialogShell } from '@/components/ui/dialog'
 
 export const ExportSeries = ({ state }: { state: any }) => {
   const [exportOpen, setExportOpen] = useState(false)
@@ -45,108 +46,88 @@ export const ExportSeries = ({ state }: { state: any }) => {
     setExportOpen(false)
   }
 
+  const selectedCount = state.shows.filter(
+    (s: Show) => exportSelected[s.imdbId],
+  ).length
+
   return (
     <>
-      <button
-        className="px-3 py-1 rounded bg-gray-200"
+      <Button
+        variant="secondary"
+        size="sm"
         onClick={openExport}
         disabled={state.shows.length === 0}
       >
         Export
-      </button>
+      </Button>
 
-      <Dialog
+      <DialogShell
         open={exportOpen}
         onClose={() => setExportOpen(false)}
-        className="relative z-50"
+        title="Export shows"
+        className="max-w-lg"
       >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="mx-auto w-full max-w-lg rounded bg-white p-6">
-            <DialogTitle className="text-lg font-semibold mb-3">
-              Export shows
-            </DialogTitle>
-            {state.shows.length === 0 ? (
-              <p className="text-sm text-gray-700">No shows to export.</p>
-            ) : (
-              <div className="space-y-4">
-                <div className="mb-2 flex items-center gap-2">
+        {state.shows.length === 0 ? (
+          <p className="mt-3 text-sm text-muted-foreground">
+            No shows to export.
+          </p>
+        ) : (
+          <div className="mt-4 space-y-4">
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                className="h-4 w-4 accent-primary"
+                checked={state.shows.every(
+                  (s: Show) => exportSelected[s.imdbId],
+                )}
+                onChange={(e) => toggleAllExport(e.target.checked)}
+              />
+              Select all
+            </label>
+
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                className="h-4 w-4 accent-primary"
+                checked={includeEpisodes}
+                onChange={(e) => setIncludeEpisodes(e.target.checked)}
+              />
+              Include episodes
+            </label>
+
+            <ul className="max-h-64 divide-y divide-border overflow-auto rounded-lg border border-border">
+              {state.shows.map((s: Show) => (
+                <li
+                  key={s.imdbId}
+                  className="flex items-center gap-2 p-2.5"
+                >
                   <input
-                    id="export-select-all"
                     type="checkbox"
-                    className="h-4 w-4"
-                    checked={state.shows.every(
-                      (s: Show) => exportSelected[s.imdbId],
-                    )}
-                    onChange={(e) => toggleAllExport(e.target.checked)}
+                    className="h-4 w-4 accent-primary"
+                    checked={!!exportSelected[s.imdbId]}
+                    onChange={(e) =>
+                      setExportSelected((prev) => ({
+                        ...prev,
+                        [s.imdbId]: e.target.checked,
+                      }))
+                    }
                   />
-                  <label htmlFor="export-select-all" className="text-sm">
-                    Select all
-                  </label>
-                </div>
-                <div className="">
-                  <div className="mb-2 flex items-center gap-2">
-                    <input
-                      id="include-episodes"
-                      type="checkbox"
-                      className="h-4 w-4"
-                      checked={includeEpisodes}
-                      onChange={(e) => setIncludeEpisodes(e.target.checked)}
-                    />
-                    <label htmlFor="include-episodes" className="text-sm">
-                      Include episodes
-                    </label>
-                  </div>
-                  <p className="text-xs text-gray-600 mt-2 ml-3">
-                    {includeEpisodes
-                      ? 'Episodes will be included in the export.'
-                      : 'Episodes are excluded from the export.'}
-                  </p>
-                </div>
-                <ul className="max-h-64 overflow-auto border rounded">
-                  {state.shows.map((s: Show) => (
-                    <li
-                      key={s.imdbId}
-                      className="flex items-center gap-2 p-2 border-b last:border-b-0"
-                    >
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4"
-                        checked={!!exportSelected[s.imdbId]}
-                        onChange={(e) =>
-                          setExportSelected((prev) => ({
-                            ...prev,
-                            [s.imdbId]: e.target.checked,
-                          }))
-                        }
-                      />
-                      <span className="text-sm">{s.title}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                className="px-4 py-2 rounded bg-gray-200"
-                onClick={() => setExportOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-60"
-                onClick={confirmExport}
-                disabled={
-                  state.shows.length === 0 ||
-                  !state.shows.some((s: Show) => exportSelected[s.imdbId])
-                }
-              >
-                Download JSON
-              </button>
-            </div>
-          </DialogPanel>
+                  <span className="text-sm">{s.title}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="mt-5 flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => setExportOpen(false)}>
+            Cancel
+          </Button>
+          <Button onClick={confirmExport} disabled={selectedCount === 0}>
+            Download JSON
+          </Button>
         </div>
-      </Dialog>
+      </DialogShell>
     </>
   )
 }

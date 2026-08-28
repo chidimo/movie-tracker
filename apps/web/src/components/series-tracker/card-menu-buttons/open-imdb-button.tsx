@@ -13,11 +13,11 @@ export const OpenIMDbButton = ({ show, onClick }: Props) => {
 
   return (
     <button
-      className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 flex items-center gap-2"
+      className="w-full text-left px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground flex items-center gap-2"
       onClick={handleClick}
     >
       <svg
-        className="w-4 h-4 text-gray-600"
+        className="w-4 h-4 text-muted-foreground"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

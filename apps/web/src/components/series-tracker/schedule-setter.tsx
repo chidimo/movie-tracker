@@ -1,7 +1,11 @@
 import { useMemo, useState } from 'react'
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import type { Show } from '@movie-tracker/core'
 import { useSeriesTracker } from '@/context/series-tracker-context'
+import { Button } from '@/components/ui/button'
+import { DialogShell } from '@/components/ui/dialog'
+
+const fieldClass =
+  'h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring'
 
 export const ScheduleSetter = ({ show }: { show: Show }) => {
   const { updateShow } = useSeriesTracker()
@@ -83,95 +87,92 @@ export const ScheduleSetter = ({ show }: { show: Show }) => {
   return (
     <>
       <button
-        className="text-blue-700 cursor-pointer"
+        type="button"
+        className="text-primary hover:underline"
         onClick={openScheduleModal}
       >
         Set tentative schedule
       </button>
-      <Dialog
+      <DialogShell
         open={scheduleOpen}
         onClose={() => setScheduleOpen(false)}
-        className="relative z-50"
+        title="Set tentative schedule"
       >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="mx-auto w-full max-w-md rounded bg-white p-6">
-            <DialogTitle className="text-lg font-semibold mb-3">
-              Set tentative schedule
-            </DialogTitle>
-            {!show || (show.seasons || []).length === 0 ? (
-              <p className="text-sm text-gray-700">
-                Load seasons first to select an episode.
-              </p>
-            ) : (
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="sched-date" className="block text-sm mb-1">
-                    Date
-                  </label>
-                  <input
-                    id="sched-date"
-                    type="date"
-                    value={schedDate}
-                    onChange={(e) => setSchedDate(e.target.value)}
-                    className="w-full border rounded px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="sched-episode" className="block text-sm mb-1">
-                    Episode
-                  </label>
-                  <select
-                    id="sched-episode"
-                    value={schedTarget}
-                    onChange={(e) => setSchedTarget(e.target.value)}
-                    className="w-full border rounded px-3 py-2"
-                  >
-                    <option value="">Select episode</option>
-                    {allEpisodesFlat.map((ep) => (
-                      <option
-                        key={`s${ep.seasonNumber}-e${ep.episodeNumber}`}
-                        value={`s${ep.seasonNumber}-e${ep.episodeNumber}`}
-                      >
-                        Season {ep.seasonNumber} · E{ep.episodeNumber} ·{' '}
-                        {ep.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="sched-freq" className="block text-sm mb-1">
-                    Frequency (days)
-                  </label>
-                  <input
-                    id="sched-freq"
-                    type="number"
-                    min={1}
-                    value={schedFreq}
-                    onChange={(e) => setSchedFreq(Number(e.target.value) || 7)}
-                    className="w-full border rounded px-3 py-2"
-                  />
-                </div>
-              </div>
-            )}
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                className="px-4 py-2 rounded bg-gray-200"
-                onClick={() => setScheduleOpen(false)}
+        {!show || (show.seasons || []).length === 0 ? (
+          <p className="mt-3 text-sm text-muted-foreground">
+            Load seasons first to select an episode.
+          </p>
+        ) : (
+          <div className="mt-4 space-y-4">
+            <div>
+              <label
+                htmlFor="sched-date"
+                className="mb-1 block text-sm font-medium"
               >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-60"
-                onClick={saveSchedule}
-                disabled={!schedDate || !schedTarget}
-              >
-                Save
-              </button>
+                Date
+              </label>
+              <input
+                id="sched-date"
+                type="date"
+                value={schedDate}
+                onChange={(e) => setSchedDate(e.target.value)}
+                className={fieldClass}
+              />
             </div>
-          </DialogPanel>
+            <div>
+              <label
+                htmlFor="sched-episode"
+                className="mb-1 block text-sm font-medium"
+              >
+                Episode
+              </label>
+              <select
+                id="sched-episode"
+                value={schedTarget}
+                onChange={(e) => setSchedTarget(e.target.value)}
+                className={fieldClass}
+              >
+                <option value="">Select episode</option>
+                {allEpisodesFlat.map((ep) => (
+                  <option
+                    key={`s${ep.seasonNumber}-e${ep.episodeNumber}`}
+                    value={`s${ep.seasonNumber}-e${ep.episodeNumber}`}
+                  >
+                    Season {ep.seasonNumber} · E{ep.episodeNumber} · {ep.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="sched-freq"
+                className="mb-1 block text-sm font-medium"
+              >
+                Frequency (days)
+              </label>
+              <input
+                id="sched-freq"
+                type="number"
+                min={1}
+                value={schedFreq}
+                onChange={(e) => setSchedFreq(Number(e.target.value) || 7)}
+                className={fieldClass}
+              />
+            </div>
+          </div>
+        )}
+        <div className="mt-5 flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => setScheduleOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            onClick={saveSchedule}
+            disabled={!schedDate || !schedTarget}
+          >
+            Save
+          </Button>
         </div>
-      </Dialog>
+      </DialogShell>
     </>
   )
 }

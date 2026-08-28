@@ -1,9 +1,10 @@
 import { normalizeShowTransfer } from '@movie-tracker/core'
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useRef, useState } from 'react'
 import type { Show } from '@movie-tracker/core'
 import { importShows } from '@/lib/import-utils'
 import { StorageRepo } from '@/lib/storage'
+import { Button } from '@/components/ui/button'
+import { DialogShell } from '@/components/ui/dialog'
 
 export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
   const [importOpen, setImportOpen] = useState(false)
@@ -70,103 +71,87 @@ export const ImportSeries = ({ onUpdateState }: { onUpdateState: any }) => {
     setImportOpen(false)
   }
 
-  return (
-    <div>
-      <button className="px-3 py-1 rounded bg-gray-200" onClick={openImport}>
-        Import
-      </button>
+  const selectedCount = importedShows.filter(
+    (s) => s.imdbId && importSelected[s.imdbId],
+  ).length
 
-      <Dialog
+  return (
+    <>
+      <Button variant="secondary" size="sm" onClick={openImport}>
+        Import
+      </Button>
+
+      <DialogShell
         open={importOpen}
         onClose={() => setImportOpen(false)}
-        className="relative z-50"
+        title="Import shows"
+        className="max-w-lg"
       >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="mx-auto w-full max-w-lg rounded bg-white p-6">
-            <DialogTitle className="text-lg font-semibold mb-3">
-              Import shows
-            </DialogTitle>
-            <div className="mb-3">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="application/json"
-                onChange={(e) => onImportFileChange(e.target.files?.[0])}
-              />
-            </div>
-            {fileError ? (
-              <p className="text-sm text-red-600 mb-2">{fileError}</p>
-            ) : null}
-            {importedShows.length > 0 ? (
-              <>
-                <div className="mb-2 flex items-center gap-2">
-                  <input
-                    id="import-select-all"
-                    type="checkbox"
-                    className="h-4 w-4"
-                    checked={importedShows.every(
-                      (s) => s.imdbId && importSelected[s.imdbId],
-                    )}
-                    onChange={(e) => toggleAllImport(e.target.checked)}
-                  />
-                  <label htmlFor="import-select-all" className="text-sm">
-                    Select all
-                  </label>
-                </div>
-                <ul className="max-h-64 overflow-auto border rounded">
-                  {importedShows.map((s) => (
-                    <li
-                      key={s.imdbId || Math.random()}
-                      className="flex items-center justify-between gap-2 p-2 border-b last:border-b-0"
-                    >
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          className="h-4 w-4"
-                          checked={!!(s.imdbId && importSelected[s.imdbId])}
-                          onChange={(e) =>
-                            s.imdbId &&
-                            setImportSelected((prev) => ({
-                              ...prev,
-                              [s.imdbId!]: e.target.checked,
-                            }))
-                          }
-                        />
-                        <span className="text-sm">{s.title || s.imdbId}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p className="text-sm text-gray-700">
-                Choose a JSON file exported from this app.
-              </p>
-            )}
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                className="px-4 py-2 rounded bg-gray-200"
-                onClick={() => setImportOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-60"
-                onClick={confirmImport}
-                disabled={
-                  importedShows.length === 0 ||
-                  !importedShows.some(
-                    (s) => s.imdbId && importSelected[s.imdbId],
-                  )
-                }
-              >
-                Import Selected
-              </button>
-            </div>
-          </DialogPanel>
+        <div className="mt-4">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json"
+            onChange={(e) => onImportFileChange(e.target.files?.[0])}
+            className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-secondary-foreground hover:file:bg-secondary/80"
+          />
         </div>
-      </Dialog>
-    </div>
+
+        {fileError ? (
+          <p className="mt-2 text-sm text-destructive">{fileError}</p>
+        ) : null}
+
+        {importedShows.length > 0 ? (
+          <>
+            <label className="mt-4 flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                className="h-4 w-4 accent-primary"
+                checked={importedShows.every(
+                  (s) => s.imdbId && importSelected[s.imdbId],
+                )}
+                onChange={(e) => toggleAllImport(e.target.checked)}
+              />
+              Select all
+            </label>
+            <ul className="mt-2 max-h-64 divide-y divide-border overflow-auto rounded-lg border border-border">
+              {importedShows.map((s) => (
+                <li
+                  key={s.imdbId || Math.random()}
+                  className="flex items-center gap-2 p-2.5"
+                >
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-primary"
+                    checked={!!(s.imdbId && importSelected[s.imdbId])}
+                    onChange={(e) =>
+                      s.imdbId &&
+                      setImportSelected((prev) => ({
+                        ...prev,
+                        [s.imdbId!]: e.target.checked,
+                      }))
+                    }
+                  />
+                  <span className="text-sm">{s.title || s.imdbId}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p className="mt-3 text-sm text-muted-foreground">
+            Choose a JSON file exported from this app.
+          </p>
+        )}
+
+        <div className="mt-5 flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => setImportOpen(false)}>
+            Cancel
+          </Button>
+          <Button onClick={confirmImport} disabled={selectedCount === 0}>
+            Import{selectedCount > 0 ? ` ${selectedCount}` : ''}
+          </Button>
+        </div>
+      </DialogShell>
+    </>
   )
 }

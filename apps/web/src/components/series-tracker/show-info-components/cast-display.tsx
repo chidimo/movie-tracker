@@ -1,16 +1,14 @@
 import type { Show } from '@movie-tracker/core'
+import { Badge } from '@/components/ui/badge'
 
 export const CastDisplay = ({ cast }: { cast: Show['mainCast'] }) => {
-  if (!cast) return null
+  if (!cast || cast.length === 0) return null
   return (
-    <div className="mt-2 flex flex-wrap gap-1">
-      {cast.slice(0, 5).map((c) => (
-        <span
-          key={c}
-          className="text-[10px] md:text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full"
-        >
+    <div className="flex flex-wrap gap-1">
+      {cast.slice(0, 4).map((c) => (
+        <Badge key={c} variant="secondary">
           {c}
-        </span>
+        </Badge>
       ))}
     </div>
   )

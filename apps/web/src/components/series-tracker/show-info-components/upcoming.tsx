@@ -19,7 +19,7 @@ export const UpcomingRibbon = ({
   const code = s && e ? `S${s}.E${e}` : 'Soon'
   return (
     <div
-      className={`bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-sm shadow ${className}`}
+      className={`bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 rounded-sm shadow ${className}`}
     >
       {code}
     </div>
@@ -44,7 +44,7 @@ export const UpcomingBanner = ({
 
   return (
     <div
-      className={`w-fit mb-2 rounded border border-blue-200 bg-blue-50 text-blue-800 px-2 py-1 text-xs ${className}`}
+      className={`w-fit mb-2 rounded-md border border-primary/20 bg-primary/10 text-primary px-2 py-1 text-xs ${className}`}
     >
       <span className="font-semibold">Upcoming:</span>{' '}
       {code ? <span className="font-mono mr-1">{code}</span> : null}

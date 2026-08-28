@@ -1,4 +1,4 @@
-import { Rating } from 'react-simple-star-rating'
+import { StarIcon } from '@heroicons/react/24/solid'
 import { formatNumber } from '@movie-tracker/core'
 
 export const RatingsDisplay = ({
@@ -9,24 +9,17 @@ export const RatingsDisplay = ({
   votes?: number
 }) => {
   if (!rating) return null
-  const stars = Math.max(0, Math.min(5, rating / 2))
 
   return (
-    <div className="flex-1 flex items-center gap-2 w-full text-xs">
-      <div className="flex items-center">
-        <Rating
-          initialValue={stars}
-          readonly
-          allowFraction
-          size={16}
-          // fillColor="var(--progress-color)"
-          className="flex flex-row"
-          SVGstyle={{ display: 'inline-block' }}
-        />
-      </div>
-      <p className="font-semibold">{rating}</p>
+    <div className="flex items-center gap-1.5 text-xs">
+      <StarIcon className="h-4 w-4 text-amber-500" />
+      <span className="font-semibold text-foreground">
+        {rating.toFixed(1)}
+      </span>
       {votes ? (
-        <p className="text-gray-600">/ {formatNumber(votes)} votes</p>
+        <span className="text-muted-foreground">
+          ({formatNumber(votes)})
+        </span>
       ) : null}
     </div>
   )

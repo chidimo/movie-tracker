@@ -1,4 +1,5 @@
 import type { ProgressProps } from '@/hooks/use-progress'
+import { mergeClasses as cn } from '@/lib/class-merge'
 import { useProgress } from '@/hooks/use-progress'
 
 type BaseProps = {
@@ -13,7 +14,7 @@ export const SeriesProgress = ({
   season,
   label,
   className,
-  barHeightClassName = 'h-2',
+  barHeightClassName = 'h-1.5',
   showFraction,
   showPercentage,
 }: SeriesComponentProps) => {
@@ -23,27 +24,40 @@ export const SeriesProgress = ({
       : { seriesId, label, showFraction, showPercentage },
   )
 
+  const complete = progress.total > 0 && progress.watched >= progress.total
+
   return (
     <div className={className}>
-      <div className="text-xs text-gray-600 mb-1">
-        {progress.label ? (
-          <span className="font-medium">{progress.label}: </span>
-        ) : null}
-        {progress.showFraction ? (
-          <span>
-            {progress.watched}/{progress.total}
+      <div className="mb-1 flex items-center justify-between text-xs text-muted-foreground">
+        <span>
+          {progress.label ? (
+            <span className="font-medium text-foreground">
+              {progress.label}:{' '}
+            </span>
+          ) : null}
+          {progress.showFraction ? (
+            <span>
+              {progress.watched}/{progress.total}
+            </span>
+          ) : null}
+        </span>
+        {progress.showPercentage ? (
+          <span className={complete ? 'font-medium text-foreground' : ''}>
+            {progress.percentage}%
           </span>
         ) : null}
-        {progress.showFraction && progress.showPercentage ? (
-          <span> · </span>
-        ) : null}
-        {progress.showPercentage ? <span>{progress.percentage}%</span> : null}
       </div>
       <div
-        className={`${barHeightClassName} w-full bg-gray-200 rounded overflow-hidden`}
+        className={cn(
+          'w-full overflow-hidden rounded-full bg-muted',
+          barHeightClassName,
+        )}
       >
         <div
-          className="h-full bg-green-600"
+          className={cn(
+            'h-full rounded-full transition-[width] duration-300',
+            complete ? 'bg-primary' : 'bg-primary/70',
+          )}
           style={{ width: `${progress.percentage}%` }}
         />
       </div>
